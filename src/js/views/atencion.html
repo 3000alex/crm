@@ -1,0 +1,223 @@
+<!--
+ Copyright (c) 2014, 2022, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+ <div class="oj-hybrid-padding">
+  <h1>Atencion</h1>
+
+  <div>
+    <oj-button  id="btnCrear" on-oj-action="[[openCrear]]">Crear Registro</oj-button>
+    <div id="popupWrapperCrear">
+      <oj-popup
+        id="crear_registro"
+        class="demo-popup"
+        auto-dismiss="none"
+        modality="modal"
+        position.my.horizontal="center"
+        position.my.vertical="center"
+        position.at.horizontal="center"
+        position.at.vertical="center"
+        position.of="window"
+        tail="none">
+        <div class="demo-popup-body">
+          <div class="demo-popup-header">
+            <oj-button
+              id="btnCancel"
+              class="oj-button-sm"
+              display="icons"
+              on-oj-action="[[cerrar_modal]]">
+              <span slot="startIcon" class="oj-ux-ico-close"></span>
+              Cancel
+            </oj-button>
+          </div>
+          <div class="demo-popup-content oj-sm-padding-2x">
+            <oj-form-layout
+              id="myform"
+              label-edge="inside"
+              direction="row"
+              class="oj-helper-margin-auto oj-formlayout-full-width"
+              user-assistance-density="efficient">
+             
+              <oj-bind-if test="[[opcion() === 'editar' ]]">
+                <oj-input-text
+                  id="idAtencion"
+                  label-hint="idAtencion"
+                  value="{{idAtencion}}">
+                </oj-input-text>
+              </oj-bind-if>
+
+              <oj-input-text
+                id="atencionA"
+                label-hint="Atención a"
+                value="{{atencionA}}">
+              </oj-input-text>
+
+              <oj-input-text
+                id="atendidoPor"
+                label-hint="Atendido por"
+                value="{{atendidoPor}}">
+              </oj-input-text>
+
+              <oj-text-area
+                id="asunto"
+                value="{{asunto}}"
+                label-hint="Asunto"
+                rows="3"></oj-text-area>
+              
+              <oj-select-single
+                id="atecionCrear"
+                data="[[datatipo_atencion]]"
+                value="{{tipo_atencion}}"
+                label-edge="inside"
+                label-hint="TipoAtención"
+                class="oj-form-control-max-width-md"></oj-select-single>
+
+                <oj-select-single
+                id="tipo_atencionCrear"
+                data="[[dataTipo_usuario]]"
+                value="{{tipo_usuario}}"
+                label-edge="inside"
+                label-hint="Se atendio a"
+                class="oj-form-control-max-width-md"></oj-select-single>
+
+                <oj-select-single
+                id="estatus"
+                data="[[dataEstatusAtencion]]"
+                value="{{estatus}}"
+                label-edge="inside"
+                label-hint="Estatus"
+                class="oj-form-control-max-width-md"></oj-select-single>
+
+                <oj-text-area
+                  id="observaciones"
+                  value="{{observaciones}}"
+                  label-hint="Observaciones"
+                  rows="3">
+                </oj-text-area>
+            </oj-form-layout>
+
+            <oj-bind-if test="[[opcion() === 'crear']]">
+              <oj-button on-oj-action="[[crearRegistro]]">Crear</oj-button>
+            </oj-bind-if>
+
+            <oj-bind-if test="[[opcion() === 'editar' ]]">
+              <oj-button on-oj-action="[[actualizarRegistro]]">Actualizar</oj-button>
+            </oj-bind-if>
+
+            <oj-button on-oj-action="[[cerrar_modal]]" >Cancelar</oj-button>
+          </div>
+        </div>
+      </oj-popup>
+    </div>
+
+    <oj-table
+    id="table"
+    aria-label="Task Table"
+    data="[[dataprovider]]"
+    columns-default.sortable="disabled"
+    layout="fixed"
+    columns='[
+              {"headerText": "ID","resizable": "enabled"},
+              {"headerText": "Atención a","resizable": "enabled"},
+              {"headerText": "Atendido por","resizable": "enabled"},
+              {"headerText": "Asunto","resizable": "enabled"},
+              {"headerText": "Tipo de atención","resizable": "enabled"},
+              {"headerText": "Se atendio","resizable": "enabled"},
+              {"headerText": "Estatus","resizable": "enabled"},
+              {"headerText": "Observaciones","resizable": "enabled"},
+              {"headerText": "Fecha atención","resizable": "enabled"},
+              {"headerText": "Acciones","resizable": "enabled"}]'
+    class="demo-table-container">
+
+    <template slot="rowTemplate" data-oj-as="row">
+      <tr>
+        <td>
+          <oj-bind-text value="[[row.data.id]]"></oj-bind-text>
+        </td>
+
+        <td>
+          <oj-bind-text value="[[row.data.atencionA]]"></oj-bind-text>
+        </td>
+
+        <td>
+          <oj-bind-text value="[[row.data.atendidoPor]]"></oj-bind-text>
+        </td>
+        
+        <td>
+          <oj-bind-text value="[[row.data.asunto]]"></oj-bind-text>
+        </td>
+        <td>
+          <oj-bind-text value="[[row.data.tipo_atencion]]"></oj-bind-text>
+        </td>
+        <td>
+          <oj-bind-text value="[[row.data.tipo_usuario]]"></oj-bind-text>
+        </td>
+        <td>
+          <oj-bind-text value="[[row.data.estatus]]"></oj-bind-text>
+        </td>
+        <td>
+          <oj-bind-text value="[[row.data.observaciones]]"></oj-bind-text>
+        </td>
+
+        <td>
+          <oj-bind-text value="[[row.data.fecha_atencion]]"></oj-bind-text>
+        </td>
+        
+        <td>
+      
+          <div id="popupWrapperRemove">
+            <oj-popup
+              id="popup2"
+              class="demo-popup"
+              auto-dismiss="none"
+              modality="modal"
+              position.my.horizontal="center"
+              position.my.vertical="center"
+              position.at.horizontal="center"
+              position.at.vertical="center"
+              position.of="window"
+              tail="none">
+              <div class="demo-popup-body">
+                <div class="demo-popup-header">
+                  <oj-button
+                    id="btnCancel2"
+                    class="oj-button-sm"
+                    display="icons"
+                    on-oj-action="[[cancelListener2]]">
+                    <span slot="startIcon" class="oj-ux-ico-close"></span>
+                    Cancel
+                  </oj-button>
+                </div>
+                <div class="demo-popup-content oj-sm-padding-2x">
+                  <p>
+                   <b>¿ Estas seguro que deseas eliminar este registro ?</b> <br> <br>
+                   <oj-button on-oj-action="[[removeTask]]">Aceptar</oj-button>
+                   <oj-button on-oj-action="[[cancelListener2]]">Cancelar</oj-button>
+
+                  </p>
+                </div>
+              </div>
+            </oj-popup>
+          </div>
+          <div>
+            <oj-button display="icons"  id="actualizar_btn" on-oj-action="[[modalEditar]]"><span slot="startIcon" class="oj-ux-ico-edit-box"></span></oj-button>
+            <oj-button display="icons" id="btnGo2" on-oj-action="[[openListener2]]"><span slot="startIcon" class="oj-ux-ico-delete-all"></span></oj-button>
+            <oj-button display="icons" ><span slot="startIcon" class="oj-ux-ico-view"></span></oj-button>
+          </div>
+          
+        </td>
+        
+      </tr>
+    </template>
+    <template slot="noData">
+      <div class="oj-flex oj-sm-align-items-center">
+        <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column oj-sm-width-full">
+          <span class="oj-sm-padding-2x oj-typography-body-xl">No existe ningun registro</span>
+        </div>
+      </div>
+    </template>
+  </oj-table>
+  </div>
+
+</div>
