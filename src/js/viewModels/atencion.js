@@ -1,7 +1,7 @@
 
-define(["require", "exports", "knockout", "ojs/ojbootstrap", "ojs/ojarraydataprovider","jquery", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
+define(["require", "exports", "knockout", "ojs/ojbootstrap", "ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
 "ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout"],
-function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
+function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvider,$) {
   function ViewModel() {
     var self = this;
 
@@ -19,58 +19,62 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
       self.estatus = ko.observable("");
       self.observaciones = ko.observable("");
 
-      //Declaracion DataProviders y data
-
-      self.atencion = ko.observableArray([]);
+      //Declaracion data y DataProviders
       self.data = ko.observableArray([]);
-      self.data.push({ id: "1", atencionA: "Juan meza (20C93018)", atendidoPor: "Alexis B (1983)", asunto: "Problemas plataforma Alumnos", tipo_atencion: "Telefónica", tipo_usuario: "Alumno", estatus: "Finalizado", observaciones: "Ninguna", fecha_atencion:"1-abril-2022" });
-      self.data.push({ id: "2", atencionA: "carlos (1234)", atendidoPor: "Alexis B (1983)", asunto: "Problemas con acceso a pagos", tipo_atencion: "Correo Electrónico", tipo_usuario: "Asesor", estatus: "En proceso", observaciones: "Ninguna", fecha_atencion:"1-abril-2022" });
-      self.data.push({ id: "3", atencionA: "jorge (4567)", atendidoPor: "Alexis B (1983)", asunto: "Devolución de papeles", tipo_atencion: "Personal", tipo_usuario: "Representante", estatus: "Rechazado", observaciones: "El alumno aun tiene deuda por saldar", fecha_atencion:"1-abril-2022" });
+      
+      $.get({
+        url: 'js/data/atencion.json',
+ 
+      }).done(function(data){
+       $.each(data, function(index, persona){
+          self.data.push(persona);
+       })
+        console.log(self.data())
+      });
+
+      self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data,{
+        keyAttributes: 'id'
+      }))
+     
 
       self.atencion = [
         { value: "Telefónica", label: "Telefónica" },
         { value: "Correo Electrónico", label: "Correo Electrónico" },
         { value: "Personal", label: "Personal" },
       ];
+      self.datatipo_atencion = new ArrayDataProvider(this.atencion, {
+        keyAttributes: "value",
+      });
+
       self.Tipo_usuario = [
         { value: "Alumno", label: "Alumno" },
         { value: "Asesor", label: "Asesor" },
         { value: "Representante", label: "Representante" },
       ];
+      self.dataTipo_usuario = new ArrayDataProvider(this.Tipo_usuario, {
+        keyAttributes: "value",
+      });
 
       self.estatusAtencion = [
         { value: "En proceso", label: "En proceso" },
         { value: "Finalizado", label: "Finalizado" },
         { value: "Rechazado", label: "Rechazado" },
       ];
-
       self.dataEstatusAtencion = new ArrayDataProvider(this.estatusAtencion, {
         keyAttributes: "value",
       })
-
-      self.dataTipo_usuario = new ArrayDataProvider(this.Tipo_usuario, {
-        keyAttributes: "value",
-      });
-
-      self.datatipo_atencion = new ArrayDataProvider(this.atencion, {
-        keyAttributes: "value",
-      });
-      self.dataprovider = new ArrayDataProvider(this.data, {
-        keyAttributes: "id",
-      });
-
     }; //FIN connected
 
     
     //MODALES
     self.openCrear = () => {
-      let popup = document.getElementById("crear_registro");
+      let popup = document.getElementById("modal_edit_create");
       self.opcion("crear");
       popup.open("#btnCrear");
     }
 
-    self.cerrar_modal = () => {
-      let popup = document.getElementById("crear_registro");
+    self.cerrar_modal_edit_create = () => {
+      let popup = document.getElementById("modal_edit_create");
       self.limpiarCampos();
       self.opcion("");
       popup.close();
@@ -90,12 +94,11 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
         fecha_atencion: "1-abril-2022"
       }
       self.data.push(registro);
-      let popup = document.getElementById("crear_registro");
-      popup.close();
+      self.cerrar_modal_edit_create()
     }
 
     self.modalEditar = () => {
-      let popup = document.getElementById("crear_registro");
+      let popup = document.getElementById("modal_edit_create");
       const element = document.getElementById('table');
       popup.open("#btnCrear");
       const currentRow = element.currentRow;
@@ -110,16 +113,20 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
       
       let key = self.idAtencion();
       const newData = {  
+        id:key,
         atencionA:self.atencionA(),
         atendidoPor:self.atendidoPor(),
         asunto:self.asunto(),
         tipo_atencion:self.tipo_atencion(),
         tipo_usuario:self.tipo_usuario(),
         estatus:self.estatus(),
-        observaciones:self.observaciones()
+        observaciones:self.observaciones(),
+        fecha_atencion: "1-abril-2022"
       }
       console.log(newData);
-      this.data.updateItem({ metadata: { key: key }, data: newData });
+      self.dataprovider.updateItem({ metadata: { key: key }, data: newData });
+      self.cerrar_modal_edit_create();
+      self.limpiarCampos();
     }
 
     self.limpiarCampos = () =>{
@@ -141,8 +148,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
       self.tipo_usuario(dataUpdate.tipo_usuario),
       self.estatus(dataUpdate.estatus),
       self.observaciones(dataUpdate.observaciones)
-
-
     }
 
     //FUNCIONES EDITAR REGISTRO DE ATENCION
@@ -152,6 +157,7 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
     //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
 
     this.removeTask = (event, context) => {
+      console.log(context.index)
       this.data.splice(context.index, 1);
     };
 
@@ -161,13 +167,13 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
       popup.close();
     }
 
-    this.openListener2 = () => {
-      let popup = document.getElementById("popup2");
-      popup.open("#btnGo2");
+    this.eliminarModal = () => {
+      let popup = document.getElementById("popup_eliminar");
+      popup.open("#eliminar_btn");
     }
 
-    this.cancelListener2 = () => {
-      let popup = document.getElementById("popup2");
+    this.cancelEliminarModal = () => {
+      let popup = document.getElementById("popup_eliminar");
       popup.close();
     }
 
@@ -178,11 +184,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,$) {
 
 
     this.transitionCompleted = () => {
-
-    };
-
-    this.prueba = () => {
-      alert("Hola mundo");
 
     };
 

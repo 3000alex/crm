@@ -1,0 +1,35 @@
+[
+      {
+            "id": "1",
+            "atencionA": "Juan meza (20C93018)",
+            "atendidoPor": "Alexis B (1983)",
+            "asunto": "Problemas plataforma Alumnos",
+            "tipo_atencion": "Telefónica",
+            "tipo_usuario": "Alumno",
+            "estatus": "Finalizado",
+            "observaciones": "Ninguna",
+            "fecha_atencion": "1-abril-2022"
+      },
+      {
+            "id": "2",
+            "atencionA": "carlos (1234)",
+            "atendidoPor": "Alexis B (1983)",
+            "asunto": "Problemas con acceso a pagos",
+            "tipo_atencion": "Correo Electrónico",
+            "tipo_usuario": "Asesor",
+            "estatus": "En proceso",
+            "observaciones": "Ninguna",
+            "fecha_atencion": "1-abril-2022"
+      },
+      {
+            "id": "3",
+            "atencionA": "jorge (4567)",
+            "atendidoPor": "Alexis B (1983)",
+            "asunto": "Devolución de papeles",
+            "tipo_atencion": "Personal",
+            "tipo_usuario": "Representante",
+            "estatus": "Rechazado",
+            "observaciones": "El alumno aun tiene deuda por saldar",
+            "fecha_atencion": "1-abril-2022"
+      }
+]
