@@ -7,11 +7,9 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
     var router = params.parentRouter;
 
     this.connected = () => {
-      document.title = "Atencion";
-      self.opcion = ko.observable("crear");
-      //INPUTS REGISTRO NUEVO: 
+      document.title = "Crear incidencia";
 
-      self.idAtencion = ko.observable(0);
+      //INPUTS REGISTRO NUEVO: 
       self.atencionA = ko.observable("");
       self.atendidoPor = ko.observable("");
       self.asunto = ko.observable("");
@@ -19,24 +17,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
       self.tipo_usuario = ko.observable("");
       self.estatus = ko.observable("");
       self.observaciones = ko.observable("");
-
-      //Declaracion data y DataProviders
-      self.data = ko.observableArray([]);
-      
-      $.get({
-        url: 'js/data/atencion.json',
- 
-      }).done(function(data){
-       $.each(data, function(index, persona){
-          self.data.push(persona);
-       })
-        console.log(self.data())
-      });
-
-      self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data,{
-        keyAttributes: 'id'
-      }))
-     
 
       self.atencion = [
         { value: "Telefónica", label: "Telefónica" },
@@ -94,24 +74,9 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
         observaciones: self.observaciones(),
         fecha_atencion: "1-abril-2022"
       }
-      self.data.push(registro);
-      self.cerrar_modal_edit_create()
-    }
-
-    self.modalEditar = () => {
-      let popup = document.getElementById("modal_edit_create");
-      const element = document.getElementById('table');
-      popup.open("#btnCrear");
-      const currentRow = element.currentRow;
-      const dataUpdate = self.data()[currentRow.rowIndex]
-      self.llenarCampos(dataUpdate)
-      self.opcion("editar")
-      popup.open("#actualizar_btn");
     }
 
     self.actualizarRegistro = () => {
-      console.log("Registro actualizado");
-      
       let key = self.idAtencion();
       const newData = {  
         id:key,
@@ -124,63 +89,7 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
         observaciones:self.observaciones(),
         fecha_atencion: "1-abril-2022"
       }
-      console.log(newData);
-      self.dataprovider.updateItem({ metadata: { key: key }, data: newData });
-      self.cerrar_modal_edit_create();
-      self.limpiarCampos();
     }
-
-    self.limpiarCampos = () =>{
-      self.atencionA(""),
-      self.atendidoPor(""),
-      self.asunto(""),
-      self.tipo_atencion(""),
-      self.tipo_usuario(""),
-      self.estatus(""),
-      self.observaciones("")
-    }
-
-    self.llenarCampos = (dataUpdate) => {
-      self.idAtencion(parseInt(dataUpdate.id));
-      self.atencionA(dataUpdate.atencionA),
-      self.atendidoPor(dataUpdate.atendidoPor),
-      self.asunto(dataUpdate.asunto),
-      self.tipo_atencion(dataUpdate.tipo_atencion),
-      self.tipo_usuario(dataUpdate.tipo_usuario),
-      self.estatus(dataUpdate.estatus),
-      self.observaciones(dataUpdate.observaciones)
-    }
-
-    //FUNCIONES EDITAR REGISTRO DE ATENCION
-
-    //FUNCIONES ELIMINAR REGISTRO DE ATENCION
-
-    //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
-    self.visualizarRegistros = () => {
-      router.go({ path: 'atencion_detail' });
-    }
-    
-    this.removeTask = (event, context) => {
-      console.log(context.index)
-      this.data.splice(context.index, 1);
-    };
-
-
-    this.cancelListener1 = () => {
-      let popup = document.getElementById("popup1");
-      popup.close();
-    }
-
-    this.eliminarModal = () => {
-      let popup = document.getElementById("popup_eliminar");
-      popup.open("#eliminar_btn");
-    }
-
-    this.cancelEliminarModal = () => {
-      let popup = document.getElementById("popup_eliminar");
-      popup.close();
-    }
-
 
     this.disconnected = () => {
 

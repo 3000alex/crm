@@ -99,7 +99,6 @@
                 {"headerText": "Se atendio","resizable": "enabled"},
                 {"headerText": "Estatus","resizable": "enabled"},
                 {"headerText": "Observaciones","resizable": "enabled"},
-                {"headerText": "Fecha atención","resizable": "enabled"},
                 {"headerText": "Acciones","resizable": "enabled"}]' class="demo-table-container">
   
           <template slot="rowTemplate" data-oj-as="row">
@@ -133,16 +132,12 @@
               </td>
   
               <td>
-                <oj-bind-text value="[[row.data.fecha_atencion]]"></oj-bind-text>
-              </td>
-  
-              <td>
                 <div>
                   <oj-button display="icons" id="actualizar_btn" on-oj-action="[[modalEditar]]"><span slot="startIcon"
                       class="oj-ux-ico-edit-box"></span></oj-button>
                   <oj-button display="icons" id="eliminar_btn" on-oj-action="[[eliminarModal]]"><span slot="startIcon"
                       class="oj-ux-ico-delete-all"></span></oj-button>
-                  <oj-button display="icons"><span slot="startIcon" class="oj-ux-ico-view"></span></oj-button>
+                  <oj-button display="icons" on-oj-action="[[visualizarRegistros]]"><span slot="startIcon" class="oj-ux-ico-view"></span></oj-button>
                 </div>
               </td>
   

@@ -1,0 +1,37 @@
+<!--
+ Copyright (c) 2014, 2022, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div class="oj-hybrid-padding">
+  <h1>Registrar incidencia</h1>
+  <div>
+    <oj-form-layout id="myform" label-edge="inside" direction="row"
+      class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
+
+      <oj-input-text id="atencionA" label-hint="Atención a" value="{{atencionA}}">
+      </oj-input-text>
+
+      <oj-input-text id="atendidoPor" label-hint="Atendido por" value="{{atendidoPor}}">
+      </oj-input-text>
+
+      <oj-text-area id="asunto" value="{{asunto}}" label-hint="Asunto" rows="3"></oj-text-area>
+
+      <oj-select-single id="atecionCrear" data="[[datatipo_atencion]]" value="{{tipo_atencion}}" label-edge="inside"
+        label-hint="TipoAtención" class="oj-form-control-max-width-md"></oj-select-single>
+
+      <oj-select-single id="tipo_atencionCrear" data="[[dataTipo_usuario]]" value="{{tipo_usuario}}" label-edge="inside"
+        label-hint="Se atendio a" class="oj-form-control-max-width-md"></oj-select-single>
+
+      <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
+        label-hint="Estatus" class="oj-form-control-max-width-md"></oj-select-single>
+
+      <oj-text-area id="observaciones" value="{{observaciones}}" label-hint="Observaciones" rows="3">
+      </oj-text-area>
+    </oj-form-layout>
+
+      <oj-button on-oj-action="">Crear</oj-button>
+      <oj-button on-oj-action="">Actualizar</oj-button>
+    <oj-button on-oj-action="">Cancelar</oj-button>
+  </div>
+</div>

@@ -33,9 +33,8 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojrespon
       let navData = [
         { path: '', redirect: 'atencion' },
         { path: 'atencion', detail: { label: 'atención', iconClass: 'oj-ux-ico-bar-chart' } },
-        { path: 'incidents', detail: { label: 'Incidents', iconClass: 'oj-ux-ico-fire' } },
-        { path: 'customers', detail: { label: 'Customers', iconClass: 'oj-ux-ico-contact-group' } },
-        { path: 'about', detail: { label: 'About', iconClass: 'oj-ux-ico-information-s' } }
+        { path: 'operaciones', detail: { label: 'operaciones', iconClass: 'oj-ux-ico-bar-chart' } },
+        { path: 'atencion_detail', detail: { label: 'atencion_detail', iconClass: 'oj-ux-ico-information-s' } }
       ];
       // Router setup
       let router = new CoreRouter(navData, {
