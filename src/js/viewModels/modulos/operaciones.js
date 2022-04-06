@@ -2,9 +2,9 @@
 define(["require", "exports", "knockout", "ojs/ojbootstrap", "ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
 "ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout"],
 function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvider,$) {
-  function ViewModel(params) {
+  function ViewModel() {
     var self = this;
-    var router = params.parentRouter;
+    //var router = params.parentRouter;
 
     this.connected = () => {
       document.title = "Crear incidencia";

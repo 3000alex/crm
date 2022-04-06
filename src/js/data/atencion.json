@@ -1,35 +1,80 @@
 [
       {
             "id": "1",
-            "atencionA": "Juan meza (20C93018)",
-            "atendidoPor": "Alexis B (1983)",
-            "asunto": "Problemas plataforma Alumnos",
-            "tipo_atencion": "Telefónica",
-            "tipo_usuario": "Alumno",
-            "estatus": "Finalizado",
-            "observaciones": "Ninguna",
-            "fecha_atencion": "1-abril-2022"
+            "usuarioAtendido": {
+                  "nombre": "Juan meza (20C93018)",
+                  "num_contacto": "222312345",
+                  "correoInstitucional": "ejemplo@iedep.edu.mx",
+                  "matricula": "20CL-28409",
+                  "correoPersonal": "personal@iedep.edu.mx",
+                  "campus": "NOPALUCAN",
+                  "licenciatura": "LICENCIATURA EN PEDAGOGIA",
+                  "tipo_usuario": "alumno"
+            },
+            "administrativo": {
+                  "nombre": "alex",
+                  "numExpediente": "1959",
+                  "correoInstitucional": "alex@iedep.edu.mx"
+            },
+            "datosGenerales": {
+                  "estatus": "En proceso ...",
+                  "tipo_atencion": "Correo electronico",
+                  "asunto": "Error en el portal de alumnos",
+                  "observaciones": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "fecha_inicio": "03/04/2022",
+                  "fecha_fin": "05/04/2022"
+            }
       },
       {
             "id": "2",
-            "atencionA": "carlos (1234)",
-            "atendidoPor": "Alexis B (1983)",
-            "asunto": "Problemas con acceso a pagos",
-            "tipo_atencion": "Correo Electrónico",
-            "tipo_usuario": "Asesor",
-            "estatus": "En proceso",
-            "observaciones": "Ninguna",
-            "fecha_atencion": "1-abril-2022"
+            "usuarioAtendido": {
+                  "nombre": "carlos lopez (20C93018)",
+                  "num_contacto": "52345345",
+                  "correoInstitucional": "ejemplo2@iedep.edu.mx",
+                  "matricula": "20CL-28409",
+                  "correoPersonal": "personal@iedep.edu.mx",
+                  "campus": "GUADALUPE VICTORIA",
+                  "licenciatura": "LICENCIATURA EN PSICOLOGIA",
+                  "tipo_usuario": "alumno"
+            },
+            "administrativo": {
+                  "nombre": "alex",
+                  "numExpediente": "1959",
+                  "correoInstitucional": "alex@iedep.edu.mx"
+            },
+            "datosGenerales": {
+                  "estatus": "Finalizado",
+                  "tipo_atencion": "Telefonica",
+                  "asunto": "Error en el portal de alumnos",
+                  "observaciones": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "fecha_inicio": "03/04/2022",
+                  "fecha_fin": "05/04/2022"
+            }
       },
       {
             "id": "3",
-            "atencionA": "jorge (4567)",
-            "atendidoPor": "Alexis B (1983)",
-            "asunto": "Devolución de papeles",
-            "tipo_atencion": "Personal",
-            "tipo_usuario": "Representante",
-            "estatus": "Rechazado",
-            "observaciones": "El alumno aun tiene deuda por saldar",
-            "fecha_atencion": "1-abril-2022"
+            "usuarioAtendido": {
+                  "nombre": "Juan meza (20C93018)",
+                  "num_contacto": "222312345",
+                  "correoInstitucional": "ejemplo@iedep.edu.mx",
+                  "matricula": "20CL-28409",
+                  "correoPersonal": "personal@iedep.edu.mx",
+                  "campus": "NOPALUCAN",
+                  "licenciatura": "LICENCIATURA EN PEDAGOGIA",
+                  "tipo_usuario": "alumno"
+            },
+            "administrativo": {
+                  "nombre": "alex",
+                  "numExpediente": "1959",
+                  "correoInstitucional": "alex@iedep.edu.mx"
+            },
+            "datosGenerales": {
+                  "estatus": "Rechazado",
+                  "tipo_atencion": "Personal",
+                  "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
+                  "observaciones": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "fecha_inicio": "03/04/2022",
+                  "fecha_fin": "05/04/2022"
+            }
       }
 ]

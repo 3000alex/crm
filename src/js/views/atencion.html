@@ -6,10 +6,10 @@
 <div class="oj-hybrid-padding ">
   <h1>Atencion</h1>
 
-  <div class="">
+  <div class="" id="moduleDemo">
     <oj-button id="btnCrear" on-oj-action="[[openCrear]]">Crear Registro</oj-button>
-    <div id="popupWrapperCrear">
-      <oj-popup id="modal_edit_create" class="demo-popup" auto-dismiss="none" modality="modal"
+    <div id="demo-popup oj-flex-item oj-sm-padding-5x-start">
+      <oj-popup id="modal_edit_create" class="demo-popup oj-private-scale-lg" auto-dismiss="none" modality="modal"
         position.my.horizontal="center" position.my.vertical="center" position.at.horizontal="center"
         position.at.vertical="center" position.of="window" tail="none">
         <div class="demo-popup-body">
@@ -34,7 +34,7 @@
               <oj-input-text id="atendidoPor" label-hint="Atendido por" value="{{atendidoPor}}">
               </oj-input-text>
 
-              <oj-text-area id="asunto" value="{{asunto}}" label-hint="Asunto" rows="3"></oj-text-area>
+              <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto" rows="3"></oj-input-text>
 
               <oj-select-single id="atecionCrear" data="[[datatipo_atencion]]" value="{{tipo_atencion}}"
                 label-edge="inside" label-hint="TipoAtención" class="oj-form-control-max-width-md"></oj-select-single>
@@ -85,75 +85,76 @@
         </div>
       </oj-popup>
     </div>
-    
-    <div style="width: 100%; height: 27rem;">
-      <div style="width: 1px; min-width: 100%;">
-        <oj-table id="table" aria-label="Task Table" data="[[dataprovider]]"  scroll-policy="loadMoreOnScroll"
-        scroll-policy-options='{"fetchSize": 10}'
-          layout="fixed" columns='[
-                {"headerText": "ID","resizable": "enabled","width":"auto"},
-                {"headerText": "Atención a","resizable": "enabled"},
-                {"headerText": "Atendido por","resizable": "enabled"},
-                {"headerText": "Asunto","resizable": "enabled"},
-                {"headerText": "Tipo de atención","resizable": "enabled"},
-                {"headerText": "Se atendio","resizable": "enabled"},
-                {"headerText": "Estatus","resizable": "enabled"},
-                {"headerText": "Observaciones","resizable": "enabled"},
-                {"headerText": "Acciones","resizable": "enabled"}]' class="demo-table-container">
-  
-          <template slot="rowTemplate" data-oj-as="row">
-            <tr>
-              <td>
-                <oj-bind-text value="[[row.data.id]]"></oj-bind-text>
-              </td>
-  
-              <td>
-                <oj-bind-text value="[[row.data.atencionA]]"></oj-bind-text>
-              </td>
-  
-              <td>
-                <oj-bind-text value="[[row.data.atendidoPor]]"></oj-bind-text>
-              </td>
-  
-              <td>
-                <oj-bind-text value="[[row.data.asunto]]"></oj-bind-text>
-              </td>
-              <td>
-                <oj-bind-text value="[[row.data.tipo_atencion]]"></oj-bind-text>
-              </td>
-              <td>
-                <oj-bind-text value="[[row.data.tipo_usuario]]"></oj-bind-text>
-              </td>
-              <td>
-                <oj-bind-text value="[[row.data.estatus]]"></oj-bind-text>
-              </td>
-              <td>
-                <oj-bind-text value="[[row.data.observaciones]]"></oj-bind-text>
-              </td>
-  
-              <td>
-                <div>
-                  <oj-button display="icons" id="actualizar_btn" on-oj-action="[[modalEditar]]"><span slot="startIcon"
-                      class="oj-ux-ico-edit-box"></span></oj-button>
-                  <oj-button display="icons" id="eliminar_btn" on-oj-action="[[eliminarModal]]"><span slot="startIcon"
-                      class="oj-ux-ico-delete-all"></span></oj-button>
-                  <oj-button display="icons" on-oj-action="[[visualizarRegistros]]"><span slot="startIcon" class="oj-ux-ico-view"></span></oj-button>
-                </div>
-              </td>
-  
-            </tr>
-          </template>
-          <template slot="noData">
-            <div class="oj-flex oj-sm-align-items-center">
-              <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column oj-sm-width-full">
-                <span class="oj-sm-padding-2x oj-typography-body-xl">No existe ningun registro</span>
+
+
+    <div class="oj-flex oj-flex-items-pad">
+      <oj-table id="table" class="demo-table-container" aria-label="Task Table"
+        data="[[dataprovider]]" columns-default.sortable="disabled"
+        columns='[
+                {"headerText": "ID", "field": "id", "resizable": "enabled","width":"auto"},
+                {"headerText": "Atención a", "field": "atendido a", "resizable": "enabled"},
+                {"headerText": "Atendido por", "field": "atendido por", "resizable": "enabled"},
+                {"headerText": "Asunto", "field": "asunto", "resizable": "enabled","width":"190px"},
+                {"headerText": "Tipo de atención", "field": "tipo de atencion", "resizable": "enabled"},
+                {"headerText": "Se atendio", "field": "se atendio", "resizable": "enabled"},
+                {"headerText": "Estatus", "field": "estatus", "resizable": "enabled"},
+                {"headerText": "Observaciones", "field": "observaciones", "resizable": "enabled","width":"150px"},
+                {"headerText": "Acciones", "field": "acciones", "resizable": "enabled"}]'>
+
+        <template slot="rowTemplate" data-oj-as="row">
+          <tr>
+            <td>
+              <oj-bind-text value="[[row.data.id]]"></oj-bind-text>
+            </td>
+
+            <td>
+              <oj-bind-text value="[[row.data.usuarioAtendido.nombre]]"></oj-bind-text>
+            </td>
+
+            <td>
+              <oj-bind-text value="[[row.data.administrativo.nombre]]"></oj-bind-text>
+            </td>
+
+            <td>
+              <oj-bind-text value="[[row.data.datosGenerales.asunto]]"></oj-bind-text>
+            </td>
+            <td>
+              <oj-bind-text value="[[row.data.datosGenerales.tipo_atencion]]"></oj-bind-text>
+            </td>
+            <td>
+              <oj-bind-text value="[[row.data.usuarioAtendido.tipo_usuario]]"></oj-bind-text>
+            </td>
+            <td>
+              <oj-bind-text value="[[row.data.datosGenerales.estatus]]"></oj-bind-text>
+            </td>
+            <td>
+              <oj-bind-text value="[[row.data.datosGenerales.observaciones[row.data.datosGenerales.observaciones.length-1]]]"></oj-bind-text>
+            </td>
+
+            <td>
+              <div>
+                <oj-button display="icons" id="actualizar_btn" on-oj-action="[[modalEditar]]"><span slot="startIcon"
+                    class="oj-ux-ico-edit-box"></span></oj-button>
+                <oj-button display="icons" id="eliminar_btn" on-oj-action="[[eliminarModal]]"><span slot="startIcon"
+                    class="oj-ux-ico-delete-all"></span></oj-button>
+                <oj-button display="icons" on-oj-action="[[visualizarRegistros]]"><span slot="startIcon"
+                    class="oj-ux-ico-view"></span></oj-button>
               </div>
+            </td>
+
+          </tr>
+        </template>
+        <template slot="noData">
+          <div class="oj-flex oj-sm-align-items-center">
+            <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column oj-sm-width-full">
+              <span class="oj-sm-padding-2x oj-typography-body-xl">No existe ningun registro</span>
             </div>
-          </template>
-        </oj-table>
-      </div>
+          </div>
+        </template>
+      </oj-table>
     </div>
-    
+
+    <oj-module config="[[ModuleElementUtils.createConfig({name:'modulos/operaciones'})]]"></oj-module>
   </div>
 
 </div>

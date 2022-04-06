@@ -1,11 +1,14 @@
 
-define(["require", "exports", "knockout", "ojs/ojbootstrap", "ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
-"ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout"],
-function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvider,$) {
+define(["require", "exports", "knockout", "ojs/ojbootstrap", "ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", 'ojs/ojmodule-element-utils',"ojs/ojmodule-element", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
+"ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout",],
+function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvider,$,ModuleElementUtils) {
   function ViewModel(params) {
     var self = this;
     var router = params.parentRouter;
-
+    self.ModuleElementUtils = ModuleElementUtils;
+    self.currentDisplayOption = ko.observable();
+    self.currentHorizontalGridVisible = ko.observable();
+    self.currentVerticalGridVisible = ko.observable();
     this.connected = () => {
       document.title = "Atencion";
       self.opcion = ko.observable("crear");
@@ -20,6 +23,12 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
       self.estatus = ko.observable("");
       self.observaciones = ko.observable("");
 
+      self.moduleConfig = ko.pureComputed(() =>{
+        return {
+          view: 'modulos/operaciones',
+          viewModel: 'modulos/operaciones'
+        }
+      });
       //Declaracion data y DataProviders
       self.data = ko.observableArray([]);
       
@@ -36,7 +45,9 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
       self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data,{
         keyAttributes: 'id'
       }))
-     
+      self.currentDisplayOption = ko.observable("grid");
+      self.currentHorizontalGridVisible = ko.observable("disable");
+      self.currentVerticalGridVisible = ko.observable("enable");
 
       self.atencion = [
         { value: "Telefónica", label: "Telefónica" },
@@ -65,6 +76,7 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
         keyAttributes: "value",
       })
     }; //FIN connected
+
 
     
     //MODALES
