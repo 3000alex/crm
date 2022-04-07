@@ -1,36 +1,31 @@
 
-define(["require", "exports", "knockout", "ojs/ojbootstrap", "ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", 'ojs/ojmodule-element-utils',"ojs/ojmodule-element", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
+define(["require", "exports", "knockout","ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
 "ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout",],
-function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvider,$,ModuleElementUtils) {
-  function ViewModel(params) {
+function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$) {
+  function ViewModel() {
     var self = this;
-    var router = params.parentRouter;
-    self.ModuleElementUtils = ModuleElementUtils;
+    //var router = params.parentRouter;
     self.currentDisplayOption = ko.observable();
     self.currentHorizontalGridVisible = ko.observable();
     self.currentVerticalGridVisible = ko.observable();
+    
+
     this.connected = () => {
       document.title = "Atencion";
       self.opcion = ko.observable("crear");
-      //INPUTS REGISTRO NUEVO: 
+      //INPUTS REGISTRO NUEVO:
 
       self.idAtencion = ko.observable(0);
       self.atencionA = ko.observable("");
       self.atendidoPor = ko.observable("");
       self.asunto = ko.observable("");
       self.tipo_atencion = ko.observable("");
-      self.tipo_usuario = ko.observable("");
       self.estatus = ko.observable("");
       self.observaciones = ko.observable("");
-
-      self.moduleConfig = ko.pureComputed(() =>{
-        return {
-          view: 'modulos/operaciones',
-          viewModel: 'modulos/operaciones'
-        }
-      });
+      
       //Declaracion data y DataProviders
       self.data = ko.observableArray([]);
+     
       
       $.get({
         url: 'js/data/atencion.json',
@@ -38,13 +33,16 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
       }).done(function(data){
        $.each(data, function(index, persona){
           self.data.push(persona);
+          console.log(persona)
        })
         console.log(self.data())
+      }).fail((err,err2) => {
+
       });
 
       self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data,{
         keyAttributes: 'id'
-      }))
+      }));
       self.currentDisplayOption = ko.observable("grid");
       self.currentHorizontalGridVisible = ko.observable("disable");
       self.currentVerticalGridVisible = ko.observable("enable");
@@ -58,15 +56,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
         keyAttributes: "value",
       });
 
-      self.Tipo_usuario = [
-        { value: "Alumno", label: "Alumno" },
-        { value: "Asesor", label: "Asesor" },
-        { value: "Representante", label: "Representante" },
-      ];
-      self.dataTipo_usuario = new ArrayDataProvider(this.Tipo_usuario, {
-        keyAttributes: "value",
-      });
-
       self.estatusAtencion = [
         { value: "En proceso", label: "En proceso" },
         { value: "Finalizado", label: "Finalizado" },
@@ -76,8 +65,7 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
         keyAttributes: "value",
       })
     }; //FIN connected
-
-
+    
     
     //MODALES
     self.openCrear = () => {
@@ -101,7 +89,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
         atendidoPor: self.atendidoPor(),
         asunto: self.asunto(),
         tipo_atencion: self.tipo_atencion(),
-        tipo_usuario: self.tipo_usuario(),
         estatus: self.estatus(),
         observaciones: self.observaciones(),
         fecha_atencion: "1-abril-2022"
@@ -131,7 +118,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
         atendidoPor:self.atendidoPor(),
         asunto:self.asunto(),
         tipo_atencion:self.tipo_atencion(),
-        tipo_usuario:self.tipo_usuario(),
         estatus:self.estatus(),
         observaciones:self.observaciones(),
         fecha_atencion: "1-abril-2022"
@@ -147,7 +133,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
       self.atendidoPor(""),
       self.asunto(""),
       self.tipo_atencion(""),
-      self.tipo_usuario(""),
       self.estatus(""),
       self.observaciones("")
     }
@@ -158,7 +143,6 @@ function (require, exports, ko, Bootstrap, ArrayDataProvider,BufferingDataProvid
       self.atendidoPor(dataUpdate.atendidoPor),
       self.asunto(dataUpdate.asunto),
       self.tipo_atencion(dataUpdate.tipo_atencion),
-      self.tipo_usuario(dataUpdate.tipo_usuario),
       self.estatus(dataUpdate.estatus),
       self.observaciones(dataUpdate.observaciones)
     }

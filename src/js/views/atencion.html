@@ -8,6 +8,7 @@
 
   <div class="" id="moduleDemo">
     <oj-button id="btnCrear" on-oj-action="[[openCrear]]">Crear Registro</oj-button>
+    
     <div id="demo-popup oj-flex-item oj-sm-padding-5x-start">
       <oj-popup id="modal_edit_create" class="demo-popup oj-private-scale-lg" auto-dismiss="none" modality="modal"
         position.my.horizontal="center" position.my.vertical="center" position.at.horizontal="center"
@@ -28,8 +29,14 @@
                 </oj-input-text>
               </oj-bind-if>
 
-              <oj-input-text id="atencionA" label-hint="Atención a" value="{{atencionA}}">
-              </oj-input-text>
+              <oj-input-search
+                id="atencion_a"
+                class="oj-form-control-max-width-md"
+                suggestions=""
+                value=""
+                on-oj-value-action=""
+                placeholder="Search..."
+                aria-label="My search field"></oj-input-search>
 
               <oj-input-text id="atendidoPor" label-hint="Atendido por" value="{{atendidoPor}}">
               </oj-input-text>
@@ -38,9 +45,6 @@
 
               <oj-select-single id="atecionCrear" data="[[datatipo_atencion]]" value="{{tipo_atencion}}"
                 label-edge="inside" label-hint="TipoAtención" class="oj-form-control-max-width-md"></oj-select-single>
-
-              <oj-select-single id="tipo_atencionCrear" data="[[dataTipo_usuario]]" value="{{tipo_usuario}}"
-                label-edge="inside" label-hint="Se atendio a" class="oj-form-control-max-width-md"></oj-select-single>
 
               <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
                 label-hint="Estatus" class="oj-form-control-max-width-md"></oj-select-single>
@@ -96,7 +100,6 @@
                 {"headerText": "Atendido por", "field": "atendido por", "resizable": "enabled"},
                 {"headerText": "Asunto", "field": "asunto", "resizable": "enabled","width":"190px"},
                 {"headerText": "Tipo de atención", "field": "tipo de atencion", "resizable": "enabled"},
-                {"headerText": "Se atendio", "field": "se atendio", "resizable": "enabled"},
                 {"headerText": "Estatus", "field": "estatus", "resizable": "enabled"},
                 {"headerText": "Observaciones", "field": "observaciones", "resizable": "enabled","width":"150px"},
                 {"headerText": "Acciones", "field": "acciones", "resizable": "enabled"}]'>
@@ -121,9 +124,7 @@
             <td>
               <oj-bind-text value="[[row.data.datosGenerales.tipo_atencion]]"></oj-bind-text>
             </td>
-            <td>
-              <oj-bind-text value="[[row.data.usuarioAtendido.tipo_usuario]]"></oj-bind-text>
-            </td>
+
             <td>
               <oj-bind-text value="[[row.data.datosGenerales.estatus]]"></oj-bind-text>
             </td>
@@ -154,7 +155,7 @@
       </oj-table>
     </div>
 
-    <oj-module config="[[ModuleElementUtils.createConfig({name:'modulos/operaciones'})]]"></oj-module>
+    
   </div>
 
 </div>

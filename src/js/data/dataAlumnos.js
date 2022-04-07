@@ -1,0 +1,48 @@
+[
+    {
+        "nombre": "luis ignacio",
+        "num_contacto": "352352345",
+        "correoInstitucional": "ejemplo1@iedep.edu.mx",
+        "matricula": "20CL-28409",
+        "correoPersonal": "personal1@iedep.edu.mx",
+        "campus": "GUADALUPE VICTORIA",
+        "licenciatura": "LICENCIATURA EN INGENIERIA MECANICA AUTOMOTRIZ",
+        "tipo_usuario": "alumno"
+    },
+    {
+        "nombre": "carlos lopez",
+        "num_contacto": "52323445",
+        "correoInstitucional": "ejemplo2@iedep.edu.mx",
+        "matricula": "20CL-84917",
+        "correoPersonal": "personal2@iedep.edu.mx",
+        "campus": "GUADALUPE VICTORIA",
+        "licenciatura": "LICENCIATURA EN DERECHO",
+    },
+    {
+        "nombre": "pedro sanchez",
+        "num_contacto": "52345345",
+        "correoInstitucional": "ejemplo3@iedep.edu.mx",
+        "matricula": "21CL-242312",
+        "correoPersonal": "personal3@iedep.edu.mx",
+        "campus": "GUADALUPE VICTORIA",
+        "licenciatura": "LICENCIATURA EN COMPUTACIÓN",
+    },
+    {
+        "nombre": "karla diaz",
+        "num_contacto": "52345345",
+        "correoInstitucional": "ejemplo4@iedep.edu.mx",
+        "matricula": "21CL-41234",
+        "correoPersonal": "personal4@iedep.edu.mx",
+        "campus": "GUADALUPE VICTORIA",
+        "licenciatura": "LICENCIATURA EN PSICOLOGIA",
+    },
+    {
+        "nombre": "omar carvajal",
+        "num_contacto": "323445",
+        "correoInstitucional": "ejemplo5@iedep.edu.mx",
+        "matricula": "21CL-28439",
+        "correoPersonal": "personal5@iedep.edu.mx",
+        "campus": "GUSTAVO DIAZ ORDAZ",
+        "licenciatura": "LICENCIATURA EN PEDAGOGIA",
+    },
+]
