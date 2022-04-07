@@ -1,7 +1,7 @@
 
-define(["require", "exports", "knockout","ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
+define(["require", "exports", "knockout","ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery","text!../data/dataAdministrativos.json", "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
 "ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout",],
-function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$) {
+function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataADM) {
   function ViewModel() {
     var self = this;
     //var router = params.parentRouter;
@@ -13,6 +13,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$) {
     this.connected = () => {
       document.title = "Atencion";
       self.opcion = ko.observable("crear");
+      self.dataADM = dataADM;
       //INPUTS REGISTRO NUEVO:
 
       self.idAtencion = ko.observable(0);
