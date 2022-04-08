@@ -4,10 +4,10 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding ">
-  <h1>Atencion</h1>
+  <h1>Atención</h1>
 
   <div class="" id="moduleDemo">
-    <oj-button id="btnCrear" on-oj-action="[[openCrear]]">Crear Registro</oj-button>
+    <oj-button id="btnCrear" on-oj-action="[[openModalCrear]]">Crear Registro</oj-button>
     
     <div id="demo-popup oj-flex-item oj-sm-padding-5x-start">
       <oj-popup id="modal_edit_create" class="demo-popup oj-private-scale-lg" auto-dismiss="none" modality="modal"
@@ -15,7 +15,7 @@
         position.at.vertical="center" position.of="window" tail="none">
         <div class="demo-popup-body">
           <div class="demo-popup-header">
-            <oj-button id="btnCancel" class="oj-button-sm" display="icons" on-oj-action="[[cerrar_modal_edit_create]]">
+            <oj-button id="btnCancel" class="oj-button-sm" display="icons" on-oj-action="[[closeModalCrear]]">
               <span slot="startIcon" class="oj-ux-ico-close"></span>
               Cancel
             </oj-button>
@@ -29,30 +29,30 @@
                 </oj-input-text>
               </oj-bind-if>
 
-              <oj-input-search
-                id="atencion_a"
-                class="oj-form-control-max-width-md"
-                suggestions=""
-                value=""
-                on-oj-value-action=""
-                placeholder="Search..."
-                aria-label="My search field"></oj-input-search>
+              <oj-bind-if test="[[opcion() != 'editar' ]]">
+              <oj-select-single id="estudiante" data="[[dataestudiante]]" value="{{estudiante}}"
+                label-edge="inside" label-hint="Estudiante" class="oj-form-control-max-width-lg"></oj-select-single>
+              </oj-bind-if>
 
-              <oj-input-text id="atendidoPor" label-hint="Atendido por" value="{{dataADM}}">
-              </oj-input-text>
+              <oj-bind-if test="[[opcion() === 'editar' ]]">
+                <oj-select-single id="administrativo" data="[[dataadministrativo]]" value="{{administrativo}}"
+                  label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg"></oj-select-single>
+              </oj-bind-if>
 
-              <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto" rows="3"></oj-input-text>
-
-              <oj-select-single id="atecionCrear" data="[[datatipo_atencion]]" value="{{tipo_atencion}}"
-                label-edge="inside" label-hint="TipoAtención" class="oj-form-control-max-width-md"></oj-select-single>
+              <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipo_atencion}}"
+                label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"></oj-select-single>
 
               <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
-                label-hint="Estatus" class="oj-form-control-max-width-md"></oj-select-single>
+                label-hint="Estatus" class="oj-form-control-max-width-lg"></oj-select-single>
 
-              <oj-text-area id="observaciones" value="{{observaciones}}" label-hint="Observaciones" rows="3">
+              <oj-bind-if test="[[opcion() != 'editar' ]]">
+                <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto" rows="3"></oj-input-text>
+              </oj-bind-if>
+
+              <oj-text-area id="notas" value="{{notas}}" label-hint="Agregar nota" rows="3">
               </oj-text-area>
             </oj-form-layout>
-
+           
             <oj-bind-if test="[[opcion() === 'crear']]">
               <oj-button on-oj-action="[[crearRegistro]]">Crear</oj-button>
             </oj-bind-if>
@@ -61,7 +61,7 @@
               <oj-button on-oj-action="[[actualizarRegistro]]">Actualizar</oj-button>
             </oj-bind-if>
 
-            <oj-button on-oj-action="[[cerrar_modal_edit_create]]">Cancelar</oj-button>
+            <oj-button on-oj-action="[[closeModalCrear]]">Cancelar</oj-button>
           </div>
         </div>
       </oj-popup>
@@ -96,12 +96,12 @@
         data="[[dataprovider]]" columns-default.sortable="disabled"
         columns='[
                 {"headerText": "ID", "field": "id", "resizable": "enabled","width":"auto"},
-                {"headerText": "Atención a", "field": "atendido a", "resizable": "enabled"},
-                {"headerText": "Atendido por", "field": "atendido por", "resizable": "enabled"},
-                {"headerText": "Asunto", "field": "asunto", "resizable": "enabled","width":"190px"},
+                {"headerText": "Estudiante", "field": "estudiante", "resizable": "enabled"},
+                {"headerText": "Administrativo(a)", "field": "Administrativo(a)", "resizable": "enabled"},
                 {"headerText": "Tipo de atención", "field": "tipo de atencion", "resizable": "enabled"},
                 {"headerText": "Estatus", "field": "estatus", "resizable": "enabled"},
-                {"headerText": "Observaciones", "field": "observaciones", "resizable": "enabled","width":"150px"},
+                {"headerText": "Asunto", "field": "asunto", "resizable": "enabled","width":"190px"},
+                {"headerText": "Ultima Nota", "field": "notas", "resizable": "enabled","width":"150px"},
                 {"headerText": "Acciones", "field": "acciones", "resizable": "enabled"}]'>
 
         <template slot="rowTemplate" data-oj-as="row">
@@ -117,10 +117,6 @@
             <td>
               <oj-bind-text value="[[row.data.administrativo.nombre]]"></oj-bind-text>
             </td>
-
-            <td>
-              <oj-bind-text value="[[row.data.datosGenerales.asunto]]"></oj-bind-text>
-            </td>
             <td>
               <oj-bind-text value="[[row.data.datosGenerales.tipo_atencion]]"></oj-bind-text>
             </td>
@@ -128,8 +124,13 @@
             <td>
               <oj-bind-text value="[[row.data.datosGenerales.estatus]]"></oj-bind-text>
             </td>
+
             <td>
-              <oj-bind-text value="[[row.data.datosGenerales.observaciones[row.data.datosGenerales.observaciones.length-1]]]"></oj-bind-text>
+              <oj-bind-text value="[[row.data.datosGenerales.asunto]]"></oj-bind-text>
+            </td>
+
+            <td>
+              <oj-bind-text value="[[row.data.datosGenerales.notas[row.data.datosGenerales.notas.length-1]]]"></oj-bind-text>
             </td>
 
             <td>

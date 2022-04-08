@@ -2,7 +2,7 @@
       {
             "id": "1",
             "usuarioAtendido": {
-                  "nombre": "Juan meza (20C93018)",
+                  "nombre": "Juan meza",
                   "num_contacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
@@ -18,9 +18,9 @@
             },
             "datosGenerales": {
                   "estatus": "En proceso ...",
-                  "tipo_atencion": "Correo electronico",
+                  "tipo_atencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
-                  "observaciones": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -28,7 +28,7 @@
       {
             "id": "2",
             "usuarioAtendido": {
-                  "nombre": "carlos lopez (20C93018)",
+                  "nombre": "carlos lopez",
                   "num_contacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
                   "matricula": "20CL-28409",
@@ -43,9 +43,9 @@
             },
             "datosGenerales": {
                   "estatus": "Finalizado",
-                  "tipo_atencion": "Telefonica",
+                  "tipo_atencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
-                  "observaciones": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -53,7 +53,7 @@
       {
             "id": "3",
             "usuarioAtendido": {
-                  "nombre": "Juan meza (20C93018)",
+                  "nombre": "Juan meza",
                   "num_contacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
@@ -71,7 +71,7 @@
                   "estatus": "Rechazado",
                   "tipo_atencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
-                  "observaciones": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }

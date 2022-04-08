@@ -16,7 +16,7 @@
         "matricula": "20CL-84917",
         "correoPersonal": "personal2@iedep.edu.mx",
         "campus": "GUADALUPE VICTORIA",
-        "licenciatura": "LICENCIATURA EN DERECHO",
+        "licenciatura": "LICENCIATURA EN DERECHO"
     },
     {
         "nombre": "pedro sanchez",
@@ -25,7 +25,7 @@
         "matricula": "21CL-242312",
         "correoPersonal": "personal3@iedep.edu.mx",
         "campus": "GUADALUPE VICTORIA",
-        "licenciatura": "LICENCIATURA EN COMPUTACIÓN",
+        "licenciatura": "LICENCIATURA EN COMPUTACIÓN"
     },
     {
         "nombre": "karla diaz",
@@ -34,7 +34,7 @@
         "matricula": "21CL-41234",
         "correoPersonal": "personal4@iedep.edu.mx",
         "campus": "GUADALUPE VICTORIA",
-        "licenciatura": "LICENCIATURA EN PSICOLOGIA",
+        "licenciatura": "LICENCIATURA EN PSICOLOGIA"
     },
     {
         "nombre": "omar carvajal",
@@ -43,6 +43,7 @@
         "matricula": "21CL-28439",
         "correoPersonal": "personal5@iedep.edu.mx",
         "campus": "GUSTAVO DIAZ ORDAZ",
-        "licenciatura": "LICENCIATURA EN PEDAGOGIA",
-    },
+        "licenciatura": "LICENCIATURA EN PEDAGOGIA"
+    }
+    
 ]

@@ -47,7 +47,7 @@ html[dir="rtl"] .demo-oracle-icon {
 
 .demo-popup {
   width: auto;
-  width: 800px;
+  width: 100%;
   padding:15px;
   margin-right: 205px;
 }
