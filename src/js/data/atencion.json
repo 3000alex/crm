@@ -20,7 +20,18 @@
                   "estatus": "En proceso",
                   "tipo_atencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -45,7 +56,18 @@
                   "estatus": "Finalizado",
                   "tipo_atencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -71,7 +93,18 @@
                   "estatus": "Rechazado",
                   "tipo_atencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -97,7 +130,18 @@
                   "estatus": "En proceso",
                   "tipo_atencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -122,7 +166,18 @@
                   "estatus": "Finalizado",
                   "tipo_atencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -148,7 +203,18 @@
                   "estatus": "Rechazado",
                   "tipo_atencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -174,7 +240,18 @@
                   "estatus": "En proceso",
                   "tipo_atencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -199,7 +276,18 @@
                   "estatus": "Finalizado",
                   "tipo_atencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }
@@ -225,7 +313,18 @@
                   "estatus": "Rechazado",
                   "tipo_atencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
-                  "notas": ["Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.","se finalizo con el tramite"],
+                  "notas": [
+                        {
+                              "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "archivos": [],
+                              "fecha_creacion": "09/04/2021"
+                        },
+                        {
+                              "descripcion": "se finalizo con el tramite",
+                              "archivos": [],
+                              "fecha_creacion": "10/04/2021"
+                        }
+                  ],
                   "fecha_inicio": "03/04/2022",
                   "fecha_fin": "05/04/2022"
             }

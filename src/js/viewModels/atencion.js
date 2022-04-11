@@ -1,7 +1,7 @@
 
 define(["require", "exports", "knockout","ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","ojs/ojkeyset","jquery",'ojs/ojpagingdataproviderview', "text!../data/dataAdministrativos.json", "text!../data/dataAlumnos.json",
 "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout","ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel",
-"ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout","ojs/ojselectcombobox",'ojs/ojinputsearch'],
+"ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout","ojs/ojselectcombobox",'ojs/ojinputsearch'],
 function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset_1,$,PagingDataProviderView,dataADM,dataAlu) {
   function ViewModel() {
     var self = this;
@@ -15,7 +15,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
     //Variables Modal crear y editar
     self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
     self.suggestionsAlu = ko.observableArray([]); // Array opciones Atencion A
-
+    
 
     self.connected = () => {
       document.title = "Atencion";
@@ -45,7 +45,18 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
                 "estatus": "",
                 "tipo_atencion": "",
                 "asunto": "",
-                "notas": [],
+                "notas": [
+                  {
+                        "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                        "archivos": [],
+                        "fecha_creacion": "09/04/2021"
+                  },
+                  {
+                        "descripcion": "se finalizo con el tramite",
+                        "archivos": [],
+                        "fecha_creacion": "10/04/2021"
+                  }
+            ],
                 "fecha_inicio": "",
                 "fecha_fin": ""
           }
@@ -61,7 +72,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
        $.each(data, function(index, persona){
           self.data.push(persona);
        })
-        console.log(self.data())
+        
       }).fail((err,err2) => {
         console.log(err,err2)
       });
@@ -83,16 +94,50 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
       self.incidenciaDetail = ko.observable({});
       self.search = ko.observable('');
       self.rawSearch = ko.observable('');
-      this.searchRegister = function (event) {
-        var detail = event.detail;
-        if(detail.value){
+      //Variables y funciones FILE
+      self.files = ko.observable([]);
+      primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
+      secondarytextFilePicker = ko.observable("Tipo de datos aceptados:JPG,JPEG,PDF,XLSX,DOCX")
+      
+      self.multipleStr = ko.pureComputed(() => {
+          return this.multiple()[0] ? "multiple" : "single";
+      });
+      self.isDisabled = ko.pureComputed(() => {
+          return this.disabled()[0] === "disable" ? true : false;
+      });
+      self.invalidMessage = ko.observable("");
+      self.invalidListener = (event) => {
+          this.fileNames([]);
+          this.invalidMessage("{severity: '" +
+              event.detail.messages[0].severity +
+              "', summary: '" +
+              event.detail.messages[0].summary +
+              "'}");
+          const promise = event.detail.until;
+          if (promise) {
+              promise.then(() => {
+                  this.invalidMessage("");
+              });
+          }
+      };
+      self.acceptStr = ko.observable("image/jpg,image/jpeg,application/pdf,application/docx,application/xlsx"); //Tipo de datos aceptados
+      self.acceptArr = ko.pureComputed(() => {
+          const accept = self.acceptStr();
+          return accept ? accept.split(",") : [];
+      });
+      self.fileNames = ko.observable([]);
+      self.selectListener = (event) => {
+          if(self.opcion() === "crear"){
+            self.invalidMessage("");
+            self.files(event.detail.files);
+          }
+          else if(self.opcion() == "editar")
+          
 
-        }
-        else{
-          alert("Debe ingresar un dato valido")
-        }
-        detail.value ?  alert(detail.value) : alert("Debe ingresar un dato valido")
-      }
+          self.fileNames(Array.prototype.map.call(self.files(), (file) => {
+              return file.name;
+          }));
+      };
       //FIN Inicializacion de variables a usar
       
       //Configuraciones Atencion A:
@@ -154,13 +199,11 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
         self.incidenciaDetail(dataObj.data);
       }
 
-      popup.open(idBtnModal);
+      popup.open();
     }
 
-    self.cerrarModal = (event) => {
-      console.log(event)
+    self.cerrarModal = (event) => { 
       let idBtnModal = event.target.id
-      console.log(event)
       let popup;
       if(idBtnModal === "btnCancelCrearEditar1" || idBtnModal === "btnCancelCrearEditar2"){
         popup = document.getElementById("modal_edit_create");
@@ -176,14 +219,6 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
       popup.close();
     }
 
-    self.cancelEliminarModal = () => {
-      let popup = document.getElementById("popup_eliminar");
-      popup.close();
-    }
-    self.cancelMostrarModal = () => {
-      let popup = document.getElementById("popup_mostrar");
-      popup.close();
-    }
     //FUNCIONES CREAR REGISTRO ATENCION
     self.crearRegistro = () => {
       let registro = {};
@@ -201,7 +236,11 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
               estatus: self.estatus(),
               tipo_atencion: self.tipo_atencion(),
               asunto: self.asunto(),
-              notas: [self.notas()],
+              notas: [{
+                "descripcion": self.notas(),
+                "archivos":self.files(),
+                "fecha_creacion": new Date().toString()
+              }]
             }
           }
 
@@ -210,7 +249,10 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
           //Se actualiza la tabla principal con los nuevos datos: 
           self.data.push(registro);
           //Cerramos el modal
-          self.cerrarModal();
+          let popup;
+          popup = document.getElementById("modal_edit_create");
+          popup.close();
+          console.log(registro);
         }
       })
     }
@@ -223,6 +265,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
       self.administrativo(self.dataUpdate().administrativo.numExpediente),
       self.tipo_atencion(self.dataUpdate().datosGenerales.tipo_atencion),
       self.estatus(self.dataUpdate().datosGenerales.estatus),
+      console.log(self.dataUpdate().datosGenerales.notas)
       self.notas("")
     }
 
@@ -233,8 +276,11 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
       self.dataUpdate().datosGenerales.estatus = self.estatus()
       if(self.notas()!=""){ self.dataUpdate().datosGenerales.notas.push(self.notas()) }
       self.dataprovider.updateItem({ metadata: { key: self.dataUpdate().id }, data: self.dataUpdate() });
-      self.cerrarModal();
       self.limpiarCampos();
+      //Cerramos el modal
+      let popup;
+      popup = document.getElementById("modal_edit_create");
+      popup.close();
     }
 
     self.limpiarCampos = () =>{
@@ -247,10 +293,6 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
     }
 
     //FUNCIONES ELIMINAR REGISTRO DE ATENCION
-
-
-
-
     self.eliminarRegistro = () => {
       const element = document.getElementById('table');
       const currentRow = element.currentRow;
@@ -267,17 +309,41 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
 
     // Clear the table selection
     element.selected = { row: new ojkeyset_1.KeySetImpl(), column: new ojkeyset_1.KeySetImpl() };
+    //Cerramos el modal
+    let popup;
+    popup = document.getElementById("popup_eliminar");
+    popup.close();
     };
     //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
 
-
     self.visualizarRegistros = () => {
+    }
+
+    //FUNCIONES BUSCAR REGISTRO 
+    this.searchRegister = function (event) {
+      let queryId = event.detail.value;
+      let objData = "";
+      //Aqui se debe de buscar en la base de datos y regresar ese dato CAMBIAR
+      $.each(self.data(),(index,dataObj)=>{
+        if(dataObj.id == queryId){
+          objData = dataObj;
+        }
+      });
+      console.log(objData);
+
+      if(queryId && objData){
+        popup = document.getElementById("popup_mostrar");
+        self.incidenciaDetail(objData);
+        popup.open();
+      }
+      else{
+        alert("Registro Invalido")
+      }
       
     }
 
     //Filter table 
 
-    
     this.disconnected = () => {
 
     };
@@ -287,7 +353,6 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset
     };
 
   }
-
 
   return ViewModel;
 }
