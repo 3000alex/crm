@@ -7,15 +7,27 @@
   <h1>Atención</h1>
 
   <div class="" id="moduleDemo">
-    <oj-button id="btnCrear" on-oj-action="[[openModalCrear]]">Crear Registro</oj-button>
-    
+    <div class="oj-flex oj-flex oj-sm-flex-items-initial oj-sm-justify-content-flex-end">
+
+      <oj-input-search id="search1"
+
+        style="width:400px;"
+        value="{{search}}"
+        raw-value="{{rawSearch}}"
+        on-oj-value-action="[[searchRegister]]"
+        placeholder="Buscar registro, ejemplo: 134512"
+        aria-label="Busqueda rapida">
+      </oj-input-search>
+    </div>
+
+    <oj-button  id="btnCrear" on-oj-action="[[abrirModal]]">Crear Registro</oj-button>
     <div id="demo-popup oj-flex-item oj-sm-padding-5x-start">
       <oj-popup id="modal_edit_create" class="demo-popup oj-private-scale-lg" auto-dismiss="none" modality="modal"
         position.my.horizontal="center" position.my.vertical="center" position.at.horizontal="center"
         position.at.vertical="center" position.of="window" tail="none">
         <div class="demo-popup-body">
           <div class="demo-popup-header">
-            <oj-button id="btnCancel" class="oj-button-sm" display="icons" on-oj-action="[[closeModalCrear]]">
+            <oj-button id="btnCancelCrearEditar1" class="oj-button-sm" display="icons" on-oj-action="[[cerrarModal]]">
               <span slot="startIcon" class="oj-ux-ico-close"></span>
               Cancel
             </oj-button>
@@ -25,18 +37,20 @@
               class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
 
               <oj-bind-if test="[[opcion() === 'editar' ]]">
-                <oj-input-text id="idAtencion" label-hint="idAtencion" value="{{idAtencion}}">
+                <oj-input-text id="idAtencion" label-hint="idAtencion" value="{{idAtencion}}" disabled="true"
+                  readonly="true">
                 </oj-input-text>
               </oj-bind-if>
 
               <oj-bind-if test="[[opcion() != 'editar' ]]">
-              <oj-select-single id="estudiante" data="[[dataestudiante]]" value="{{estudiante}}"
-                label-edge="inside" label-hint="Estudiante" class="oj-form-control-max-width-lg"></oj-select-single>
+                <oj-select-single id="estudiante" data="[[dataestudiante]]" value="{{estudiante}}" label-edge="inside"
+                  label-hint="Estudiante" class="oj-form-control-max-width-lg"></oj-select-single>
               </oj-bind-if>
 
               <oj-bind-if test="[[opcion() === 'editar' ]]">
                 <oj-select-single id="administrativo" data="[[dataadministrativo]]" value="{{administrativo}}"
-                  label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg"></oj-select-single>
+                  label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
+                </oj-select-single>
               </oj-bind-if>
 
               <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipo_atencion}}"
@@ -52,7 +66,7 @@
               <oj-text-area id="notas" value="{{notas}}" label-hint="Agregar nota" rows="3">
               </oj-text-area>
             </oj-form-layout>
-           
+
             <oj-bind-if test="[[opcion() === 'crear']]">
               <oj-button on-oj-action="[[crearRegistro]]">Crear</oj-button>
             </oj-bind-if>
@@ -61,7 +75,7 @@
               <oj-button on-oj-action="[[actualizarRegistro]]">Actualizar</oj-button>
             </oj-bind-if>
 
-            <oj-button on-oj-action="[[closeModalCrear]]">Cancelar</oj-button>
+            <oj-button id="btnCancelCrearEditar2" on-oj-action="[[cerrarModal]]">Cancelar</oj-button>
           </div>
         </div>
       </oj-popup>
@@ -73,16 +87,16 @@
         position.at.vertical="center" position.of="window" tail="none">
         <div class="demo-popup-body">
           <div class="demo-popup-header">
-            <oj-button id="btnCancel2" class="oj-button-sm" display="icons" on-oj-action="[[cancelEliminarModal]]">
+            <oj-button id="btnCancelEliminar1" class="oj-button-sm" display="icons" on-oj-action="[[cerrarModal]]">
               <span slot="startIcon" class="oj-ux-ico-close"></span>
               Cancel
             </oj-button>
           </div>
-          <div class="demo-popup-content oj-sm-padding-2x">
+          <div class="demo-popup-content oj-sm-padding-2x oj-lg-justify-content-center oj-sm-12">
             <p>
               <b>¿ Estas seguro que deseas eliminar este registro ?</b> <br> <br>
-              <oj-button on-oj-action="[[removeTask]]">Aceptar</oj-button>
-              <oj-button on-oj-action="[[cancelEliminarModal]]">Cancelar</oj-button>
+              <oj-button on-oj-action="[[eliminarRegistro]]">Aceptar</oj-button>
+              <oj-button id="btnCancelEliminar2" on-oj-action="[[cerrarModal]]">Cancelar</oj-button>
 
             </p>
           </div>
@@ -90,11 +104,171 @@
       </oj-popup>
     </div>
 
+    <div id="popupWrapperMostrar">
+      <oj-popup id="popup_mostrar" class="demo-popup" auto-dismiss="none" modality="modal"
+        position.my.horizontal="center" position.my.vertical="center" position.at.horizontal="center"
+        position.at.vertical="center" position.of="window" tail="none">
+        <div class="demo-popup-body">
+          <div class="demo-popup-header">
+            <oj-button id="btnCancelMostrar1" class="oj-button-sm" display="icons" on-oj-action="[[cerrarModal]]">
+              <span slot="startIcon" class="oj-ux-ico-close"></span>
+              Cancel
+            </oj-button>
+          </div>
+          <div class="demo-popup-content oj-sm-padding-2x oj-lg-justify-content-center oj-sm-12">
+            <h2>Atencion Incidencia N° <oj-bind-text value="[[ incidenciaDetail().id ]]"></oj-bind-text>
+            </h2>
+           
+            <div id="accordionPage" data-oj-binding-provider="none">
+              <oj-accordion id="a1">
+
+                <oj-collapsible id="c1" expanded>
+                  <h3 slot="header">Datos de la persona atendida</h3>
+                  <div class="oj-flex">
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Nombre</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value="[[ incidenciaDetail().usuarioAtendido ]]"></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Numero de contacto</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value="[[ incidenciaDetail().usuarioAtendido ]]"></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Correo Institucional</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value="[[ incidenciaDetail().usuarioAtendido ]]"></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Correo Personal</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value="[[ incidenciaDetail().usuarioAtendido ]]"></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Matricula</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value="[[ incidenciaDetail().usuarioAtendido ]]"></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Campus</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value="[[ incidenciaDetail().usuarioAtendido ]]"></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Licenciatura</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value="[[ incidenciaDetail().usuarioAtendido]]"></oj-bind-text>
+                      </div>
+                    </div>
+
+                   
+                  </div>
+
+                </oj-collapsible>
+
+                <oj-collapsible id="c2">
+                  <h3 slot="header">Datos de la persona que atendio</h3>
+                  <div class="oj-flex">
+                    <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
+                      <p>Nombre</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+                    <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
+                      <p>N° Expediente</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+                    <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
+                      <p>Nombre</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+                  </div>
+                </oj-collapsible>
+
+                <oj-collapsible id="c3">
+                  <h3 slot="header">Datos generales</h3>
+                  <div class="oj-flex">
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Fecha de inicio de atención</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Estatus</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Tipo de atención</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+
+                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Asunto</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+
+                  </oj-bind-if test="true">
+                    <!-- <oj-bind-if test="[[datosGenerales().estatus === 'finalizada' ]]"> -->
+                      <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <p>Fecha de final de atención</p>
+                        <div class="oj-typography-subheading-xs">
+                          <oj-bind-text value=""></oj-bind-text>
+                        </div>
+                      </div>
+                    </oj-bind-if>
+
+                    <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                      <p>Observaciones</p>
+                      <div class="oj-typography-subheading-xs">
+                        <oj-bind-text value=""></oj-bind-text>
+                      </div>
+                    </div>
+                  </div>
+                </oj-collapsible>
+
+              </oj-accordion>
+            </div>
+            <!--
+            <oj-button id="btnCancelMostrar2" >Cancelar</oj-button>
+            -->
+          </div>
+        </div>
+      </oj-popup>
+    </div>
+
 
     <div class="oj-flex oj-flex-items-pad">
-      <oj-table id="table" class="demo-table-container" aria-label="Task Table"
-        data="[[dataprovider]]" columns-default.sortable="disabled"
-        columns='[
+      
+      <oj-table id="table" class="demo-table-container" aria-label="Task Table" data="[[dataprovider]]"
+        columns-default.sortable="disabled" columns='[
                 {"headerText": "ID", "field": "id", "resizable": "enabled","width":"auto"},
                 {"headerText": "Estudiante", "field": "estudiante", "resizable": "enabled"},
                 {"headerText": "Administrativo(a)", "field": "Administrativo(a)", "resizable": "enabled"},
@@ -130,21 +304,23 @@
             </td>
 
             <td>
-              <oj-bind-text value="[[row.data.datosGenerales.notas[row.data.datosGenerales.notas.length-1]]]"></oj-bind-text>
+              <oj-bind-text value="[[row.data.datosGenerales.notas[row.data.datosGenerales.notas.length-1]]]">
+              </oj-bind-text>
             </td>
 
             <td>
               <div>
-                <oj-button display="icons" id="actualizar_btn" on-oj-action="[[modalEditar]]"><span slot="startIcon"
+                <oj-button display="icons" id="btnActualizar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
                     class="oj-ux-ico-edit-box"></span></oj-button>
-                <oj-button display="icons" id="eliminar_btn" on-oj-action="[[eliminarModal]]"><span slot="startIcon"
+                <oj-button display="icons" id="btnEliminar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
                     class="oj-ux-ico-delete-all"></span></oj-button>
-                <oj-button display="icons" on-oj-action="[[visualizarRegistros]]"><span slot="startIcon"
+                <oj-button display="icons" id="btnMostrar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
                     class="oj-ux-ico-view"></span></oj-button>
               </div>
             </td>
 
           </tr>
+          
         </template>
         <template slot="noData">
           <div class="oj-flex oj-sm-align-items-center">
@@ -153,10 +329,16 @@
             </div>
           </div>
         </template>
+
+        <oj-paging-control id="pagingControl" 
+          data="[[pagingDataProvider]]"
+          page-size="5" slot="bottom">         
+        </oj-paging-control>
       </oj-table>
+
     </div>
 
-    
+
   </div>
 
 </div>

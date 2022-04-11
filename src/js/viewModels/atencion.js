@@ -1,8 +1,8 @@
 
-define(["require", "exports", "knockout","ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","jquery", "text!../data/dataAdministrativos.json", "text!../data/dataAlumnos.json",
-"ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout",
-"ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout","ojs/ojselectcombobox"],
-function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataADM,dataAlu) {
+define(["require", "exports", "knockout","ojs/ojarraydataprovider","ojs/ojbufferingdataprovider","ojs/ojkeyset","jquery",'ojs/ojpagingdataproviderview', "text!../data/dataAdministrativos.json", "text!../data/dataAlumnos.json",
+"ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout","ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel",
+"ojs/ojinputtext", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout","ojs/ojselectcombobox",'ojs/ojinputsearch'],
+function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,ojkeyset_1,$,PagingDataProviderView,dataADM,dataAlu) {
   function ViewModel() {
     var self = this;
     //var router = params.parentRouter;
@@ -15,6 +15,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
     //Variables Modal crear y editar
     self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
     self.suggestionsAlu = ko.observableArray([]); // Array opciones Atencion A
+
 
     self.connected = () => {
       document.title = "Atencion";
@@ -65,6 +66,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
         console.log(err,err2)
       });
       self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data,{ keyAttributes: 'id'}));
+      self.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data,{ idAttribute: 'id' }));
       //Fin configuracion de los datos de la tabla
 
 
@@ -78,6 +80,19 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
       self.estatus = ko.observable("");
       self.asunto = ko.observable("");
       self.notas = ko.observableArray([]);
+      self.incidenciaDetail = ko.observable({});
+      self.search = ko.observable('');
+      self.rawSearch = ko.observable('');
+      this.searchRegister = function (event) {
+        var detail = event.detail;
+        if(detail.value){
+
+        }
+        else{
+          alert("Debe ingresar un dato valido")
+        }
+        detail.value ?  alert(detail.value) : alert("Debe ingresar un dato valido")
+      }
       //FIN Inicializacion de variables a usar
       
       //Configuraciones Atencion A:
@@ -110,31 +125,65 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
     
     
     //Funciones de MODALES
-    self.openModalCrear = () => {
-      let popup = document.getElementById("modal_edit_create");
-      self.opcion("crear");
-      popup.open("#btnCrear");
-    }
-    self.modalEditar = () => {
-      let popup = document.getElementById("modal_edit_create");
-      const element = document.getElementById('table');
-      popup.open("#btnCrear");
-      const currentRow = element.currentRow;
-      console.log(self.data()[currentRow.rowIndex])
-      self.dataUpdate(self.data()[currentRow.rowIndex]);
 
-      self.llenarCampos()
-      self.opcion("editar")
-      popup.open("#actualizar_btn");
+
+    self.abrirModal = (event) => {
+      let idBtnModal = event.target.id
+      let popup;
+
+      if(idBtnModal === "btnCrear"){
+        self.opcion("crear");
+        popup = document.getElementById("modal_edit_create");
+      }
+      else if(idBtnModal === "btnActualizar"){
+        self.opcion("editar")
+        popup = document.getElementById("modal_edit_create");
+        const element = document.getElementById('table');
+        const currentRow = element.currentRow;
+        self.dataUpdate(self.data()[currentRow.rowIndex]);
+        self.llenarCampos()
+      }
+      else if(idBtnModal === "btnEliminar"){
+        popup = document.getElementById("popup_eliminar");
+      }
+      else if(idBtnModal === "btnMostrar"){
+        popup = document.getElementById("popup_mostrar");
+        const element = document.getElementById('table');
+        const currentRow = element.currentRow;
+        const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
+        self.incidenciaDetail(dataObj.data);
+      }
+
+      popup.open(idBtnModal);
     }
 
-    self.closeModalCrear = () => {
-      let popup = document.getElementById("modal_edit_create");
+    self.cerrarModal = (event) => {
+      console.log(event)
+      let idBtnModal = event.target.id
+      console.log(event)
+      let popup;
+      if(idBtnModal === "btnCancelCrearEditar1" || idBtnModal === "btnCancelCrearEditar2"){
+        popup = document.getElementById("modal_edit_create");
+      }
+      else if(idBtnModal === "btnCancelEliminar1" || idBtnModal === "btnCancelEliminar2"){
+        popup = document.getElementById("popup_eliminar");
+      }
+      else if(idBtnModal === "btnCancelMostrar1" || idBtnModal === "btnCancelMostrar2"){ 
+        popup = document.getElementById("popup_mostrar");
+      }
+
       self.limpiarCampos();
-      self.opcion("");
       popup.close();
     }
 
+    self.cancelEliminarModal = () => {
+      let popup = document.getElementById("popup_eliminar");
+      popup.close();
+    }
+    self.cancelMostrarModal = () => {
+      let popup = document.getElementById("popup_mostrar");
+      popup.close();
+    }
     //FUNCIONES CREAR REGISTRO ATENCION
     self.crearRegistro = () => {
       let registro = {};
@@ -144,8 +193,8 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
             id: self.data().length+1,
             usuarioAtendido: data,
             administrativo: { //Estos datos se obtendran del login 
-              nombre: "alex",
-              numExpediente: "1931",
+              nombre: "alex3",
+              numExpediente: "1960",
               correoInstituciona: "alex@iedep.edu.mx"
             },
             datosGenerales:{
@@ -161,7 +210,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
           //Se actualiza la tabla principal con los nuevos datos: 
           self.data.push(registro);
           //Cerramos el modal
-          self.closeModalCrear();
+          self.cerrarModal();
         }
       })
     }
@@ -184,7 +233,7 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
       self.dataUpdate().datosGenerales.estatus = self.estatus()
       if(self.notas()!=""){ self.dataUpdate().datosGenerales.notas.push(self.notas()) }
       self.dataprovider.updateItem({ metadata: { key: self.dataUpdate().id }, data: self.dataUpdate() });
-      self.closeModalCrear();
+      self.cerrarModal();
       self.limpiarCampos();
     }
 
@@ -197,43 +246,41 @@ function (require, exports, ko, ArrayDataProvider,BufferingDataProvider,$,dataAD
       self.notas("")
     }
 
-
-
-    //FUNCIONES EDITAR REGISTRO DE ATENCION
-
     //FUNCIONES ELIMINAR REGISTRO DE ATENCION
 
-    //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
-    self.visualizarRegistros = () => {
-      router.go({ path: 'atencion_detail' });
-    }
-    
-    this.removeTask = (event, context) => {
-      console.log(context.index)
-      this.data.splice(context.index, 1);
+
+
+
+    self.eliminarRegistro = () => {
+      const element = document.getElementById('table');
+      const currentRow = element.currentRow;
+      const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
+      self.dataprovider.removeItem({
+        metadata: { key: dataObj.key },
+        data:dataObj.data
+      });
+      this.dataprovider.getTotalSize().then(function (value) {
+        if (value == 0) {
+            this.isEmptyTable(true);
+        }
+    }.bind(this));
+
+    // Clear the table selection
+    element.selected = { row: new ojkeyset_1.KeySetImpl(), column: new ojkeyset_1.KeySetImpl() };
     };
+    //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
 
 
-    this.cancelListener1 = () => {
-      let popup = document.getElementById("popup1");
-      popup.close();
+    self.visualizarRegistros = () => {
+      
     }
 
-    this.eliminarModal = () => {
-      let popup = document.getElementById("popup_eliminar");
-      popup.open("#eliminar_btn");
-    }
+    //Filter table 
 
-    this.cancelEliminarModal = () => {
-      let popup = document.getElementById("popup_eliminar");
-      popup.close();
-    }
-
-
+    
     this.disconnected = () => {
 
     };
-
 
     this.transitionCompleted = () => {
 

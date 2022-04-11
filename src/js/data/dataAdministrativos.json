@@ -1,22 +1,17 @@
 [
     {
-        "nombre": "alex",
-        "numExpediente": "1959",
-        "correoInstitucional": "alex@iedep.edu.mx"
-    },
-    {
         "nombre": "alex1",
-        "numExpediente": "1960",
+        "numExpediente": "1959",
         "correoInstitucional": "alex1@iedep.edu.mx"
     },
     {
         "nombre": "alex2",
-        "numExpediente": "1961",
+        "numExpediente": "1960",
         "correoInstitucional": "alex2@iedep.edu.mx"
     },
     {
         "nombre": "alex3",
-        "numExpediente": "1962",
+        "numExpediente": "1961",
         "correoInstitucional": "alex3@iedep.edu.mx"
     }
 ]
