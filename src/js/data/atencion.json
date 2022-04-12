@@ -1,9 +1,9 @@
 [
       {
             "id": "1",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "Juan meza",
-                  "num_contacto": "222312345",
+                  "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -18,7 +18,7 @@
             },
             "datosGenerales": {
                   "estatus": "En proceso",
-                  "tipo_atencion": "Correo Electrónico",
+                  "tipoAtencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
                   "notas": [
                         {
@@ -38,9 +38,9 @@
       },
       {
             "id": "2",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "carlos lopez",
-                  "num_contacto": "52345345",
+                  "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -54,7 +54,7 @@
             },
             "datosGenerales": {
                   "estatus": "Finalizado",
-                  "tipo_atencion": "Telefónica",
+                  "tipoAtencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
                   "notas": [
                         {
@@ -74,9 +74,9 @@
       },
       {
             "id": "3",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "Juan meza",
-                  "num_contacto": "222312345",
+                  "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -91,7 +91,7 @@
             },
             "datosGenerales": {
                   "estatus": "Rechazado",
-                  "tipo_atencion": "Personal",
+                  "tipoAtencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
                   "notas": [
                         {
@@ -111,9 +111,9 @@
       },
       {
             "id": "4",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "Juan meza",
-                  "num_contacto": "222312345",
+                  "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -128,7 +128,7 @@
             },
             "datosGenerales": {
                   "estatus": "En proceso",
-                  "tipo_atencion": "Correo Electrónico",
+                  "tipoAtencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
                   "notas": [
                         {
@@ -148,9 +148,9 @@
       },
       {
             "id": "5",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "carlos lopez",
-                  "num_contacto": "52345345",
+                  "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -164,7 +164,7 @@
             },
             "datosGenerales": {
                   "estatus": "Finalizado",
-                  "tipo_atencion": "Telefónica",
+                  "tipoAtencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
                   "notas": [
                         {
@@ -184,9 +184,9 @@
       },
       {
             "id": "6",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "Juan meza",
-                  "num_contacto": "222312345",
+                  "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -201,7 +201,7 @@
             },
             "datosGenerales": {
                   "estatus": "Rechazado",
-                  "tipo_atencion": "Personal",
+                  "tipoAtencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
                   "notas": [
                         {
@@ -221,9 +221,9 @@
       },
       {
             "id": "7",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "Juan meza",
-                  "num_contacto": "222312345",
+                  "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -238,7 +238,7 @@
             },
             "datosGenerales": {
                   "estatus": "En proceso",
-                  "tipo_atencion": "Correo Electrónico",
+                  "tipoAtencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
                   "notas": [
                         {
@@ -258,9 +258,9 @@
       },
       {
             "id": "8",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "carlos lopez",
-                  "num_contacto": "52345345",
+                  "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -274,7 +274,7 @@
             },
             "datosGenerales": {
                   "estatus": "Finalizado",
-                  "tipo_atencion": "Telefónica",
+                  "tipoAtencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
                   "notas": [
                         {
@@ -294,9 +294,9 @@
       },
       {
             "id": "9",
-            "usuarioAtendido": {
+            "alumno": {
                   "nombre": "Juan meza",
-                  "num_contacto": "222312345",
+                  "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
@@ -311,7 +311,7 @@
             },
             "datosGenerales": {
                   "estatus": "Rechazado",
-                  "tipo_atencion": "Personal",
+                  "tipoAtencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
                   "notas": [
                         {

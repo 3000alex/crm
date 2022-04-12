@@ -45,11 +45,10 @@ html[dir="rtl"] .demo-oracle-icon {
   content:url("images/avatar_24px.png")
 }
 
-.demo-popup {
+.modal {
   width: auto;
   width: 100%;
-  padding:15px;
-  margin-right: 205px;
+  padding:10px;
 }
 
 #popup_eliminar{
