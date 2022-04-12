@@ -79,10 +79,6 @@
           <oj-form-layout id="myform" label-edge="inside" direction="row"
             class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
 
-            <oj-input-text id="idAtencion" label-hint="idAtencion" value="{{idAtencion}}" disabled="true"
-              readonly="true">
-            </oj-input-text>
-
             <oj-select-single id="administrativo" data="[[dataadministrativo]]" value="{{administrativo}}"
               label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
             </oj-select-single>
@@ -103,34 +99,34 @@
                 <div id="accordionPage" data-oj-binding-provider="none">
                   <oj-accordion id="a1">
 
-                    <oj-collapsible id="c1" expanded>
-                      <h3 slot="header">Seguimiento</h3>
+                    <oj-collapsible :id="[[$current.index]]">
+                      <h3 slot="header">Seguimiento - <oj-bind-text value="[[$current.data.fecha_creacion]]">
+                        </oj-bind-text>
+                      </h3>
                       <div class="oj-flex">
-                        <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                           <div class="oj-typography-subheading-xs">
                             <p> Descripción: <oj-bind-text value="[[$current.data.descripcion]]"></oj-bind-text>
                             </p>
                           </div>
                         </div>
 
-                        <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                           <div class="oj-typography-subheading-xs">
                             <p> Archivo adjunto:
                               <oj-bind-if test="[[$current.data.archivos]]">
-                                <oj-bind-text value="[[$current.data.archivo]]"></oj-bind-text>
+                                <oj-bind-for-each data="[[ $current.data.archivos ]]">
+                                  <template data-oj-as="archivo">
+                                    <oj-bind-text value="[[archivo.data.name]]"></oj-bind-text>
+                                  </template>
+
+                                </oj-bind-for-each>
+
                               </oj-bind-if>
 
                               <oj-bind-if test="[[$current.data.archivos == '' ]]">
                                 <p>No se agrego ningun archivo</p>
                               </oj-bind-if>
-                            </p>
-                          </div>
-                        </div>
-
-                        <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                          <div class="oj-typography-subheading-xs">
-                            <p> Fecha de creación: <oj-bind-text value="[[$current.data.fecha_creacion]]">
-                              </oj-bind-text>
                             </p>
                           </div>
                         </div>
@@ -140,25 +136,32 @@
 
                   </oj-accordion>
                 </div>
-
               </template>
 
               <template slot='noData'>
                 <p>No existen notas previas</p>
-                <template>
+              <template>
             </oj-bind-for-each>
+            
+            <oj-button id="agregarNotaBtn" on-oj-action="[[activarCamposNotas]]">Agregar Nota</oj-button>
+            <oj-bind-if test="[[ camposNotas() ]]">
+              <oj-text-area id="notas" value="{{notas}}" label-hint="Agregar nota" rows="3"
+                placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
+              </oj-text-area>
 
-            <oj-text-area id="notas" value="{{notas}}" label-hint="Agregar nota" rows="3"
-              placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
-            </oj-text-area>
+              <oj-file-picker class="oj-form-control-max-width-lg" style="max-width: 100% !important; text-align:center"
+                accept="[[acceptArr]]" selection-mode="multiple" on-oj-select="[[selectListener]]"
+                on-oj-invalid-select="[[invalidListener]]" primary-text="[[primaryTextFilePicker]]"
+                secondary-text="[[secondarytextFilePicker]]">
+              </oj-file-picker>
+              <p>Archivos cargados: <oj-bind-text value="[[fileNames]]"></oj-bind-text> </p>
+              <div>
+                <oj-button on-oj-action="[[actualizarNotas]]">Actualizar Seguimiento</oj-button>
+                <oj-button on-oj-action="[[cancelActualizarNotas]]">Cancelar seguimiento</oj-button>
+              </div>
+              
 
-            <oj-file-picker class="oj-form-control-max-width-lg" style="max-width: 100% !important; text-align:center"
-              accept="[[acceptArr]]" selection-mode="multiple" on-oj-select="[[selectListener]]"
-              on-oj-invalid-select="[[invalidListener]]" primary-text="[[primaryTextFilePicker]]"
-              secondary-text="[[secondarytextFilePicker]]">
-            </oj-file-picker>
-            <p>Archivos cargados: <oj-bind-text value="[[fileNames]]"></oj-bind-text>
-            </p>
+            </oj-bind-if>
 
           </oj-form-layout>
         </div>
@@ -171,7 +174,7 @@
 
     <!--Modal Eliminar -->
     <div id="popupWrapperEliminar">
-      <oj-dialog id="eliminarModal" dialog-title="Eliminar registro" class="modal">
+      <oj-dialog id="eliminarModal" dialog-title="Eliminar registro">
         <div slot="header">
           <oj-button id="btnCancelEliminar1" class="oj-button-sm" display="icons" on-oj-action="[[cerrarModal]]">
             <span slot="startIcon" class="oj-ux-ico-close"></span>
@@ -258,8 +261,6 @@
                         <oj-bind-text value="[[ alumnoLicenciatura() ]]"></oj-bind-text>
                       </div>
                     </div>
-
-
                   </div>
 
                 </oj-collapsible>
@@ -322,7 +323,7 @@
 
                     <oj-bind-if test="[[ datosGeneralesEstatus === 'finalizada' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                        <p>Fecha de final de atención</p>
+                        <p>Fecha final de atención</p>
                         <div class="oj-typography-subheading-xs">
                           <oj-bind-text value="[[ datosGeneralesFechaFin() ]]"></oj-bind-text>
                         </div>
@@ -335,17 +336,15 @@
                         <strong>Notas registradas</strong>
 
                         <oj-bind-for-each data="[[ datosGeneralesNotas ]]">
-
                           <template>
                             <div id="accordionPage" data-oj-binding-provider="none">
                               <oj-accordion id="a1">
-
-                                <oj-collapsible id="c1" expanded>
-                                  <h3 slot="header">Nota <oj-bind-text value="[[$current.index+1]]">
+                                <oj-collapsible :id="[[ $current.data.id ]]">
+                                  <h3 slot="header">Seguimiento <oj-bind-text value="[[$current.data.fecha_creacion]]">
                                     </oj-bind-text>
                                   </h3>
                                   <div class="oj-flex">
-                                    <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                                    <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                                       <div class="oj-typography-subheading-xs">
                                         <p> Descripción: <oj-bind-text value="[[$current.data.descripcion]]">
                                           </oj-bind-text>
@@ -353,11 +352,17 @@
                                       </div>
                                     </div>
 
-                                    <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                                    <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                                       <div class="oj-typography-subheading-xs">
                                         <p> Archivo adjunto:
                                           <oj-bind-if test="[[$current.data.archivos]]">
-                                            <oj-bind-text value="[[$current.data.archivo]]"></oj-bind-text>
+                                            <oj-bind-for-each data="[[ $current.data.archivos ]]">
+                                              <template data-oj-as="archivo">
+                                                <oj-bind-text value="[[archivo.data.name]]"></oj-bind-text>
+                                              </template>
+
+                                            </oj-bind-for-each>
+
                                           </oj-bind-if>
 
                                           <oj-bind-if test="[[$current.data.archivos == '' ]]">
@@ -367,20 +372,12 @@
                                       </div>
                                     </div>
 
-                                    <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                                      <div class="oj-typography-subheading-xs">
-                                        <p> Fecha de creación: <oj-bind-text value="[[$current.data.fecha_creacion]]">
-                                          </oj-bind-text>
-                                        </p>
-                                      </div>
-                                    </div>
                                   </div>
 
-                                </oj-collapsible>
 
+                                </oj-collapsible>
                               </oj-accordion>
                             </div>
-
                           </template>
 
                           <template slot='noData'>

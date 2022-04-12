@@ -53,6 +53,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.estatus = ko.observable("");
         self.asunto = ko.observable("");
         self.notas = ko.observableArray([]);
+        self.camposNotas = ko.observable(false)
 
         //Variables Incidencia Detail
         self.idIncidencia = ko.observable();
@@ -222,51 +223,51 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       //FUNCIONES CREAR REGISTRO ATENCION
       self.crearRegistro = () => {
         let registro = {};
+        let dataAluBD;
+        //Buscamos los datos del alumno: 
+        // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
         $.each(JSON.parse(dataAlu), (index, data) => {
-          if (data.matricula === self.estudiante()) {
-            registro = {
-              id: self.data().length + 1,
-              alumno: data,
-              administrativo: { //Estos datos se obtendran del login 
-                nombre: "alex3",
-                numExpediente: "1960",
-                correoInstituciona: "alex@iedep.edu.mx"
-              },
-              datosGenerales: {
-                estatus: self.estatus(),
-                tipoAtencion: self.tipoAtencion(),
-                asunto: self.asunto(),
-                notas: [{
-                  "descripcion": self.notas(),
-                  "archivos": self.files(),
-                  "fecha_creacion": new Date().toString()
-                }]
-              }
-            }
-
-            //Se almacena el nuevo registro en la tabla CRM 
-
-            //Se actualiza la tabla principal con los nuevos datos: 
-            self.data.push(registro);
-            //Cerramos el modal
-            let popup;
-            popup = document.getElementById("modal_edit_create");
-            popup.close();
+          if (data.matricula === self.estudiante()) { 
+              dataAluBD = data;
           }
         })
+
+        registro = {
+          id: self.data().length + 1, //Este dato sera generado cuando se cree el registro
+          alumno: dataAluBD, 
+          administrativo: { //Estos datos se obtendran del login 
+            nombre: "alex3",
+            numExpediente: "1960",
+            correoInstituciona: "alex@iedep.edu.mx"
+          },
+          datosGenerales: {
+            estatus: self.estatus(),
+            tipoAtencion: self.tipoAtencion(),
+            asunto: self.asunto(),
+            notas: [{
+              "descripcion": self.notas(),
+              "archivos": self.files(),
+              "fecha_creacion": new Date().toString()
+            }]
+          }
+        }
+        console.log(registro)
+        //Se almacena el nuevo registro en la tabla CRM 
+
+          //Se actualiza la tabla principal con los nuevos datos: 
+          self.data.push(registro);
+          //Cerramos el modal
+          document.querySelector("#crearModal").close();
       }
 
       //FUNCIONES ACTUALIZAR REGISTRO
       //Llenamos los inputs del modal con los datos de la tabla
       self.llenarCampos = () => {
-
         self.idAtencion(parseInt(self.dataUpdate.id));
         self.administrativo(self.dataUpdate.administrativo.numExpediente),
-          self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
-          self.estatus(self.dataUpdate.datosGenerales.estatus),
-          self.notasArray(self.dataUpdate.datosGenerales.notas);
-        console.log(self.notasArray())
-        console.log(self.opcion())
+        self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
+        self.estatus(self.dataUpdate.datosGenerales.estatus),
+        self.notasArray(self.dataUpdate.datosGenerales.notas);
         self.notas("")
       }
 
@@ -293,6 +294,36 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         popup.close();
       }
 
+      self.activarCamposNotas = (event) => {
+        $(event.target).hide();
+        self.camposNotas(true)
+      }
+
+      self.actualizarNotas = () => {
+        let date = new Date()
+        let fecha = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        let hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        self.notasArray.push(
+          {
+            "descripcion":self.notas(),
+            "archivos":self.files(),
+            "fecha_creacion": fecha + " - " + hora 
+          }
+        )
+        self.notas("")
+        self.files("")
+        self.fileNames("")
+        $("#agregarNotaBtn").show();
+        self.camposNotas(false);
+      }
+
+      self.cancelActualizarNotas = () => {
+        $("#agregarNotaBtn").show();
+        self.camposNotas(false);
+        self.notas("")
+        self.files("")
+      }
+
       self.limpiarCampos = () => {
         self.estudiante(""),
           self.administrativo(""),
@@ -300,6 +331,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.tipoAtencion(""),
           self.estatus(""),
           self.notas("")
+          self.files("")
       }
 
       //FUNCIONES ELIMINAR REGISTRO DE ATENCION
