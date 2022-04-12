@@ -5,7 +5,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
   function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView, dataADM, dataAlu) {
     function ViewModel() {
       var self = this;
-      //var router = params.parentRouter;
 
       //Variables tabla
       self.currentDisplayOption = ko.observable();
@@ -140,17 +139,16 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         //Configuracion Estatus
         self.dataEstatusAtencion = new ArrayDataProvider([
+          { value:"Se necesitan más datos", label:"Se necesitan más datos" },
+          { value: "Rechazado", label: "Rechazado" },
           { value: "En proceso", label: "En proceso" },
-          { value: "Finalizado", label: "Finalizado" },
-          { value: "Rechazado", label: "Rechazado" },],
+          { value: "Finalizado", label: "Finalizado" }],
           { keyAttributes: "value", })
         //Fin configuracion estatus
 
       }; //FIN connected
 
-
       //Funciones de MODALES
-
 
       self.abrirModal = (event) => {
         let idBtnModal = event.target.id
@@ -287,11 +285,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         }
         self.dataprovider.updateItem({ metadata: { key: self.dataUpdate.id }, data: self.dataUpdate });
         self.limpiarCampos();
-        console.log(self.dataUpdate);
+        
         //Cerramos el modal
-        let popup;
-        popup = document.getElementById("modal_edit_create");
-        popup.close();
+        document.getElementById("editarModal").close();
+        
       }
 
       self.activarCamposNotas = (event) => {
@@ -352,9 +349,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         // Clear the table selection
         element.selected = { row: new ojkeyset_1.KeySetImpl(), column: new ojkeyset_1.KeySetImpl() };
         //Cerramos el modal
-        let popup;
-        popup = document.getElementById("popup_eliminar");
-        popup.close();
+        
+        document.getElementById("eliminarModal").close();
+        
       };
       //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
 
