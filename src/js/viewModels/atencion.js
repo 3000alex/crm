@@ -52,7 +52,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.estatus = ko.observable("");
         self.asunto = ko.observable("");
         self.seguimiento = ko.observableArray([]);
-        self.camposNotas = ko.observable(false)
+        self.camposSeguimientos = ko.observable(false)
 
         //Variables Incidencia Detail
         self.idIncidencia = ko.observable();
@@ -118,6 +118,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           }));
         };
         //FIN Inicializacion de variables a usar
+        //Variables para utilizar 
+          var fecha = "";
+          var hora = "";
+        //Fin varibales a utilizar
 
         //Configuraciones Atencion A:
         $.each(JSON.parse(dataAlu), (index, data) => { self.suggestionsAlu.push({ value: data.matricula, label: data.nombre }) })
@@ -222,6 +226,13 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.crearRegistro = () => {
         let registro = {};
         let dataAluBD;
+        let dataAdmBD;
+        let seguimientoBD;
+        
+        //Configuramos fecha: 
+        self.obtenerFecha();
+        //Fin configuracion fecha. 
+
         //Buscamos los datos del alumno: 
         // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
         $.each(JSON.parse(dataAlu), (index, data) => {
@@ -230,25 +241,37 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           }
         })
 
-        registro = {
-          id: self.data().length + 1, //Este dato sera generado cuando se cree el registro
-          alumno: dataAluBD, 
-          administrativo: { //Estos datos se obtendran del login 
+        //Obtenemos datos del administrativo
+        dataAdmBD = { //Estos datos se obtendran del login 
             nombre: "alex3",
             numExpediente: "1960",
             correoInstituciona: "alex@iedep.edu.mx"
-          },
+          }
+        //Creamos seguimiento para esta incidencia en la BD
+        let idSeguimiento = "3"; //Este ID lo obtenemos de la BD al crear el registro
+        seguimientoBD = {
+          "id":idSeguimiento,
+          "descripcion": self.seguimiento(),
+          "tipoAtencion": self.tipoAtencion(),
+          "tipoActualizacion": "Registro creado",
+          "administrativo": dataAdmBD.nombre,
+          "estatus": self.estatus(),
+          "archivos": self.files(),
+          "fecha_actualizacion": self.fecha + "  " + self.hora
+        }
+
+        registro = {
+          id: self.data().length + 1, //Este dato sera generado cuando se cree el registro
+          alumno: dataAluBD, 
+          administrativo: dataAdmBD,
           datosGenerales: {
             estatus: self.estatus(),
             tipoAtencion: self.tipoAtencion(),
             asunto: self.asunto(),
-            seguimiento: [{
-              "descripcion": self.seguimiento(),
-              "archivos": self.files(),
-              "fecha_creacion": new Date().toString()
-            }]
+            seguimiento: [seguimientoBD]
           }
         }
+
         console.log(registro)
         //Se almacena el nuevo registro en la tabla CRM 
 
@@ -269,17 +292,29 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.seguimiento("")
       }
 
+      self.obtenerFecha = () =>{
+        let date = new Date()
+        self.fecha = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        self.hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      }
 
       self.actualizarRegistro = () => {
+        self.obtenerFecha();
         self.dataUpdate.administrativo.numExpediente = self.administrativo()
         self.dataUpdate.datosGenerales.tipoAtencion = self.tipoAtencion()
         self.dataUpdate.datosGenerales.estatus = self.estatus()
         if (self.seguimiento() != "") {
+          let idSeguimiento = "3"; //Este ID lo obtenemos de la BD al crear el registro
           self.dataUpdate.datosGenerales.seguimiento.push(
             {
+              "id":idSeguimiento,
               "descripcion": self.seguimiento(),
+              "tipoAtencion": self.tipoAtencion(),
+              "tipoActualizacion": "Actualización de status",
+              "administrativo": dataAdmBD.nombre,
+              "estatus": self.estatus(),
               "archivos": self.files(),
-              "fecha_creacion": new Date().toString()
+              "fecha_actualizacion": self.fecha + "  " + self.hora
             }
           )
         }
@@ -291,40 +326,50 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         
       }
 
-      self.activarCamposNotas = (event) => {
+      self.activarCamposSeguimientos = (event) => {
         $(event.target).hide();
-        self.camposNotas(true)
+        self.camposSeguimientos(true)
       }
 
-      self.actualizarSeguimiento = () => {
-        let date = new Date()
-        let fecha = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-        let hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      self.actualizarSeguimientos = () => {
+        self.obtenerFecha();
+        //Obtenemos datos del administrativo
+        let dataAdmBD = { //Estos datos se obtendran del login 
+          nombre: "alex3",
+          numExpediente: "1960",
+          correoInstituciona: "alex@iedep.edu.mx"
+        }
+        let idSeguimiento = "3"; //Este ID lo obtenemos de la BD al crear el registro
         self.seguimientoArray.push(
           {
-            "descripcion":self.seguimiento(),
-            "archivos":self.files(),
-            "fecha_creacion": fecha + " - " + hora 
+            "id":idSeguimiento,
+            "descripcion": self.seguimiento(),
+            "tipoAtencion": self.tipoAtencion(),
+            "tipoActualizacion": "Se agrego una nota nueva",
+            "administrativo": dataAdmBD.nombre,
+            "estatus": self.estatus(),
+            "archivos": self.files(),
+            "fecha_actualizacion": self.fecha + "  " + self.hora
           }
         )
         self.seguimiento("")
         self.files("")
         self.fileNames("")
-        $("#agregarNotaBtn").show();
-        self.camposNotas(false);
+        $("#agregarSeguimientoBtn").show();
+        self.camposSeguimientos(false);
       }
 
       self.actualizarSeguimiento = () => {
 
       }
 
-      self.eliminarNota = () => {
+      self.eliminarSeguimiento = () => {
         
       }
 
       self.cancelActualizarSeguimientos = () => {
-        $("#agregarNotaBtn").show();
-        self.camposNotas(false);
+        $("#agregarSeguimientoBtn").show();
+        self.camposSeguimientos(false);
         self.seguimiento("")
         self.files("")
       }
