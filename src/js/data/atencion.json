@@ -20,16 +20,22 @@
                   "estatus": "En proceso",
                   "tipoAtencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"1",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:23:40"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"2",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021 - 09:23:40"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -56,16 +62,22 @@
                   "estatus": "Finalizado",
                   "tipoAtencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"3",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:23:40"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"4",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021 - 09:23:40"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -93,16 +105,22 @@
                   "estatus": "Rechazado",
                   "tipoAtencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"5",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:10:31"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"6",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -130,16 +148,22 @@
                   "estatus": "En proceso",
                   "tipoAtencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"7",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:10:31"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"8",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -166,16 +190,22 @@
                   "estatus": "Finalizado",
                   "tipoAtencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"9",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:10:31"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"10",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -203,16 +233,22 @@
                   "estatus": "Rechazado",
                   "tipoAtencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"11",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:10:31"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"12",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -240,16 +276,22 @@
                   "estatus": "En proceso",
                   "tipoAtencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"13",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:10:31"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"14",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -276,16 +318,22 @@
                   "estatus": "Finalizado",
                   "tipoAtencion": "Telefónica",
                   "asunto": "Error en el portal de alumnos",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"15",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:10:31"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"16",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",
@@ -313,16 +361,23 @@
                   "estatus": "Rechazado",
                   "tipoAtencion": "Personal",
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
-                  "notas": [
+                  "seguimiento": [
                         {
+                              "id":"17",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "09/04/2021 - 09:10:31"
+                              "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
+                              "id":"18",
                               "descripcion": "se finalizo con el tramite",
+                              "tipoActualizacion":"Se agrego una nota",
+                              "administrativo":"",
+                              "estatus": "En proceso",
                               "archivos": [],
-                              "fecha_creacion": "10/04/2021"
+                              "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }
                   ],
                   "fecha_inicio": "03/04/2022",

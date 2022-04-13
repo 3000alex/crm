@@ -44,7 +44,7 @@
             <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto" rows="3"
               placeholder="Ingrese el asunto que se trato con el alumno"></oj-input-text>
 
-            <oj-text-area id="notas" value="{{notas}}" label-hint="Agregar nota" rows="3"
+            <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar nota" rows="3"
               placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
             </oj-text-area>
 
@@ -91,27 +91,31 @@
               label-hint="Estatus" class="oj-form-control-max-width-lg"
               placeholder="Seleccione el estatus en el que se encuentra este registro"></oj-select-single>
 
-            <strong>Notas registradas</strong>
+            <strong>Seguimiento registrado</strong>
 
-            <oj-bind-for-each data="[[ notasArray ]]">
+            <oj-bind-for-each data="[[ seguimientoArray ]]">
 
               <template>
                 <div id="accordionPage" data-oj-binding-provider="none">
                   <oj-accordion id="a1">
 
                     <oj-collapsible :id="[[$current.index]]">
-                      <h3 slot="header">Seguimiento - <oj-bind-text value="[[$current.data.fecha_creacion]]">
+                      <h3 slot="header">Seguimiento - <oj-bind-text value="[[$current.data.tipoActualizacion]]"></oj-bind-text> - <oj-bind-text value="[[$current.data.fecha_actualizacion]]">
                         </oj-bind-text>
                       </h3>
                       <div class="oj-flex">
-                        <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <div class="oj-md-5 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                           <div class="oj-typography-subheading-xs">
-                            <p> Descripción: <oj-bind-text value="[[$current.data.descripcion]]"></oj-bind-text>
+                            <p> Descripción: 
+                              <ul>
+                                <li>Atencion por: <oj-bind-text value="[[$current.data.descripcion]]"></oj-bind-text></li>
+                              </ul>
+                              <oj-bind-text value="[[$current.data.descripcion]]"></oj-bind-text>
                             </p>
                           </div>
                         </div>
 
-                        <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                           <div class="oj-typography-subheading-xs">
                             <p> Archivo adjunto:
                               <oj-bind-if test="[[$current.data.archivos]]">
@@ -130,6 +134,23 @@
                             </p>
                           </div>
                         </div>
+
+                        <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                          <div class="oj-typography-subheading-xs">
+                            
+                            <div>
+                              <p> Acciones:</p>
+                              <oj-button display="icons" id="btnActualizar" on-oj-action="[[actualizarSeguimiento]]"><span slot="startIcon"
+                                class="oj-ux-ico-edit-box"></span></oj-button>
+
+                              <oj-button display="icons" id="btnEliminar" on-oj-action="[[eliminarNota]]"><span slot="startIcon"
+                                class="oj-ux-ico-delete-all"></span></oj-button>
+
+                            </div>
+                          </div>
+                        </div>
+
+
                       </div>
 
                     </oj-collapsible>
@@ -139,13 +160,13 @@
               </template>
 
               <template slot='noData'>
-                <p>No existen notas previas</p>
+                <p>No existen seguimiento previas</p>
               <template>
             </oj-bind-for-each>
             
             <oj-button id="agregarNotaBtn" on-oj-action="[[activarCamposNotas]]">Agregar Nota</oj-button>
             <oj-bind-if test="[[ camposNotas() ]]">
-              <oj-text-area id="notas" value="{{notas}}" label-hint="Agregar nota" rows="3"
+              <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar nota" rows="3"
                 placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
               </oj-text-area>
 
@@ -156,8 +177,8 @@
               </oj-file-picker>
               <p>Archivos cargados: <oj-bind-text value="[[fileNames]]"></oj-bind-text> </p>
               <div>
-                <oj-button on-oj-action="[[actualizarNotas]]">Actualizar Seguimiento</oj-button>
-                <oj-button on-oj-action="[[cancelActualizarNotas]]">Cancelar seguimiento</oj-button>
+                <oj-button on-oj-action="[[actualizarSeguimientos]]">Actualizar Seguimiento</oj-button>
+                <oj-button on-oj-action="[[cancelActualizarSeguimientos]]">Cancelar seguimiento</oj-button>
               </div>
               
 
@@ -333,14 +354,14 @@
 
                     <div class="oj-md-12 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <div class="oj-typography-subheading-xs">
-                        <strong>Notas registradas</strong>
+                        <strong>Seguimiento registrado</strong>
 
-                        <oj-bind-for-each data="[[ datosGeneralesNotas ]]">
+                        <oj-bind-for-each data="[[ datosGeneralesSeguimientos ]]">
                           <template>
                             <div id="accordionPage" data-oj-binding-provider="none">
                               <oj-accordion id="a1">
                                 <oj-collapsible :id="[[ $current.data.id ]]">
-                                  <h3 slot="header">Seguimiento <oj-bind-text value="[[$current.data.fecha_creacion]]">
+                                  <h3 slot="header">Seguimiento <oj-bind-text value="[[$current.data.fecha_actualizacion]]">
                                     </oj-bind-text>
                                   </h3>
                                   <div class="oj-flex">
@@ -381,7 +402,7 @@
                           </template>
 
                           <template slot='noData'>
-                            <p>No existen notas previas</p>
+                            <p>No existen seguimiento previas</p>
                             <template>
                         </oj-bind-for-each>
                       </div>
@@ -409,7 +430,7 @@
                 {"headerText": "Tipo de atención", "field": "tipo de atencion", "resizable": "enabled"},
                 {"headerText": "Estatus", "field": "estatus", "resizable": "enabled"},
                 {"headerText": "Asunto", "field": "asunto", "resizable": "enabled","width":"190px"},
-                {"headerText": "Ultima Nota", "field": "notas", "resizable": "enabled","width":"150px"},
+                {"headerText": "Ultima Nota", "field": "seguimiento", "resizable": "enabled","width":"150px"},
                 {"headerText": "Acciones", "field": "acciones", "resizable": "enabled"}]'>
 
         <template slot="rowTemplate" data-oj-as="row">
@@ -439,7 +460,7 @@
 
             <td>
               <oj-bind-text
-                value="[[row.data.datosGenerales.notas[row.data.datosGenerales.notas.length-1].descripcion]]">
+                value="[[row.data.datosGenerales.seguimiento[row.data.datosGenerales.seguimiento.length-1].descripcion]]">
               </oj-bind-text>
             </td>
 

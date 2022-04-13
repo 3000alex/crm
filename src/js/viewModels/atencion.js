@@ -33,7 +33,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           $.each(data, function (index, persona) {
             self.data.push(persona);
           })
-
+          console.log(self.data())
         }).fail((err, err2) => {
           console.log(err, err2)
         });
@@ -51,7 +51,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.tipoAtencion = ko.observable("");
         self.estatus = ko.observable("");
         self.asunto = ko.observable("");
-        self.notas = ko.observableArray([]);
+        self.seguimiento = ko.observableArray([]);
         self.camposNotas = ko.observable(false)
 
         //Variables Incidencia Detail
@@ -72,12 +72,12 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.datosGeneralesEstatus = ko.observable();
         self.datosGeneralesTipoAtencion = ko.observable();
         self.datosGeneralesAsunto = ko.observable();
-        self.datosGeneralesNotas = ko.observableArray([]);
+        self.datosGeneralesSeguimientos = ko.observableArray([]);
         self.datosGeneralesFechaFin = ko.observable();
         //Fin variables Incidencia Detail 
         self.search = ko.observable('');
         self.rawSearch = ko.observable('');
-        self.notasArray = ko.observableArray([]);
+        self.seguimientoArray = ko.observableArray([]);
         //Variables y funciones FILE
         self.files = ko.observable([]);
         primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
@@ -190,7 +190,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.datosGeneralesEstatus(dataObj.data.datosGenerales.estatus)
           self.datosGeneralesTipoAtencion(dataObj.data.datosGenerales.tipoAtencion)
           self.datosGeneralesAsunto(dataObj.data.datosGenerales.asunto)
-          self.datosGeneralesNotas(dataObj.data.datosGenerales.notas)
+          self.datosGeneralesSeguimientos(dataObj.data.datosGenerales.seguimiento)
           self.datosGeneralesFechaFin(dataObj.data.datosGenerales.fecha_fin)
 
           document.getElementById("mostrarModal").open();
@@ -242,8 +242,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
             estatus: self.estatus(),
             tipoAtencion: self.tipoAtencion(),
             asunto: self.asunto(),
-            notas: [{
-              "descripcion": self.notas(),
+            seguimiento: [{
+              "descripcion": self.seguimiento(),
               "archivos": self.files(),
               "fecha_creacion": new Date().toString()
             }]
@@ -265,8 +265,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.administrativo(self.dataUpdate.administrativo.numExpediente),
         self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
         self.estatus(self.dataUpdate.datosGenerales.estatus),
-        self.notasArray(self.dataUpdate.datosGenerales.notas);
-        self.notas("")
+        self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
+        self.seguimiento("")
       }
 
 
@@ -274,10 +274,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.dataUpdate.administrativo.numExpediente = self.administrativo()
         self.dataUpdate.datosGenerales.tipoAtencion = self.tipoAtencion()
         self.dataUpdate.datosGenerales.estatus = self.estatus()
-        if (self.notas() != "") {
-          self.dataUpdate.datosGenerales.notas.push(
+        if (self.seguimiento() != "") {
+          self.dataUpdate.datosGenerales.seguimiento.push(
             {
-              "descripcion": self.notas(),
+              "descripcion": self.seguimiento(),
               "archivos": self.files(),
               "fecha_creacion": new Date().toString()
             }
@@ -296,28 +296,36 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.camposNotas(true)
       }
 
-      self.actualizarNotas = () => {
+      self.actualizarSeguimiento = () => {
         let date = new Date()
         let fecha = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
         let hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-        self.notasArray.push(
+        self.seguimientoArray.push(
           {
-            "descripcion":self.notas(),
+            "descripcion":self.seguimiento(),
             "archivos":self.files(),
             "fecha_creacion": fecha + " - " + hora 
           }
         )
-        self.notas("")
+        self.seguimiento("")
         self.files("")
         self.fileNames("")
         $("#agregarNotaBtn").show();
         self.camposNotas(false);
       }
 
-      self.cancelActualizarNotas = () => {
+      self.actualizarSeguimiento = () => {
+
+      }
+
+      self.eliminarNota = () => {
+        
+      }
+
+      self.cancelActualizarSeguimientos = () => {
         $("#agregarNotaBtn").show();
         self.camposNotas(false);
-        self.notas("")
+        self.seguimiento("")
         self.files("")
       }
 
@@ -327,7 +335,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.asunto(""),
           self.tipoAtencion(""),
           self.estatus(""),
-          self.notas("")
+          self.seguimiento("")
           self.files("")
       }
 
