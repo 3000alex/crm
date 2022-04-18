@@ -1,6 +1,6 @@
 
 define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery", 'ojs/ojpagingdataproviderview', "text!../data/dataAdministrativos.json", "text!../data/dataAlumnos.json",
-  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel",
+  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel","ojs/ojlabelvalue",
   "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
   function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView, dataADM, dataAlu) {
     function ViewModel() {
@@ -78,6 +78,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.search = ko.observable('');
         self.rawSearch = ko.observable('');
         self.seguimientoArray = ko.observableArray([]);
+        //Variables seguimiento:
+        self.seguimientoUpdate = ko.observable({});
+        self.camposSeguimiento = ko.observable(true);
         //Variables y funciones FILE
         self.files = ko.observable([]);
         primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
@@ -169,9 +172,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.llenarCampos()
           document.querySelector("#editarModal").open();
         }
-        else if (idBtnModal === "btnEliminar") {
-          document.getElementById("eliminarModal").open();
-        }
+
         else if (idBtnModal === "btnMostrar") {
           const element = document.getElementById('table');
           const currentRow = element.currentRow;
@@ -359,12 +360,20 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.camposSeguimientos(false);
       }
 
-      self.actualizarSeguimiento = () => {
-
+      self.activarCamposSeguimiento = (event) => {
+        console.log(self.camposSeguimiento());
+        self.camposSeguimiento() == true ? self.camposSeguimiento(false) : self.camposSeguimiento(true);
+        console.log(self.camposSeguimiento());
       }
 
-      self.eliminarSeguimiento = () => {
-        
+      self.actualizarCamposSeguimiento = (event) =>{
+        let idSeguimiento = event.target.id;
+        let seguimiento = self.dataUpdate.datosGenerales.seguimiento;
+        self.seguimientoUpdate(seguimiento[idSeguimiento-1]);//Quitar -1 cuando sea la informacion de la BD
+      }
+
+      self.eliminarSeguimiento = (event) => {
+        alert("seguimiento eliminado")
       }
 
       self.cancelActualizarSeguimientos = () => {
