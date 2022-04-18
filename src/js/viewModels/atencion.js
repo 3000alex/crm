@@ -1,10 +1,14 @@
 
-define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery", 'ojs/ojpagingdataproviderview', "text!../data/dataAdministrativos.json", "text!../data/dataAlumnos.json",
+define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery", 'ojs/ojpagingdataproviderview', 
   "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel","ojs/ojlabelvalue",
   "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
-  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView, dataADM, dataAlu) {
+  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView) {
     function ViewModel() {
       var self = this;
+      self.data = ko.observableArray([]);
+      self.dataADM = ko.observableArray([]);
+      self.dataAlu = ko.observableArray([]);
+
 
       //Variables tabla
       self.currentDisplayOption = ko.observable();
@@ -15,28 +19,47 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
       self.suggestionsAlu = ko.observableArray([]); // Array opciones Atencion A
 
+      self.obtenerDatos = () =>{
+        let peticion = $.get({ url: 'js/data/atencion.json',})
+        peticion.done((data) => { self.data(data) })
+        peticion.fail((err, err2) => {console.log(err, err2) });
+
+        peticion = $.get({ url: 'js/data/dataAdministrativos.json',})
+        peticion.done((data) => { 
+          self.dataADM(data) 
+          //Config atendido por
+          $.each(self.dataADM(), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) })
+          //Fin config atendido por
+        })
+        peticion.fail((err, err2) => {console.log(err, err2) });
+
+        peticion = $.get({ url: 'js/data/dataAlumnos.json',})
+        peticion.done((data) => {
+          self.dataAlu(data) 
+          //Configuraciones Atencion A:
+          $.each(self.dataAlu(), (index, data) => { self.suggestionsAlu.push({ value: data.matricula, label: data.nombre }) })
+          //Fin config atencion a
+          })
+        peticion.fail((err, err2) => {console.log(err, err2) });
+
+
+        //Configuramos suggestions 
+        self.dataestudiante = new ArrayDataProvider(this.suggestionsAlu, { keyAttributes: "value", });
+        self.dataadministrativo = new ArrayDataProvider(this.suggestionsADM, { keyAttributes: "value", });
+      }
 
       self.connected = () => {
         document.title = "Atencion";
         self.opcion = ko.observable("crear");
+        
+        //Obtenemos datos
+        this.obtenerDatos();
 
         //Configuracion datos de la tabla
-        self.data = ko.observableArray([]);
         self.dataUpdate = {}
         self.currentDisplayOption = ko.observable("grid");
         self.currentHorizontalGridVisible = ko.observable("disable");
         self.currentVerticalGridVisible = ko.observable("enable");
-        $.get({
-          url: 'js/data/atencion.json',
-
-        }).done(function (data) {
-          $.each(data, function (index, persona) {
-            self.data.push(persona);
-          })
-          console.log(self.data())
-        }).fail((err, err2) => {
-          console.log(err, err2)
-        });
         self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' }));
         self.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data, { idAttribute: 'id' }));
         //Fin configuracion de los datos de la tabla
@@ -125,16 +148,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           var fecha = "";
           var hora = "";
         //Fin varibales a utilizar
-
-        //Configuraciones Atencion A:
-        $.each(JSON.parse(dataAlu), (index, data) => { self.suggestionsAlu.push({ value: data.matricula, label: data.nombre }) })
-        self.dataestudiante = new ArrayDataProvider(this.suggestionsAlu, { keyAttributes: "value", });
-        //Fin config atencion a
-
-        //Config atendido por
-        $.each(JSON.parse(dataADM), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) })
-        self.dataadministrativo = new ArrayDataProvider(this.suggestionsADM, { keyAttributes: "value", });
-        //Fin config atendido por
 
         //Config Tipo de atención
         self.datatipo_atencion = new ArrayDataProvider([
