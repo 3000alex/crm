@@ -1,47 +1,36 @@
 
-define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery", 'ojs/ojpagingdataproviderview', 
+define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery",
   "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel","ojs/ojlabelvalue",
   "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
-  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView) {
+  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $) {
     function ViewModel() {
       var self = this;
-      self.data = ko.observableArray([]);
-      self.dataADM = ko.observableArray([]);
-      self.dataAlu = ko.observableArray([]);
-
-
-      //Variables tabla
-      self.currentDisplayOption = ko.observable();
-      self.currentHorizontalGridVisible = ko.observable();
-      self.currentVerticalGridVisible = ko.observable();
-
-      //Variables Modal crear y editar
+      self.data = ko.observableArray([]); //Data de la tabla principal
+      self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
+      self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
       self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
       self.suggestionsAlu = ko.observableArray([]); // Array opciones Atencion A
+      self.fecha = "";
+      self.hora = "";
 
       self.obtenerDatos = () =>{
-        let peticion = $.get({ url: 'js/data/atencion.json',})
+        let peticion = $.get({ url: 'js/data/atencion.json'})
         peticion.done((data) => { self.data(data) })
         peticion.fail((err, err2) => {console.log(err, err2) });
 
-        peticion = $.get({ url: 'js/data/dataAdministrativos.json',})
+        peticion = $.get({ url: 'js/data/dataAdministrativos.json'})
         peticion.done((data) => { 
-          self.dataADM(data) 
-          //Config atendido por
-          $.each(self.dataADM(), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) })
-          //Fin config atendido por
+          self.dataADM(data)  
+          $.each(self.dataADM(), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) }) //Config atendido por
         })
         peticion.fail((err, err2) => {console.log(err, err2) });
 
-        peticion = $.get({ url: 'js/data/dataAlumnos.json',})
+        peticion = $.get({ url: 'js/data/dataAlumnos.json'})
         peticion.done((data) => {
           self.dataAlu(data) 
-          //Configuraciones Atencion A:
-          $.each(self.dataAlu(), (index, data) => { self.suggestionsAlu.push({ value: data.matricula, label: data.nombre }) })
-          //Fin config atencion a
+          $.each(self.dataAlu(), (index, data) => { self.suggestionsAlu.push({ value: data.matricula, label: data.nombre }) }) //Configuraciones Atencion A:
           })
         peticion.fail((err, err2) => {console.log(err, err2) });
-
 
         //Configuramos suggestions 
         self.dataestudiante = new ArrayDataProvider(this.suggestionsAlu, { keyAttributes: "value", });
@@ -53,17 +42,18 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.opcion = ko.observable("crear");
         
         //Obtenemos datos
-        this.obtenerDatos();
+        self.obtenerDatos();
 
         //Configuracion datos de la tabla
-        self.dataUpdate = {}
         self.currentDisplayOption = ko.observable("grid");
         self.currentHorizontalGridVisible = ko.observable("disable");
         self.currentVerticalGridVisible = ko.observable("enable");
-        self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' }));
-        self.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data, { idAttribute: 'id' }));
+        self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
         //Fin configuracion de los datos de la tabla
 
+        //Variables para actualizar tabla
+        self.dataUpdate = {}
+        //Fin variables para actualizar tabla
 
         //Configuracion Modal Crear
         //Inicializacion de variables a usar
@@ -98,22 +88,22 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.datosGeneralesSeguimientos = ko.observableArray([]);
         self.datosGeneralesFechaFin = ko.observable();
         //Fin variables Incidencia Detail 
+
         self.search = ko.observable('');
         self.rawSearch = ko.observable('');
-        self.seguimientoArray = ko.observableArray([]);
+        
+
         //Variables seguimiento:
         self.seguimientoUpdate = ko.observable({});
         self.camposSeguimiento = ko.observable(true);
+        self.seguimientoArray = ko.observableArray([]);
+
         //Variables y funciones FILE
         self.files = ko.observable([]);
         primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
         secondarytextFilePicker = ko.observable("Tipo de datos aceptados:JPG,JPEG,PDF,XLSX,DOCX")
-        self.multipleStr = ko.pureComputed(() => {
-          return this.multiple()[0] ? "multiple" : "single";
-        });
-        self.isDisabled = ko.pureComputed(() => {
-          return this.disabled()[0] === "disable" ? true : false;
-        });
+        self.multipleStr = ko.pureComputed(() => { return this.multiple()[0] ? "multiple" : "single"; });
+        self.isDisabled = ko.pureComputed(() => { return this.disabled()[0] === "disable" ? true : false; });
         self.invalidMessage = ko.observable("");
         self.invalidListener = (event) => {
           this.fileNames([]);
@@ -144,10 +134,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           }));
         };
         //FIN Inicializacion de variables a usar
-        //Variables para utilizar 
-          var fecha = "";
-          var hora = "";
-        //Fin varibales a utilizar
 
         //Config Tipo de atención
         self.datatipo_atencion = new ArrayDataProvider([
@@ -172,7 +158,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
       self.abrirModal = (event) => {
         let idBtnModal = event.target.id
-
 
         if (idBtnModal === "btnCrear") {
           document.getElementById("crearModal").open();
@@ -374,9 +359,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       }
 
       self.activarCamposSeguimiento = (event) => {
-        console.log(self.camposSeguimiento());
         self.camposSeguimiento() == true ? self.camposSeguimiento(false) : self.camposSeguimiento(true);
-        console.log(self.camposSeguimiento());
       }
 
       self.actualizarCamposSeguimiento = (event) =>{
