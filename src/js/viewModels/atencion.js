@@ -1,6 +1,6 @@
 
 define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery",
-  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel","ojs/ojlabelvalue",
+  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel", "ojs/ojlabelvalue",
   "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
   function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $) {
     function ViewModel() {
@@ -13,24 +13,24 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.fecha = "";
       self.hora = "";
 
-      self.obtenerDatos = () =>{
-        let peticion = $.get({ url: 'js/data/atencion.json'})
+      self.obtenerDatos = () => {
+        let peticion = $.get({ url: 'js/data/atencion.json' })
         peticion.done((data) => { self.data(data) })
-        peticion.fail((err, err2) => {console.log(err, err2) });
+        peticion.fail((err, err2) => { console.log(err, err2) });
 
-        peticion = $.get({ url: 'js/data/dataAdministrativos.json'})
-        peticion.done((data) => { 
-          self.dataADM(data)  
+        peticion = $.get({ url: 'js/data/dataAdministrativos.json' })
+        peticion.done((data) => {
+          self.dataADM(data)
           $.each(self.dataADM(), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) }) //Config atendido por
         })
-        peticion.fail((err, err2) => {console.log(err, err2) });
+        peticion.fail((err, err2) => { console.log(err, err2) });
 
-        peticion = $.get({ url: 'js/data/dataAlumnos.json'})
+        peticion = $.get({ url: 'js/data/dataAlumnos.json' })
         peticion.done((data) => {
-          self.dataAlu(data) 
+          self.dataAlu(data)
           $.each(self.dataAlu(), (index, data) => { self.suggestionsAlu.push({ value: data.matricula, label: data.nombre }) }) //Configuraciones Atencion A:
-          })
-        peticion.fail((err, err2) => {console.log(err, err2) });
+        })
+        peticion.fail((err, err2) => { console.log(err, err2) });
 
         //Configuramos suggestions 
         self.dataestudiante = new ArrayDataProvider(this.suggestionsAlu, { keyAttributes: "value", });
@@ -40,7 +40,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.connected = () => {
         document.title = "Atencion";
         self.opcion = ko.observable("crear");
-        
+
         //Obtenemos datos
         self.obtenerDatos();
 
@@ -89,9 +89,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.datosGeneralesFechaFin = ko.observable();
         //Fin variables Incidencia Detail 
 
+        //Variables campos de busqueda 
         self.search = ko.observable('');
         self.rawSearch = ko.observable('');
-        
 
         //Variables seguimiento:
         self.seguimientoUpdate = ko.observable({});
@@ -100,31 +100,19 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         //Variables y funciones FILE
         self.files = ko.observable([]);
+        self.fileNames = ko.observable([]);
         primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
         secondarytextFilePicker = ko.observable("Tipo de datos aceptados:JPG,JPEG,PDF,XLSX,DOCX")
-        self.multipleStr = ko.pureComputed(() => { return this.multiple()[0] ? "multiple" : "single"; });
-        self.isDisabled = ko.pureComputed(() => { return this.disabled()[0] === "disable" ? true : false; });
-        self.invalidMessage = ko.observable("");
         self.invalidListener = (event) => {
+          alert("Archivo(s) invalido(s), por favor intente nuevamente")
           this.fileNames([]);
-          this.invalidMessage("{severity: '" +
-            event.detail.messages[0].severity +
-            "', summary: '" +
-            event.detail.messages[0].summary +
-            "'}");
-          const promise = event.detail.until;
-          if (promise) {
-            promise.then(() => {
-              this.invalidMessage("");
-            });
-          }
         };
         self.acceptStr = ko.observable("image/jpg,image/jpeg,application/pdf,application/docx,application/xlsx"); //Tipo de datos aceptados
         self.acceptArr = ko.pureComputed(() => {
           const accept = self.acceptStr();
           return accept ? accept.split(",") : [];
         });
-        self.fileNames = ko.observable([]);
+
         self.selectListener = (event) => {
 
           self.invalidMessage("");
@@ -139,13 +127,13 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.datatipo_atencion = new ArrayDataProvider([
           { value: "Telefónica", label: "Telefónica" },
           { value: "Correo Electrónico", label: "Correo Electrónico" },
-          { value: "Personal", label: "Personal" },],
+          { value: "Personal", label: "Personal" }],
           { keyAttributes: "value", });
         //Fin config tipo de atencion
 
         //Configuracion Estatus
         self.dataEstatusAtencion = new ArrayDataProvider([
-          { value:"Se necesitan más datos", label:"Se necesitan más datos" },
+          { value: "Se necesitan más datos", label: "Se necesitan más datos" },
           { value: "Rechazado", label: "Rechazado" },
           { value: "En proceso", label: "En proceso" },
           { value: "Finalizado", label: "Finalizado" }],
@@ -227,29 +215,27 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         let dataAluBD;
         let dataAdmBD;
         let seguimientoBD;
-        
+
         //Configuramos fecha: 
         self.obtenerFecha();
         //Fin configuracion fecha. 
 
         //Buscamos los datos del alumno: 
         // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
-        $.each(JSON.parse(dataAlu), (index, data) => {
-          if (data.matricula === self.estudiante()) { 
-              dataAluBD = data;
-          }
+        $.each(self.dataAlu(), (index, data) => {
+          if (data.matricula === self.estudiante()) { dataAluBD = data; }
         })
 
         //Obtenemos datos del administrativo
         dataAdmBD = { //Estos datos se obtendran del login 
-            nombre: "alex3",
-            numExpediente: "1960",
-            correoInstituciona: "alex@iedep.edu.mx"
-          }
+          nombre: "alex3",
+          numExpediente: "1960",
+          correoInstituciona: "alex@iedep.edu.mx"
+        }
         //Creamos seguimiento para esta incidencia en la BD
         let idSeguimiento = "3"; //Este ID lo obtenemos de la BD al crear el registro
         seguimientoBD = {
-          "id":idSeguimiento,
+          "id": idSeguimiento,
           "descripcion": self.seguimiento(),
           "tipoAtencion": self.tipoAtencion(),
           "tipoActualizacion": "Registro creado",
@@ -261,7 +247,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         registro = {
           id: self.data().length + 1, //Este dato sera generado cuando se cree el registro
-          alumno: dataAluBD, 
+          alumno: dataAluBD,
           administrativo: dataAdmBD,
           datosGenerales: {
             estatus: self.estatus(),
@@ -274,10 +260,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         console.log(registro)
         //Se almacena el nuevo registro en la tabla CRM 
 
-          //Se actualiza la tabla principal con los nuevos datos: 
-          self.data.push(registro);
-          //Cerramos el modal
-          document.querySelector("#crearModal").close();
+        //Se actualiza la tabla principal con los nuevos datos: 
+        self.data.push(registro);
+        //Cerramos el modal
+        document.querySelector("#crearModal").close();
       }
 
       //FUNCIONES ACTUALIZAR REGISTRO
@@ -285,13 +271,13 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.llenarCampos = () => {
         self.idAtencion(parseInt(self.dataUpdate.id));
         self.administrativo(self.dataUpdate.administrativo.numExpediente),
-        self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
-        self.estatus(self.dataUpdate.datosGenerales.estatus),
-        self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
+          self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
+          self.estatus(self.dataUpdate.datosGenerales.estatus),
+          self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
         self.seguimiento("")
       }
 
-      self.obtenerFecha = () =>{
+      self.obtenerFecha = () => {
         let date = new Date()
         self.fecha = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
         self.hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
@@ -306,7 +292,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           let idSeguimiento = "3"; //Este ID lo obtenemos de la BD al crear el registro
           self.dataUpdate.datosGenerales.seguimiento.push(
             {
-              "id":idSeguimiento,
+              "id": idSeguimiento,
               "descripcion": self.seguimiento(),
               "tipoAtencion": self.tipoAtencion(),
               "tipoActualizacion": "Actualización de status",
@@ -319,10 +305,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         }
         self.dataprovider.updateItem({ metadata: { key: self.dataUpdate.id }, data: self.dataUpdate });
         self.limpiarCampos();
-        
+
         //Cerramos el modal
         document.getElementById("editarModal").close();
-        
+
       }
 
       self.activarCamposSeguimientos = (event) => {
@@ -341,7 +327,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         let idSeguimiento = "3"; //Este ID lo obtenemos de la BD al crear el registro
         self.seguimientoArray.push(
           {
-            "id":idSeguimiento,
+            "id": idSeguimiento,
             "descripcion": self.seguimiento(),
             "tipoAtencion": self.tipoAtencion(),
             "tipoActualizacion": "Se agrego una nota nueva",
@@ -362,10 +348,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.camposSeguimiento() == true ? self.camposSeguimiento(false) : self.camposSeguimiento(true);
       }
 
-      self.actualizarCamposSeguimiento = (event) =>{
+      self.actualizarCamposSeguimiento = (event) => {
         let idSeguimiento = event.target.id;
         let seguimiento = self.dataUpdate.datosGenerales.seguimiento;
-        self.seguimientoUpdate(seguimiento[idSeguimiento-1]);//Quitar -1 cuando sea la informacion de la BD
+        self.seguimientoUpdate(seguimiento[idSeguimiento - 1]);//Quitar -1 cuando sea la informacion de la BD
       }
 
       self.eliminarSeguimiento = (event) => {
@@ -386,7 +372,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.tipoAtencion(""),
           self.estatus(""),
           self.seguimiento("")
-          self.files("")
+        self.files("")
       }
 
       //FUNCIONES ELIMINAR REGISTRO DE ATENCION
@@ -407,9 +393,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         // Clear the table selection
         element.selected = { row: new ojkeyset_1.KeySetImpl(), column: new ojkeyset_1.KeySetImpl() };
         //Cerramos el modal
-        
+
         document.getElementById("eliminarModal").close();
-        
+
       };
       //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
 
@@ -447,7 +433,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       this.transitionCompleted = () => {
 
       };
-
     }
 
     return ViewModel;
