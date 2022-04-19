@@ -76,112 +76,115 @@
           </oj-button>
         </div>
         <div slot="body">
-          <oj-form-layout id="myform" label-edge="inside" direction="row"
-            class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
 
-            <oj-select-single id="administrativo" data="[[dataadministrativo]]" value="{{administrativo}}"
-              label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
-            </oj-select-single>
+          <strong>Seguimiento registrado</strong>
 
-            <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
-              label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
-              placeholder="Seleccione el tipo de atención que se ha dado a este registro"></oj-select-single>
+          <oj-bind-for-each data="[[ seguimientoArray ]]">
 
-            <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
-              label-hint="Estatus" class="oj-form-control-max-width-lg"
-              placeholder="Seleccione el estatus en el que se encuentra este registro"></oj-select-single>
+            <template>
+              <div id="accordionPage" data-oj-binding-provider="none">
+                <oj-accordion id="a1">
 
-            <strong>Seguimiento registrado</strong>
+                  <oj-collapsible :id="[[$current.index]]">
+                    <h3 slot="header">Seguimiento - <oj-bind-text value="[[$current.data.tipoActualizacion]]">
+                      </oj-bind-text> - <oj-bind-text value="[[$current.data.fecha_actualizacion]]">
+                      </oj-bind-text>
+                    </h3>
 
-            <oj-bind-for-each data="[[ seguimientoArray ]]">
+                    <oj-form-layout :id="[[$current.index]]" label-edge="start" columns="3" max-columns="3"
+                      direction="row" label-wrapping="wrap" readonly="{{camposSeguimiento}}"
+                      user-assistance-density="efficient">
 
+                      <oj-select-single id="seguimientoAtencionPor" data="[[dataadministrativo]]"
+                        value="{{administrativo}}" label-edge="inside" label-hint="Administrativo(a)"
+                        class="oj-form-control-max-width-lg">
+                      </oj-select-single>
+
+                      <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
+                        label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
+                        placeholder="Seleccione el tipo de atención que se ha dado a este registro">
+                      </oj-select-single>
+
+                      <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="[[$current.data.estatus]]"
+                        label-edge="inside" label-hint="Estatus" class="oj-form-control-max-width-lg"
+                        placeholder="Seleccione el estatus en el que se encuentra este registro">
+                      </oj-select-single>
+
+                      <oj-text-area id="seguimiento[[$current.index]]" value="[[$current.data.descripcion]]"
+                        label-edge="inside" label-hint="Nota" rows="3"
+                        placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
+                      </oj-text-area>
+
+                      <oj-bind-for-each data="[[ $current.data.archivos ]]">
+
+                        <template data-oj-as="archivo">
+                          <oj-label-value>
+                            <oj-bind-text slot="value" value="[[archivo.data.name]]"></oj-bind-text>
+                          </oj-label-value>
+                        </template>
+
+                        <template slot='noData'>
+                          <oj-label-value>
+                            <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
+                          </oj-label-value>
+                        </template>
+
+                      </oj-bind-for-each>
+
+                      <oj-file-picker class="oj-form-control-max-width-lg"
+                        style="max-width: 100% !important; text-align:center" accept="[[acceptArr]]"
+                        selection-mode="multiple" on-oj-select="[[selectListener]]"
+                        on-oj-invalid-select="[[invalidListener]]" primary-text="[[primaryTextFilePicker]]"
+                        secondary-text="[[secondarytextFilePicker]]" disabled="{{camposSeguimiento}}">
+
+                      </oj-file-picker>
+
+                    </oj-form-layout>
+
+                    <div class="oj-typography-subheading-md">
+                      <oj-button display="icons" :id="[[ $current.data.id ]]"
+                        on-oj-action="[[activarCamposSeguimiento]]"><span slot="startIcon"
+                          class="oj-ux-ico-edit-box"></span></oj-button>
+
+                      <oj-button display="icons" :id="[[ $current.data.id ]]"
+                        on-oj-action="[[actualizarCamposSeguimiento]]"><span slot="startIcon"
+                          class="oj-ux-ico-save"></span></oj-button>
+
+                      <oj-button display="icons" :id="[[ $current.data.id ]]" on-oj-action="[[eliminarSeguimiento]]">
+                        <span slot="startIcon" class="oj-ux-ico-delete-all"></span>
+                      </oj-button>
+                    </div>
+
+                  </oj-collapsible>
+
+                </oj-accordion>
+              </div>
+            </template>
+
+            <template slot='noData'>
+              <p>No existe seguimiento previo</p>
               <template>
-                <div id="accordionPage" data-oj-binding-provider="none">
-                  <oj-accordion id="a1">
+          </oj-bind-for-each>
 
-                    <oj-collapsible :id="[[$current.index]]">
-                      <h3 slot="header">Seguimiento - <oj-bind-text value="[[$current.data.tipoActualizacion]]">
-                        </oj-bind-text> - <oj-bind-text value="[[$current.data.fecha_actualizacion]]">
-                        </oj-bind-text>
-                      </h3>
+          <oj-button id="agregarSeguimientoBtn" on-oj-action="[[activarCamposSeguimientos]]">Agregar Seguimiento
+          </oj-button>
 
-                      <oj-form-layout :id="[[$current.index]]" label-edge="start" columns="3" max-columns="3"
-                        direction="row" label-wrapping="wrap" readonly="{{camposSeguimiento}}" user-assistance-density="efficient">
+          <oj-bind-if test="[[ camposSeguimientos() ]]">
+            <oj-form-layout id="myform" label-edge="inside" direction="row"
+              class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
 
-                        <oj-select-single id="seguimientoAtencionPor" data="[[dataadministrativo]]"
-                          value="{{administrativo}}" label-edge="inside" label-hint="Administrativo(a)"
-                          class="oj-form-control-max-width-lg">
-                        </oj-select-single>
+              <oj-select-single id="administrativo" data="[[dataadministrativo]]" value="{{administrativo}}"
+                label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
+              </oj-select-single>
 
-                        <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
-                          label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
-                          placeholder="Seleccione el tipo de atención que se ha dado a este registro">
-                        </oj-select-single>
+              <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
+                label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
+                placeholder="Seleccione el tipo de atención que se ha dado a este registro"></oj-select-single>
 
-                        <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="[[$current.data.estatus]]"
-                          label-edge="inside" label-hint="Estatus" class="oj-form-control-max-width-lg"
-                          placeholder="Seleccione el estatus en el que se encuentra este registro">
-                        </oj-select-single>
+              <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
+                label-hint="Estatus" class="oj-form-control-max-width-lg"
+                placeholder="Seleccione el estatus en el que se encuentra este registro"></oj-select-single>
 
-                        <oj-text-area id="seguimiento[[$current.index]]" value="[[$current.data.descripcion]]"
-                          label-edge="inside" label-hint="Nota" rows="3"
-                          placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
-                        </oj-text-area>
-
-                        <oj-bind-for-each data="[[ $current.data.archivos ]]">
-
-                          <template data-oj-as="archivo">
-                            <oj-label-value>
-                              <oj-bind-text slot="value" value="[[archivo.data.name]]"></oj-bind-text>
-                            </oj-label-value>
-                          </template>
-
-                          <template slot='noData'>
-                            <oj-label-value>
-                              <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
-                            </oj-label-value>
-                          </template>
-
-                        </oj-bind-for-each>
-
-                        <oj-file-picker class="oj-form-control-max-width-lg"
-                          style="max-width: 100% !important; text-align:center" accept="[[acceptArr]]"
-                          selection-mode="multiple" on-oj-select="[[selectListener]]"
-                          on-oj-invalid-select="[[invalidListener]]" primary-text="[[primaryTextFilePicker]]"
-                          secondary-text="[[secondarytextFilePicker]]" disabled="{{camposSeguimiento}}">
-
-                        </oj-file-picker>
-
-                      </oj-form-layout>
-
-                        <div class="oj-typography-subheading-md">
-                          <oj-button display="icons" :id="[[ $current.data.id ]]"
-                            on-oj-action="[[activarCamposSeguimiento]]"><span slot="startIcon"
-                              class="oj-ux-ico-edit-box"></span></oj-button>
-
-                          <oj-button display="icons" :id="[[ $current.data.id ]]"
-                            on-oj-action="[[actualizarCamposSeguimiento]]"><span slot="startIcon"
-                              class="oj-ux-ico-save"></span></oj-button>
-
-                          <oj-button display="icons" :id="[[ $current.data.id ]]"
-                            on-oj-action="[[eliminarSeguimiento]]"><span slot="startIcon"
-                              class="oj-ux-ico-delete-all"></span></oj-button>
-                        </div>
-
-                    </oj-collapsible>
-
-                  </oj-accordion>
-                </div>
-              </template>
-
-              <template slot='noData'>
-                <p>No existe seguimiento previo</p>
-                <template>
-            </oj-bind-for-each>
-
-            <oj-button id="agregarSeguimientoBtn" on-oj-action="[[activarCamposSeguimientos]]">Agregar Seguimiento
-            </oj-button>
-            <oj-bind-if test="[[ camposSeguimientos() ]]">
               <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar seguimiento" rows="3"
                 placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
               </oj-text-area>
@@ -199,7 +202,7 @@
               </div>
 
 
-            </oj-bind-if>
+          </oj-bind-if>
 
           </oj-form-layout>
         </div>
@@ -209,7 +212,6 @@
         </div>
       </oj-dialog>
     </div>
-
 
     <!--Modal Eliminar -->
     <div id="popupWrapperEliminar">
@@ -274,14 +276,14 @@
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                      <p>Correo Personal</p>
+                      <p>Matricula</p>
                       <div class="oj-typography-subheading-xs">
                         <oj-bind-text value="[[ alumnoMatricula() ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                      <p>Matricula</p>
+                      <p>Correo Personal</p>
                       <div class="oj-typography-subheading-xs">
                         <oj-bind-text value="[[ alumnoCorreoPersonal() ]]"></oj-bind-text>
                       </div>

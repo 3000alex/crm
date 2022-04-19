@@ -191,8 +191,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
           document.getElementById("mostrarModal").open();
         }
-
-
       }
 
       self.cerrarModal = (event) => {
@@ -203,6 +201,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         }
         else if (idBtnModal === "btnCancelEditar1" || idBtnModal === "btnCancelEditar2") {
           document.querySelector("#editarModal").close();
+          self.camposSeguimientos(false)
         }
         else if (idBtnModal === "btnCancelEliminar1" || idBtnModal === "btnCancelEliminar2") {
           document.querySelector("#eliminarModal").close();
