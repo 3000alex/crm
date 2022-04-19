@@ -103,6 +103,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.fileNames = ko.observable([]);
         primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
         secondarytextFilePicker = ko.observable("Tipo de datos aceptados:JPG,JPEG,PDF,XLSX,DOCX")
+        self.invalidMessage = ko.observable("")
         self.invalidListener = (event) => {
           alert("Archivo(s) invalido(s), por favor intente nuevamente")
           this.fileNames([]);
@@ -157,6 +158,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.dataUpdate = self.data()[currentRow.rowIndex];
           self.llenarCampos()
           document.querySelector("#editarModal").open();
+        }
+
+        else if(idBtnModal === "btnEliminar"){
+          document.querySelector("#eliminarModal").open();
         }
 
         else if (idBtnModal === "btnMostrar") {
@@ -372,7 +377,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.tipoAtencion(""),
           self.estatus(""),
           self.seguimiento("")
-        self.files("")
+        self.fileNames("");
+        self.files = ko.observable([]);
+
       }
 
       //FUNCIONES ELIMINAR REGISTRO DE ATENCION
