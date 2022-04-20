@@ -181,7 +181,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
 
-          self.idIncidencia(dataObj.data.id)
+          self.idIncidencia(dataObj.data.id);
           self.incidenciaDetail().personaAtendida(dataObj.data.personaAtendida);
           self.incidenciaDetail().administrativo(dataObj.data.administrativo)
           self.incidenciaDetail().datosGenerales(dataObj.data.datosGenerales)
@@ -456,8 +456,11 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         if (queryId && objData) {
           self.dataUpdate = objData;
+
           self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
           self.idIncidencia(self.dataUpdate.id)
+          self.asunto(self.dataUpdate.datosGenerales.asunto)
+          self.tipoUsuario(self.dataUpdate.personaAtendida.tipoUsuario)
           document.querySelector("#editarModal").open();
         }
         else {
