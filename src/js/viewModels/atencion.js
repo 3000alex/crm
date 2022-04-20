@@ -49,7 +49,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         //Configuracion Modal Crear
         //Inicializacion de variables a usar
         self.idAtencion = ko.observable(0);
-        self.personaAtendida = ko.observable("");
+        self.tipoUsuario = ko.observable("");
         self.identificadorPersonaAtendida = ko.observable("");
         self.administrativo = ko.observable("");
         self.tipoAtencion = ko.observable("");
@@ -84,7 +84,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
             seguimiento: ko.observableArray([]),
             fecha_fin: ko.observable(),
           }),
-          
+
         })
         //Fin variables Incidencia Detail 
 
@@ -141,13 +141,13 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         //Fin configuracion estatus
 
         //Configuracion persona atendida
-          self.dataPersonaAtendida = new ArrayDataProvider([
-            { value: "Aspirante", label: "Aspirante" },
-            { value: "Alumno", label: "Alumno" },
-            { value: "Ex Alumno", label: "Ex Alumno" },
-            { value: "Representante", label: "Representante" },
-            { value: "Coordinador(a)", label: "Coordinador(a)" },
-          ], { keyAttributes: "value", })
+        self.dataPersonaAtendida = new ArrayDataProvider([
+          { value: "Aspirante", label: "Aspirante" },
+          { value: "Alumno", label: "Alumno" },
+          { value: "Ex Alumno", label: "Ex Alumno" },
+          { value: "Representante", label: "Representante" },
+          { value: "Coordinador(a)", label: "Coordinador(a)" },
+        ], { keyAttributes: "value", })
         //Fin configuracion persona atendida 
 
       }; //FIN connected
@@ -166,11 +166,13 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const currentRow = element.currentRow;
           self.dataUpdate = self.data()[currentRow.rowIndex];
           self.idIncidencia(self.dataUpdate.id)
+          self.asunto(self.dataUpdate.datosGenerales.asunto)
+          self.tipoUsuario(self.dataUpdate.personaAtendida.tipoUsuario)
           self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
           document.querySelector("#editarModal").open();
         }
 
-        else if(idBtnModal === "btnEliminar"){
+        else if (idBtnModal === "btnEliminar") {
           document.querySelector("#eliminarModal").open();
         }
 
@@ -220,27 +222,50 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         //Buscamos los datos de la persona atendida: 
         // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
-        if(self.personaAtendida() == "Aspirante"){
-          
+        if (self.tipoUsuario() == "Aspirante") {
+          dataPersonaAtendidaBD = {
+            id: "19231",
+            numExpediente: "",
+            nombre: "Juan meza",
+            numContacto: "222312345",
+            correoInstitucional: "ejemplo@iedep.edu.mx",
+            matricula: "",
+            correoPersonal: "personal@iedep.edu.mx",
+            campus: "NOPALUCAN",
+            licenciatura: "LICENCIATURA EN PEDAGOGIA",
+            tipoUsuario: self.tipoUsuario()
+          }
         }
-        else if(self.personaAtendida() == "Alumno"){
-
+        else if (self.tipoUsuario() == "Alumno" || self.tipoUsuario() == "Ex Alumno") {
+          dataPersonaAtendidaBD = {
+            id: "",
+            numExpediente: "",
+            nombre: "Juan meza",
+            numContacto: "222312345",
+            correoInstitucional: "ejemplo@iedep.edu.mx",
+            matricula: "20C31234",
+            correoPersonal: "personal@iedep.edu.mx",
+            campus: "NOPALUCAN",
+            licenciatura: "LICENCIATURA EN PEDAGOGIA",
+            tipoUsuario: self.tipoUsuario()
+          }
         }
-        else if(self.personaAtendida() == "Ex Alumno"){
-
+        else if (self.tipoUsuario() == "Representante" || self.tipoUsuario() == "Coordinador(a)") {
+          dataPersonaAtendidaBD = {
+            id: "",
+            numExpediente: "1254",
+            nombre: "Juan meza",
+            numContacto: "222312345",
+            correoInstitucional: "ejemplo@iedep.edu.mx",
+            matricula: "",
+            correoPersonal: "personal@iedep.edu.mx",
+            campus: "NOPALUCAN",
+            licenciatura: "LICENCIATURA EN PEDAGOGIA",
+            tipoUsuario: self.tipoUsuario()
+          }
         }
-        else if(self.personaAtendida() == "Representante"){
 
-        }
-        else if(self.personaAtendida() == "Coordinador(a)"){
-
-        }
-
-        $.each(self.dataAlu(), (index, data) => {
-          if (data.matricula === self.identificadorPersonaAtendida()) { dataPersonaAtendidaBD = data; }
-        })
-
-        //Obtenemos datos del administrativo
+        //Obtenemos datos del administrativo que atendio la incidencia
         dataAdmBD = { //Estos datos se obtendran del login 
           nombre: "alex3",
           numExpediente: "1960",
@@ -261,13 +286,15 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         registro = {
           id: self.data().length + 1, //Este dato sera generado cuando se cree el registro
-          personaAtendida: dataAluBD,
+          personaAtendida: dataPersonaAtendidaBD,
           administrativo: dataAdmBD,
           datosGenerales: {
             estatus: self.estatus(),
             tipoAtencion: self.tipoAtencion(),
             asunto: self.asunto(),
-            seguimiento: [seguimientoBD]
+            seguimiento: [seguimientoBD],
+            fecha_inicio: self.fecha + "  " + self.hora,
+            fecha_fin: ""
           }
         }
 
@@ -285,9 +312,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.llenarCampos = () => {
         self.idAtencion(parseInt(self.dataUpdate.id));
         self.administrativo(self.dataUpdate.administrativo.numExpediente),
-        self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
-        self.estatus(self.dataUpdate.datosGenerales.estatus),
-        self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
+          self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
+          self.estatus(self.dataUpdate.datosGenerales.estatus),
+          self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
         self.seguimiento("")
       }
 
@@ -326,7 +353,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       }
 
       self.activarCamposSeguimientos = (event) => {
-        $(event.target).prop('disabled',true);
+        $(event.target).prop('disabled', true);
         self.camposSeguimientos(true)
       }
 
@@ -352,7 +379,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           }
         )
         self.limpiarCampos();
-        $("#agregarSeguimientoBtn").prop("disabled",false);
+        $("#agregarSeguimientoBtn").prop("disabled", false);
         self.camposSeguimientos(false);
       }
 
@@ -378,13 +405,12 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       }
 
       self.limpiarCampos = () => {
-      
-        self.identificadorPersonaAtendida(""),
-          self.administrativo(""),
-          self.asunto(""),
-          self.tipoAtencion(""),
-          self.estatus(""),
-          self.seguimiento("")
+        self.administrativo("");
+        self.asunto("");
+        self.tipoAtencion("");
+        self.estatus("");
+        self.seguimiento("");
+        self.identificadorPersonaAtendida("");
         self.fileNames("");
         self.files = ko.observable([]);
 
