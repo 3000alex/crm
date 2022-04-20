@@ -29,9 +29,15 @@
           <oj-form-layout id="myform" label-edge="inside" direction="row"
             class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
 
-            <oj-select-single id="estudiante" data="[[dataestudiante]]" value="{{estudiante}}" label-edge="inside"
-              label-hint="Estudiante" class="oj-form-control-max-width-lg"
-              placeholder="Ingrese la matricula del estudiante que realizará el registro"></oj-select-single>
+            <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto"
+              placeholder="Ingrese el asunto que se trato"></oj-input-text>
+
+            <oj-input-text id="identificadorPersonaAtendida" value="{{identificadorPersonaAtendida}}" label-hint="Matricula, Num expediente o ID de la persona atendida" 
+              placeholder="Ingrese la matricula, expediente o id de la persona atendida"></oj-input-text>
+
+            <oj-select-single id="personaAtendida" data="[[dataPersonaAtendida]]" value="{{personaAtendida}}"
+              label-edge="inside" label-hint="Persona atendida" class="oj-form-control-max-width-lg"
+              placeholder="Seleccione el tipo de persona que fue atendida"></oj-select-single>
 
             <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
               label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
@@ -41,8 +47,6 @@
               label-hint="Estatus" class="oj-form-control-max-width-lg"
               placeholder="Seleccione el estatus en el que se encuentra este registro"></oj-select-single>
 
-            <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto" rows="3"
-              placeholder="Ingrese el asunto que se trato con el alumno"></oj-input-text>
 
             <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar seguimiento" rows="3"
               placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
@@ -257,49 +261,49 @@
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Nombre</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="{{ incidenciaDetail().alumno().nombre() }}"></oj-bind-text>
+                        <oj-bind-text value="{{ incidenciaDetail().personaAtendida().nombre }}"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Numero de contacto</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().alumno().numContacto() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().numContacto ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Institucional</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().alumno().correoInstitucional() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().correoInstitucional ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Matricula</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().alumno().matricula() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().matricula ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Personal</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().alumno().correoPersonal() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().correoPersonal ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Campus</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().alumno().campus() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().campus ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Licenciatura</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().alumno().licenciatura() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().licenciatura ]]"></oj-bind-text>
                       </div>
                     </div>
 
@@ -313,19 +317,19 @@
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>Nombre</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().administrativo().nombre() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().administrativo().nombre ]]"></oj-bind-text>
                       </div>
                     </div>
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>N° Expediente</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().administrativo().numExpediente() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().administrativo().numExpediente ]]"></oj-bind-text>
                       </div>
                     </div>
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>Correo Institucional</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().administrativo().correoInstitucional() ]]">
+                        <oj-bind-text value="[[ incidenciaDetail().administrativo().correoInstitucional ]]">
                         </oj-bind-text>
                       </div>
                     </div>
@@ -339,36 +343,36 @@
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Fecha de inicio de atención</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().fechaInicio() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().fecha_inicio ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Estatus</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().estatus() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().estatus ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Tipo de atención</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().tipoAtencion() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().tipoAtencion ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Asunto</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().asunto() ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().asunto ]]"></oj-bind-text>
                       </div>
                     </div>
 
-                    <oj-bind-if test="[[ incidenciaDetail().datosGenerales().estatus() === 'Finalizado' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().datosGenerales().estatus === 'Finalizado' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Fecha final de atención</p>
                         <div class="oj-typography-subheading-xs">
-                          <oj-bind-text value="[[ incidenciaDetail().datosGenerales().fecha_fin() ]]"></oj-bind-text>
+                          <oj-bind-text value="[[ incidenciaDetail().datosGenerales().fecha_fin ]]"></oj-bind-text>
                         </div>
                       </div>
                     </oj-bind-if>
@@ -377,7 +381,7 @@
                   <div>
                     <strong>Seguimiento registrado</strong>
 
-                    <oj-bind-for-each data="[[ incidenciaDetail().datosGenerales().seguimientos() ]]">
+                    <oj-bind-for-each data="[[ incidenciaDetail().datosGenerales().seguimiento ]]">
                       <template>
                         <div id="accordionPage" data-oj-binding-provider="none">
                           <oj-accordion id="aa1">
@@ -390,24 +394,27 @@
                                 <div class="oj-md-3 oj-sm-12 oj-flex-item">
                                   <p>Administrativo(a)</p>
                                   <div class="oj-typography-subheading-xs">
-                                    <oj-bind-text value="{{$current.data.administrativo}}">
-                                    </oj-bind-text>
+                                    <small>
+                                      <oj-bind-text value="{{$current.data.administrativo}}"></oj-bind-text>
+                                    </small>
                                   </div>
                                 </div>
 
                                 <div class="oj-md-3 oj-sm-12 oj-flex-item">
                                   <p>Tipo atención</p>
                                   <div class="oj-typography-subheading-xs">
-                                    <oj-bind-text value="{{$current.data.tipoAtencion}}">
-                                    </oj-bind-text>
+                                    <small>
+                                      <oj-bind-text value="{{$current.data.tipoAtencion}}"></oj-bind-text>
+                                    </small>
                                   </div>
                                 </div>
 
                                 <div class="oj-md-3 oj-sm-12 oj-flex-item">
                                   <p>Estatus</p>
                                   <div class="oj-typography-subheading-xs">
-                                    <oj-bind-text value="{{$current.data.estatus}}">
-                                    </oj-bind-text>
+                                    <small>
+                                      <oj-bind-text value="{{$current.data.estatus}}"> </oj-bind-text>
+                                    </small>
                                   </div>
 
                                 </div>
@@ -415,24 +422,27 @@
                                 <div class="oj-md-3 oj-sm-12 oj-flex-item">
                                   <p>Descrición</p>
                                   <div class="oj-typography-subheading-xs">
-                                    <oj-bind-text value="{{$current.data.descripcion}}">
+                                    <small>
+                                      <oj-bind-text value="{{$current.data.descripcion}}">
+                                    </small>
                                     </oj-bind-text>
                                   </div>
                                 </div>
 
                                 <div class="oj-md-3 oj-sm-12 oj-flex-item">
+                                  <p>Archivos cargados:</p>
                                   <oj-bind-for-each data="[[ $current.data.archivos ]]">
 
                                     <template data-oj-as="archivo">
-                                      <oj-label-value>
-                                        <oj-bind-text slot="value" value="[[archivo.data.name]]"></oj-bind-text>
-                                      </oj-label-value>
+                                      <small>
+                                        <oj-bind-text value="[[archivo.data.name]]"></oj-bind-text>
+                                      </small>
                                     </template>
 
                                     <template slot='noData'>
-                                      <oj-label-value>
-                                        <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
-                                      </oj-label-value>
+                                      <small>
+                                        <oj-bind-text value="No se agregaron archivos"></oj-bind-text>
+                                      </small>
                                     </template>
 
                                   </oj-bind-for-each>
@@ -467,7 +477,8 @@
       <oj-table id="table" class="demo-table-container" aria-label="Task Table" data="[[dataprovider]]"
         columns-default.sortable="disabled" columns='[
                 {"headerText": "ID", "field": "id", "resizable": "enabled","width":"auto"},
-                {"headerText": "Estudiante", "field": "estudiante", "resizable": "enabled"},
+                {"headerText": "Atención A", "field": "Atención A", "resizable": "enabled"},
+                {"headerText": "Persona atendida", "field": "Persona atendida", "resizable": "enabled"},
                 {"headerText": "Administrativo(a)", "field": "Administrativo(a)", "resizable": "enabled"},
                 {"headerText": "Tipo de atención", "field": "tipo de atencion", "resizable": "enabled"},
                 {"headerText": "Estatus", "field": "estatus", "resizable": "enabled"},
@@ -482,7 +493,11 @@
             </td>
 
             <td>
-              <oj-bind-text value="[[row.data.alumno.nombre]]"></oj-bind-text>
+              <oj-bind-text value="[[row.data.personaAtendida.nombre]]"></oj-bind-text>
+            </td>
+
+            <td>
+              <oj-bind-text value="[[row.data.personaAtendida.tipoUsuario]]"></oj-bind-text>
             </td>
 
             <td>

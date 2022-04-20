@@ -1,7 +1,9 @@
 [
       {
             "id": "1",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19231",
+                  "numExpediente":"1931",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -9,7 +11,7 @@
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "NOPALUCAN",
                   "licenciatura": "LICENCIATURA EN PEDAGOGIA",
-                  "tipo_usuario": "alumno"
+                  "tipoUsuario": "Alumno"
             },
             "administrativo": {
                   "nombre": "alex1",
@@ -48,14 +50,17 @@
       },
       {
             "id": "2",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19232",
+                  "numExpediente":"1932",
                   "nombre": "carlos lopez",
                   "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "GUADALUPE VICTORIA",
-                  "licenciatura": "LICENCIATURA EN PSICOLOGIA"
+                  "licenciatura": "LICENCIATURA EN PSICOLOGIA",
+                  "tipoUsuario": "Ex Alumno"
             },
             "administrativo": {
                   "nombre": "alex2",
@@ -94,7 +99,9 @@
       },
       {
             "id": "3",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19233",
+                  "numExpediente":"1933",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -102,7 +109,7 @@
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "NOPALUCAN",
                   "licenciatura": "LICENCIATURA EN PEDAGOGIA",
-                  "tipo_usuario": "alumno"
+                  "tipoUsuario": "Aspirante"
             },
             "administrativo": {
                   "nombre": "alex3",
@@ -141,7 +148,9 @@
       },
       {
             "id": "4",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19234",
+                  "numExpediente":"1934",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -149,7 +158,7 @@
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "NOPALUCAN",
                   "licenciatura": "LICENCIATURA EN PEDAGOGIA",
-                  "tipo_usuario": "alumno"
+                  "tipoUsuario": "Representante"
             },
             "administrativo": {
                   "nombre": "alex1",
@@ -187,14 +196,17 @@
       },
       {
             "id": "5",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19235",
+                  "numExpediente":"1935",
                   "nombre": "carlos lopez",
                   "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "GUADALUPE VICTORIA",
-                  "licenciatura": "LICENCIATURA EN PSICOLOGIA"
+                  "licenciatura": "LICENCIATURA EN PSICOLOGIA",
+                  "tipoUsuario": "Coordinador(a)"
             },
             "administrativo": {
                   "nombre": "alex2",
@@ -232,7 +244,9 @@
       },
       {
             "id": "6",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19236",
+                  "numExpediente":"1936",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -240,7 +254,7 @@
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "NOPALUCAN",
                   "licenciatura": "LICENCIATURA EN PEDAGOGIA",
-                  "tipo_usuario": "alumno"
+                  "tipoUsuario": "Alumno"
             },
             "administrativo": {
                   "nombre": "alex3",
@@ -279,7 +293,9 @@
       },
       {
             "id": "7",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19237",
+                  "numExpediente":"1937",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -287,7 +303,7 @@
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "NOPALUCAN",
                   "licenciatura": "LICENCIATURA EN PEDAGOGIA",
-                  "tipo_usuario": "alumno"
+                  "tipoUsuario": "Alumno"
             },
             "administrativo": {
                   "nombre": "alex1",
@@ -326,14 +342,17 @@
       },
       {
             "id": "8",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19238",
+                  "numExpediente":"1938",
                   "nombre": "carlos lopez",
                   "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
                   "matricula": "20CL-28409",
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "GUADALUPE VICTORIA",
-                  "licenciatura": "LICENCIATURA EN PSICOLOGIA"
+                  "licenciatura": "LICENCIATURA EN PSICOLOGIA",
+                  "tipoUsuario": "Aspirante"
             },
             "administrativo": {
                   "nombre": "alex2",
@@ -372,7 +391,9 @@
       },
       {
             "id": "9",
-            "alumno": {
+            "personaAtendida": {
+                  "id":"19239",
+                  "numExpediente":"1939",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -380,7 +401,7 @@
                   "correoPersonal": "personal@iedep.edu.mx",
                   "campus": "NOPALUCAN",
                   "licenciatura": "LICENCIATURA EN PEDAGOGIA",
-                  "tipo_usuario": "alumno"
+                  "tipoUsuario": "Alumno"
             },
             "administrativo": {
                   "nombre": "alex3",

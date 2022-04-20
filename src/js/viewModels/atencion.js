@@ -9,7 +9,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
       self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
-      self.suggestionsAlu = ko.observableArray([]); // Array opciones Atencion A
       self.fecha = "";
       self.hora = "";
 
@@ -25,15 +24,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         })
         peticion.fail((err, err2) => { console.log(err, err2) });
 
-        peticion = $.get({ url: 'js/data/dataAlumnos.json' })
-        peticion.done((data) => {
-          self.dataAlu(data)
-          $.each(self.dataAlu(), (index, data) => { self.suggestionsAlu.push({ value: data.matricula, label: data.nombre }) }) //Configuraciones Atencion A:
-        })
-        peticion.fail((err, err2) => { console.log(err, err2) });
-
         //Configuramos suggestions 
-        self.dataestudiante = new ArrayDataProvider(this.suggestionsAlu, { keyAttributes: "value", });
         self.dataadministrativo = new ArrayDataProvider(this.suggestionsADM, { keyAttributes: "value", });
       }
 
@@ -58,8 +49,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         //Configuracion Modal Crear
         //Inicializacion de variables a usar
         self.idAtencion = ko.observable(0);
-        self.estudiante = ko.observable("");
-        self.matricula = ko.observable("");
+        self.personaAtendida = ko.observable("");
+        self.identificadorPersonaAtendida = ko.observable("");
         self.administrativo = ko.observable("");
         self.tipoAtencion = ko.observable("");
         self.estatus = ko.observable("");
@@ -70,7 +61,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         //Variables Incidencia Detail
         self.idIncidencia = ko.observable();
         self.incidenciaDetail = ko.observable({
-          alumno: ko.observable({
+          personaAtendida: ko.observable({
             nombre: ko.observable(),
             numContacto: ko.observable(),
             correoInstitucional: ko.observable(),
@@ -90,7 +81,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
             estatus: ko.observable(),
             tipoAtencion: ko.observable(),
             asunto: ko.observable(),
-            seguimientos: ko.observableArray([]),
+            seguimiento: ko.observableArray([]),
             fecha_fin: ko.observable(),
           }),
           
@@ -149,6 +140,16 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           { keyAttributes: "value", })
         //Fin configuracion estatus
 
+        //Configuracion persona atendida
+          self.dataPersonaAtendida = new ArrayDataProvider([
+            { value: "Aspirante", label: "Aspirante" },
+            { value: "Alumno", label: "Alumno" },
+            { value: "Ex Alumno", label: "Ex Alumno" },
+            { value: "Representante", label: "Representante" },
+            { value: "Coordinador(a)", label: "Coordinador(a)" },
+          ], { keyAttributes: "value", })
+        //Fin configuracion persona atendida 
+
       }; //FIN connected
 
       //Funciones de MODALES
@@ -179,26 +180,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
 
           self.idIncidencia(dataObj.data.id)
-          self.incidenciaDetail().alumno().nombre(dataObj.data.alumno.nombre)
-          self.incidenciaDetail().alumno().numContacto(dataObj.data.alumno.numContacto)
-          self.incidenciaDetail().alumno().correoInstitucional(dataObj.data.alumno.correoInstitucional)
-          self.incidenciaDetail().alumno().matricula(dataObj.data.alumno.matricula)
-          self.incidenciaDetail().alumno().correoPersonal(dataObj.data.alumno.correoPersonal)
-          self.incidenciaDetail().alumno().campus(dataObj.data.alumno.campus)
-          self.incidenciaDetail().alumno().licenciatura(dataObj.data.alumno.licenciatura)
-
-
-          self.incidenciaDetail().administrativo().nombre(dataObj.data.administrativo.nombre)
-          self.incidenciaDetail().administrativo().numExpediente(dataObj.data.administrativo.numExpediente)
-          self.incidenciaDetail().administrativo().correoInstitucional(dataObj.data.administrativo.correoInstitucional)
-
-          self.incidenciaDetail().datosGenerales().fechaInicio(dataObj.data.datosGenerales.fecha_inicio)
-          self.incidenciaDetail().datosGenerales().estatus(dataObj.data.datosGenerales.estatus)
-          self.incidenciaDetail().datosGenerales().tipoAtencion(dataObj.data.datosGenerales.tipoAtencion)
-          self.incidenciaDetail().datosGenerales().asunto(dataObj.data.datosGenerales.asunto)
-          self.incidenciaDetail().datosGenerales().seguimientos(dataObj.data.datosGenerales.seguimiento)
-          self.incidenciaDetail().datosGenerales().fecha_fin(dataObj.data.datosGenerales.fecha_fin)
-
+          self.incidenciaDetail().personaAtendida(dataObj.data.personaAtendida);
+          self.incidenciaDetail().administrativo(dataObj.data.administrativo)
+          self.incidenciaDetail().datosGenerales(dataObj.data.datosGenerales)
           document.getElementById("mostrarModal").open();
         }
       }
@@ -226,7 +210,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       //FUNCIONES CREAR REGISTRO ATENCION
       self.crearRegistro = () => {
         let registro = {};
-        let dataAluBD;
+        let dataPersonaAtendidaBD;
         let dataAdmBD;
         let seguimientoBD;
 
@@ -234,10 +218,26 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.obtenerFecha();
         //Fin configuracion fecha. 
 
-        //Buscamos los datos del alumno: 
+        //Buscamos los datos de la persona atendida: 
         // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
+        if(self.personaAtendida() == "Aspirante"){
+          
+        }
+        else if(self.personaAtendida() == "Alumno"){
+
+        }
+        else if(self.personaAtendida() == "Ex Alumno"){
+
+        }
+        else if(self.personaAtendida() == "Representante"){
+
+        }
+        else if(self.personaAtendida() == "Coordinador(a)"){
+
+        }
+
         $.each(self.dataAlu(), (index, data) => {
-          if (data.matricula === self.estudiante()) { dataAluBD = data; }
+          if (data.matricula === self.identificadorPersonaAtendida()) { dataPersonaAtendidaBD = data; }
         })
 
         //Obtenemos datos del administrativo
@@ -261,7 +261,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         registro = {
           id: self.data().length + 1, //Este dato sera generado cuando se cree el registro
-          alumno: dataAluBD,
+          personaAtendida: dataAluBD,
           administrativo: dataAdmBD,
           datosGenerales: {
             estatus: self.estatus(),
@@ -378,7 +378,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       }
 
       self.limpiarCampos = () => {
-        self.estudiante(""),
+      
+        self.identificadorPersonaAtendida(""),
           self.administrativo(""),
           self.asunto(""),
           self.tipoAtencion(""),
