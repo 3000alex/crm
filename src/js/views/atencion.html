@@ -95,13 +95,13 @@
                       direction="row" label-wrapping="wrap" readonly="{{camposSeguimiento}}"
                       user-assistance-density="efficient">
 
-                      <oj-select-single id="seguimientoAtencionPor" data="[[dataadministrativo]]"
-                        value="{{administrativo}}" label-edge="inside" label-hint="Administrativo(a)"
-                        class="oj-form-control-max-width-lg">
+                      <oj-select-single id="seguimientoAtencionPor" data="[[dataadministrativo]]" value="{{$current.data.administrativo}}"
+                        label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
                       </oj-select-single>
 
-                      <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
-                        label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
+                      <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]"
+                        value="[[$current.data.tipoAtencion]]" label-edge="inside" label-hint="Tipo atención"
+                        class="oj-form-control-max-width-lg"
                         placeholder="Seleccione el tipo de atención que se ha dado a este registro">
                       </oj-select-single>
 
@@ -164,10 +164,7 @@
             <template slot='noData'>
               <p>No existe seguimiento previo</p>
               <template>
-          </oj-bind-for-each>
-
-          <oj-button id="agregarSeguimientoBtn" on-oj-action="[[activarCamposSeguimientos]]">Agregar Seguimiento
-          </oj-button>
+          </oj-bind-for-each>   
 
           <oj-bind-if test="[[ camposSeguimientos() ]]">
             <oj-form-layout id="myform" label-edge="inside" direction="row"
@@ -207,7 +204,8 @@
           </oj-form-layout>
         </div>
         <div slot="footer">
-          <oj-button on-oj-action="[[actualizarRegistro]]">Actualizar</oj-button>
+          <oj-button id="agregarSeguimientoBtn" on-oj-action="[[activarCamposSeguimientos]]">Agregar Seguimiento
+          </oj-button>
           <oj-button id="btnCancelEditar2" on-oj-action="[[cerrarModal]]">Cancelar</oj-button>
         </div>
       </oj-dialog>

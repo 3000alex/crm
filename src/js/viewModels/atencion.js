@@ -156,7 +156,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const element = document.getElementById('table');
           const currentRow = element.currentRow;
           self.dataUpdate = self.data()[currentRow.rowIndex];
-          self.llenarCampos()
+          //self.llenarCampos()
+          self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
+          console.log(self.seguimientoArray())
           document.querySelector("#editarModal").open();
         }
 
@@ -275,9 +277,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.llenarCampos = () => {
         self.idAtencion(parseInt(self.dataUpdate.id));
         self.administrativo(self.dataUpdate.administrativo.numExpediente),
-          self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
-          self.estatus(self.dataUpdate.datosGenerales.estatus),
-          self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
+        self.tipoAtencion(self.dataUpdate.datosGenerales.tipoAtencion),
+        self.estatus(self.dataUpdate.datosGenerales.estatus),
+        self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
         self.seguimiento("")
       }
 
@@ -316,7 +318,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       }
 
       self.activarCamposSeguimientos = (event) => {
-        $(event.target).hide();
+        $(event.target).prop('disabled',true);
         self.camposSeguimientos(true)
       }
 
@@ -341,10 +343,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
             "fecha_actualizacion": self.fecha + "  " + self.hora
           }
         )
-        self.seguimiento("")
-        self.files("")
-        self.fileNames("")
-        $("#agregarSeguimientoBtn").show();
+        self.limpiarCampos();
+        $("#agregarSeguimientoBtn").prop("disabled",false);
         self.camposSeguimientos(false);
       }
 
