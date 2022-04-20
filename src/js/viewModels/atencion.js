@@ -69,24 +69,32 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         //Variables Incidencia Detail
         self.idIncidencia = ko.observable();
-        self.alumnoNombre = ko.observable();
-        self.alumnoNumContacto = ko.observable();
-        self.alumnoCorreoInstitucional = ko.observable();
-        self.alumnoMatricula = ko.observable();
-        self.alumnoCorreoPersonal = ko.observable();
-        self.alumnoCampus = ko.observable();
-        self.alumnoLicenciatura = ko.observable();
-
-        self.administrativoNombre = ko.observable();
-        self.administrativoNumExpediente = ko.observable();
-        self.administrativoCorreoInstitucional = ko.observable();
-
-        self.datosGeneralesFechaInicio = ko.observable();
-        self.datosGeneralesEstatus = ko.observable();
-        self.datosGeneralesTipoAtencion = ko.observable();
-        self.datosGeneralesAsunto = ko.observable();
-        self.datosGeneralesSeguimientos = ko.observableArray([]);
-        self.datosGeneralesFechaFin = ko.observable();
+        self.incidenciaDetail = ko.observable({
+          alumno: ko.observable({
+            nombre: ko.observable(),
+            numContacto: ko.observable(),
+            correoInstitucional: ko.observable(),
+            correoInstitucional: ko.observable(),
+            matricula: ko.observable(),
+            correoPersonal: ko.observable(),
+            campus: ko.observable(),
+            licenciatura: ko.observable(),
+          }),
+          administrativo: ko.observable({
+            nombre: ko.observable(),
+            numExpediente: ko.observable(),
+            correoInstitucional: ko.observable(),
+          }),
+          datosGenerales: ko.observable({
+            fechaInicio: ko.observable(),
+            estatus: ko.observable(),
+            tipoAtencion: ko.observable(),
+            asunto: ko.observable(),
+            seguimientos: ko.observableArray([]),
+            fecha_fin: ko.observable(),
+          }),
+          
+        })
         //Fin variables Incidencia Detail 
 
         //Variables campos de busqueda 
@@ -156,9 +164,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const element = document.getElementById('table');
           const currentRow = element.currentRow;
           self.dataUpdate = self.data()[currentRow.rowIndex];
-          //self.llenarCampos()
+          self.idIncidencia(self.dataUpdate.id)
           self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
-          console.log(self.seguimientoArray())
           document.querySelector("#editarModal").open();
         }
 
@@ -172,24 +179,25 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
 
           self.idIncidencia(dataObj.data.id)
-          self.alumnoNombre(dataObj.data.alumno.nombre)
-          self.alumnoNumContacto(dataObj.data.alumno.numContacto)
-          self.alumnoCorreoInstitucional(dataObj.data.alumno.correoInstitucional)
-          self.alumnoMatricula(dataObj.data.alumno.matricula)
-          self.alumnoCorreoPersonal(dataObj.data.alumno.correoPersonal)
-          self.alumnoCampus(dataObj.data.alumno.campus)
-          self.alumnoLicenciatura(dataObj.data.alumno.licenciatura)
+          self.incidenciaDetail().alumno().nombre(dataObj.data.alumno.nombre)
+          self.incidenciaDetail().alumno().numContacto(dataObj.data.alumno.numContacto)
+          self.incidenciaDetail().alumno().correoInstitucional(dataObj.data.alumno.correoInstitucional)
+          self.incidenciaDetail().alumno().matricula(dataObj.data.alumno.matricula)
+          self.incidenciaDetail().alumno().correoPersonal(dataObj.data.alumno.correoPersonal)
+          self.incidenciaDetail().alumno().campus(dataObj.data.alumno.campus)
+          self.incidenciaDetail().alumno().licenciatura(dataObj.data.alumno.licenciatura)
 
-          self.administrativoNombre(dataObj.data.administrativo.nombre)
-          self.administrativoNumExpediente(dataObj.data.administrativo.numExpediente)
-          self.administrativoCorreoInstitucional(dataObj.data.administrativo.correoInstitucional)
 
-          self.datosGeneralesFechaInicio(dataObj.data.datosGenerales.fecha_inicio)
-          self.datosGeneralesEstatus(dataObj.data.datosGenerales.estatus)
-          self.datosGeneralesTipoAtencion(dataObj.data.datosGenerales.tipoAtencion)
-          self.datosGeneralesAsunto(dataObj.data.datosGenerales.asunto)
-          self.datosGeneralesSeguimientos(dataObj.data.datosGenerales.seguimiento)
-          self.datosGeneralesFechaFin(dataObj.data.datosGenerales.fecha_fin)
+          self.incidenciaDetail().administrativo().nombre(dataObj.data.administrativo.nombre)
+          self.incidenciaDetail().administrativo().numExpediente(dataObj.data.administrativo.numExpediente)
+          self.incidenciaDetail().administrativo().correoInstitucional(dataObj.data.administrativo.correoInstitucional)
+
+          self.incidenciaDetail().datosGenerales().fechaInicio(dataObj.data.datosGenerales.fecha_inicio)
+          self.incidenciaDetail().datosGenerales().estatus(dataObj.data.datosGenerales.estatus)
+          self.incidenciaDetail().datosGenerales().tipoAtencion(dataObj.data.datosGenerales.tipoAtencion)
+          self.incidenciaDetail().datosGenerales().asunto(dataObj.data.datosGenerales.asunto)
+          self.incidenciaDetail().datosGenerales().seguimientos(dataObj.data.datosGenerales.seguimiento)
+          self.incidenciaDetail().datosGenerales().fecha_fin(dataObj.data.datosGenerales.fecha_fin)
 
           document.getElementById("mostrarModal").open();
         }
@@ -420,9 +428,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         });
 
         if (queryId && objData) {
-          document.getElementById("popup_mostrar");
-          self.incidenciaDetail(objData);
-          popup.open();
+          self.dataUpdate = objData;
+          self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
+          self.idIncidencia(self.dataUpdate.id)
+          document.querySelector("#editarModal").open();
         }
         else {
           alert("Registro Invalido")
