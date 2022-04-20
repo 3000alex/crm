@@ -17,7 +17,7 @@
                   "correoInstitucional": "alex@iedep.edu.mx"
             },
             "datosGenerales": {
-                  "estatus": "En proceso",
+                  "estatus": "Finalizado",
                   "tipoAtencion": "Correo Electrónico",
                   "asunto": "Error en el portal de alumnos",
                   "seguimiento": [
@@ -37,7 +37,7 @@
                               "tipoAtencion":"Correo Electrónico",
                               "tipoActualizacion":"Se agrego una nota",
                               "administrativo":"alex1",
-                              "estatus": "En proceso",
+                              "estatus": "Finalizado",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
                         }

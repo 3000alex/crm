@@ -335,6 +335,7 @@
                 <oj-collapsible id="c3">
                   <h3 slot="header">Datos generales</h3>
                   <div class="oj-flex">
+
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Fecha de inicio de atención</p>
                       <div class="oj-typography-subheading-xs">
@@ -363,85 +364,92 @@
                       </div>
                     </div>
 
-
-                    <oj-bind-if test="[[ incidenciaDetail().datosGenerales().estatus() === 'finalizada' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().datosGenerales().estatus() === 'Finalizado' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Fecha final de atención</p>
                         <div class="oj-typography-subheading-xs">
-                          <oj-bind-text value="[[ datosGeneralesFechaFin().fecha_fin ]]"></oj-bind-text>
+                          <oj-bind-text value="[[ incidenciaDetail().datosGenerales().fecha_fin() ]]"></oj-bind-text>
                         </div>
                       </div>
                     </oj-bind-if>
-
-
-                    <div class="oj-md-12 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                      <div class="oj-typography-subheading-xs">
-                        <strong>Seguimiento registrado</strong>
-
-                        <oj-bind-for-each data="[[ incidenciaDetail().datosGenerales().seguimientos() ]]">
-                          <template>
-                            <div id="accordionPage" data-oj-binding-provider="none">
-                              <oj-accordion id="a1">
-                                <oj-collapsible :id="[[ $current.data.id ]]">
-                                  <h3 slot="header">Seguimiento <oj-bind-text
-                                      value="[[$current.data.fecha_actualizacion]]">
-                                    </oj-bind-text>
-                                  </h3>
-                                  <oj-form-layout :id="[[$current.index]]" label-edge="start" columns="3"
-                                    max-columns="3" direction="row" label-wrapping="wrap"
-                                    readonly="{{camposSeguimiento}}" user-assistance-density="efficient">
-
-                                    <oj-select-single id="seguimientoAtencionPor" data="[[dataadministrativo]]"
-                                      value="{{$current.data.administrativo}}" label-edge="inside"
-                                      label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
-                                    </oj-select-single>
-
-                                    <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]"
-                                      value="[[$current.data.tipoAtencion]]" label-edge="inside"
-                                      label-hint="Tipo atención" class="oj-form-control-max-width-lg"
-                                      placeholder="Seleccione el tipo de atención que se ha dado a este registro">
-                                    </oj-select-single>
-
-                                    <oj-select-single id="estatus" data="[[dataEstatusAtencion]]"
-                                      value="[[$current.data.estatus]]" label-edge="inside" label-hint="Estatus"
-                                      class="oj-form-control-max-width-lg"
-                                      placeholder="Seleccione el estatus en el que se encuentra este registro">
-                                    </oj-select-single>
-
-                                    <oj-text-area id="seguimiento[[$current.index]]"
-                                      value="[[$current.data.descripcion]]" label-edge="inside" label-hint="Nota"
-                                      rows="3"
-                                      placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
-                                    </oj-text-area>
-
-                                    <oj-bind-for-each data="[[ $current.data.archivos ]]">
-
-                                      <template data-oj-as="archivo">
-                                        <oj-label-value>
-                                          <oj-bind-text slot="value" value="[[archivo.data.name]]"></oj-bind-text>
-                                        </oj-label-value>
-                                      </template>
-
-                                      <template slot='noData'>
-                                        <oj-label-value>
-                                          <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
-                                        </oj-label-value>
-                                      </template>
-
-                                    </oj-bind-for-each>
-                                  </oj-form-layout>
-                                </oj-collapsible>
-                              </oj-accordion>
-                            </div>
-                          </template>
-
-                          <template slot='noData'>
-                            <p>No existen seguimiento previos</p>
-                            <template>
-                        </oj-bind-for-each>
-                      </div>
-                    </div>
                   </div>
+
+                  <div>
+                    <strong>Seguimiento registrado</strong>
+
+                    <oj-bind-for-each data="[[ incidenciaDetail().datosGenerales().seguimientos() ]]">
+                      <template>
+                        <div id="accordionPage" data-oj-binding-provider="none">
+                          <oj-accordion id="aa1">
+                            <oj-collapsible id="aa1">
+                              <h3 slot="header">Seguimiento <oj-bind-text value="[[$current.data.fecha_actualizacion]]">
+                                </oj-bind-text>
+                              </h3>
+
+                              <div class="oj-flex">
+                                <div class="oj-md-3 oj-sm-12 oj-flex-item">
+                                  <p>Administrativo(a)</p>
+                                  <div class="oj-typography-subheading-xs">
+                                    <oj-bind-text value="{{$current.data.administrativo}}">
+                                    </oj-bind-text>
+                                  </div>
+                                </div>
+
+                                <div class="oj-md-3 oj-sm-12 oj-flex-item">
+                                  <p>Tipo atención</p>
+                                  <div class="oj-typography-subheading-xs">
+                                    <oj-bind-text value="{{$current.data.tipoAtencion}}">
+                                    </oj-bind-text>
+                                  </div>
+                                </div>
+
+                                <div class="oj-md-3 oj-sm-12 oj-flex-item">
+                                  <p>Estatus</p>
+                                  <div class="oj-typography-subheading-xs">
+                                    <oj-bind-text value="{{$current.data.estatus}}">
+                                    </oj-bind-text>
+                                  </div>
+
+                                </div>
+
+                                <div class="oj-md-3 oj-sm-12 oj-flex-item">
+                                  <p>Descrición</p>
+                                  <div class="oj-typography-subheading-xs">
+                                    <oj-bind-text value="{{$current.data.descripcion}}">
+                                    </oj-bind-text>
+                                  </div>
+                                </div>
+
+                                <div class="oj-md-3 oj-sm-12 oj-flex-item">
+                                  <oj-bind-for-each data="[[ $current.data.archivos ]]">
+
+                                    <template data-oj-as="archivo">
+                                      <oj-label-value>
+                                        <oj-bind-text slot="value" value="[[archivo.data.name]]"></oj-bind-text>
+                                      </oj-label-value>
+                                    </template>
+
+                                    <template slot='noData'>
+                                      <oj-label-value>
+                                        <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
+                                      </oj-label-value>
+                                    </template>
+
+                                  </oj-bind-for-each>
+                                </div>
+                              </div>
+
+                            </oj-collapsible>
+                          </oj-accordion>
+                        </div>
+                      </template>
+
+                      <template slot='noData'>
+                        <p>No existen seguimiento previos</p>
+                        <template>
+                    </oj-bind-for-each>
+                  </div>
+
                 </oj-collapsible>
 
               </oj-accordion>
