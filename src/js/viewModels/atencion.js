@@ -1,20 +1,24 @@
 
-define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery",
+define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery","ojs/ojpagingdataproviderview",
   "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel", "ojs/ojlabelvalue",
   "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
-  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $) {
+  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $,PagingDataProviderView,) {
     function ViewModel() {
       var self = this;
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
       self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
+      self.pagingDataProvider = ko.observable();
       self.fecha = "";
       self.hora = "";
 
       self.obtenerDatos = () => {
         let peticion = $.get({ url: 'js/data/atencion.json' })
-        peticion.done((data) => { self.data(data) })
+        peticion.done((data) => { 
+          self.data(data) 
+          
+        })
         peticion.fail((err, err2) => { console.log(err, err2) });
 
         peticion = $.get({ url: 'js/data/dataAdministrativos.json' })
@@ -40,6 +44,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.currentHorizontalGridVisible = ko.observable("disable");
         self.currentVerticalGridVisible = ko.observable("enable");
         self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
+        this.pagingDataProvider = new PagingDataProviderView(self.dataprovider, { idAttribute: "id" });
+        console.log(this.pagingDataProvider)
         //Fin configuracion de los datos de la tabla
 
         //Variables para actualizar tabla
