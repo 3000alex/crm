@@ -477,7 +477,7 @@
 
     <div class="oj-flex oj-flex-items-pad">
 
-      <oj-table id="table" class="demo-table-container" aria-label="Task Table" data="[[pagingDataProvider]]"
+      <oj-table id="table" class="demo-table-container" aria-label="Task Table" data="[[dataprovider]]"
         columns-default.sortable="disabled" columns='[
                 {"headerText": "ID", "field": "id", "resizable": "enabled","width":"auto"},
                 {"headerText": "Atención A", "field": "Atención A", "resizable": "enabled"},
@@ -536,7 +536,8 @@
             </td>
 
           </tr>
-
+          <oj-paging-control id="pagingControl" data="[[pagingDataProvider]]" page-size="5" slot="bottom">
+          </oj-paging-control>
         </template>
         <template slot="noData">
           <div class="oj-flex oj-sm-align-items-center">
@@ -546,8 +547,7 @@
           </div>
         </template>
 
-        <oj-paging-control id="pagingControl" data="[[pagingDataProvider]]" page-size="5" slot="bottom">
-        </oj-paging-control>
+        
       </oj-table>
 
     </div>

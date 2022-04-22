@@ -9,7 +9,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
       self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
-      self.pagingDataProvider = ko.observable();
       self.fecha = "";
       self.hora = "";
 
@@ -44,8 +43,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.currentHorizontalGridVisible = ko.observable("disable");
         self.currentVerticalGridVisible = ko.observable("enable");
         self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
-        this.pagingDataProvider = new PagingDataProviderView(self.dataprovider, { idAttribute: "id" });
-        console.log(this.pagingDataProvider)
+        
         //Fin configuracion de los datos de la tabla
 
         //Variables para actualizar tabla
