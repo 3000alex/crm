@@ -32,7 +32,8 @@
             <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto"
               placeholder="Ingrese el asunto que se trato"></oj-input-text>
 
-            <oj-input-text id="identificadorPersonaAtendida" value="{{identificadorPersonaAtendida}}" label-hint="Matricula, Num expediente o ID de la persona atendida" 
+            <oj-input-text id="identificadorPersonaAtendida" value="{{identificadorPersonaAtendida}}"
+              label-hint="Matricula, Num expediente o ID de la persona atendida"
               placeholder="Ingrese la matricula, expediente o id de la persona atendida"></oj-input-text>
 
             <oj-select-single id="tipoUsuario" data="[[dataPersonaAtendida]]" value="{{tipoUsuario}}"
@@ -82,9 +83,17 @@
         <div slot="body">
           <h2>Editar Incidencia N° <oj-bind-text value="[[ idIncidencia() ]]"></oj-bind-text>
           </h2>
-          <b><p> Asunto: <small><oj-bind-text value="[[ asunto() ]]"></oj-bind-text></small></p></b>
-          <b><p> Persona atendida: <small><oj-bind-text value="[[ tipoUsuario() ]]"></oj-bind-text></small></p></b>
-          
+          <b>
+            <p> Asunto: <small>
+                <oj-bind-text value="[[ asunto() ]]"></oj-bind-text>
+              </small></p>
+          </b>
+          <b>
+            <p> Persona atendida: <small>
+                <oj-bind-text value="[[ tipoUsuario() ]]"></oj-bind-text>
+              </small></p>
+          </b>
+
           <strong>Seguimiento registrado</strong>
 
           <oj-bind-for-each data="[[ seguimientoArray ]]">
@@ -278,7 +287,8 @@
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Institucional</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().correoInstitucional ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().correoInstitucional ]]">
+                        </oj-bind-text>
                       </div>
                     </div>
 
@@ -475,10 +485,8 @@
       </oj-dialog>
     </div>
 
-    <div class="oj-flex oj-flex-items-pad">
-
-      <oj-table id="table" class="demo-table-container" aria-label="Task Table" data="[[dataprovider]]"
-        columns-default.sortable="disabled" columns='[
+    <oj-table id="table" class="demo-table-container" aria-label="Task Table" data="[[dataprovider]]"
+      columns-default.sortable="disabled" columns='[
                 {"headerText": "ID", "field": "id", "resizable": "enabled","width":"auto"},
                 {"headerText": "Atención A", "field": "Atención A", "resizable": "enabled"},
                 {"headerText": "Persona atendida", "field": "Persona atendida", "resizable": "enabled"},
@@ -489,69 +497,66 @@
                 {"headerText": "Ultima Nota", "field": "seguimiento", "resizable": "enabled","width":"150px"},
                 {"headerText": "Acciones", "field": "acciones", "resizable": "enabled"}]'>
 
-        <template slot="rowTemplate" data-oj-as="row">
-          <tr>
-            <td>
-              <oj-bind-text value="[[row.data.id]]"></oj-bind-text>
-            </td>
+      <template slot="rowTemplate" data-oj-as="row">
+        <tr>
+          <td>
+            <oj-bind-text value="[[row.data.id]]"></oj-bind-text>
+          </td>
 
-            <td>
-              <oj-bind-text value="[[row.data.personaAtendida.nombre]]"></oj-bind-text>
-            </td>
+          <td>
+            <oj-bind-text value="[[row.data.personaAtendida.nombre]]"></oj-bind-text>
+          </td>
 
-            <td>
-              <oj-bind-text value="[[row.data.personaAtendida.tipoUsuario]]"></oj-bind-text>
-            </td>
+          <td>
+            <oj-bind-text value="[[row.data.personaAtendida.tipoUsuario]]"></oj-bind-text>
+          </td>
 
-            <td>
-              <oj-bind-text value="[[row.data.administrativo.nombre]]"></oj-bind-text>
-            </td>
-            <td>
-              <oj-bind-text value="[[row.data.datosGenerales.tipoAtencion]]"></oj-bind-text>
-            </td>
+          <td>
+            <oj-bind-text value="[[row.data.administrativo.nombre]]"></oj-bind-text>
+          </td>
+          <td>
+            <oj-bind-text value="[[row.data.datosGenerales.tipoAtencion]]"></oj-bind-text>
+          </td>
 
-            <td>
-              <oj-bind-text value="[[row.data.datosGenerales.estatus]]"></oj-bind-text>
-            </td>
+          <td>
+            <oj-bind-text value="[[row.data.datosGenerales.estatus]]"></oj-bind-text>
+          </td>
 
-            <td>
-              <oj-bind-text value="[[row.data.datosGenerales.asunto]]"></oj-bind-text>
-            </td>
+          <td>
+            <oj-bind-text value="[[row.data.datosGenerales.asunto]]"></oj-bind-text>
+          </td>
 
-            <td>
-              <oj-bind-text
-                value="[[row.data.datosGenerales.seguimiento[row.data.datosGenerales.seguimiento.length-1].descripcion]]">
-              </oj-bind-text>
-            </td>
+          <td>
+            <oj-bind-text
+              value="[[row.data.datosGenerales.seguimiento[row.data.datosGenerales.seguimiento.length-1].descripcion]]">
+            </oj-bind-text>
+          </td>
 
-            <td>
-              <div>
-                <oj-button display="icons" id="btnActualizar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
-                    class="oj-ux-ico-edit-box"></span></oj-button>
-                <oj-button display="icons" id="btnEliminar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
-                    class="oj-ux-ico-delete-all"></span></oj-button>
-                <oj-button display="icons" id="btnMostrar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
-                    class="oj-ux-ico-view"></span></oj-button>
-              </div>
-            </td>
-
-          </tr>
-          <oj-paging-control id="pagingControl" data="[[pagingDataProvider]]" page-size="5" slot="bottom">
-          </oj-paging-control>
-        </template>
-        <template slot="noData">
-          <div class="oj-flex oj-sm-align-items-center">
-            <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column oj-sm-width-full">
-              <span class="oj-sm-padding-2x oj-typography-body-xl">No existe ningun registro</span>
+          <td>
+            <div>
+              <oj-button display="icons" id="btnActualizar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
+                  class="oj-ux-ico-edit-box"></span></oj-button>
+              <oj-button display="icons" id="btnEliminar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
+                  class="oj-ux-ico-delete-all"></span></oj-button>
+              <oj-button display="icons" id="btnMostrar" on-oj-action="[[abrirModal]]"><span slot="startIcon"
+                  class="oj-ux-ico-view"></span></oj-button>
             </div>
+          </td>
+
+        </tr>
+        <oj-paging-control id="pagingControl" data="[[pagingDataProvider]]" page-size="5" slot="bottom">
+        </oj-paging-control>
+      </template>
+      <template slot="noData">
+        <div class="oj-flex oj-sm-align-items-center">
+          <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column oj-sm-width-full">
+            <span class="oj-sm-padding-2x oj-typography-body-xl">No existe ningun registro</span>
           </div>
-        </template>
+        </div>
+      </template>
 
-        
-      </oj-table>
 
-    </div>
-
+    </oj-table>
 
   </div>
 
