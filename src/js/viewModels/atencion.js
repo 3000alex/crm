@@ -1,6 +1,6 @@
 
 define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery","ojs/ojpagingdataproviderview",
-  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel", "ojs/ojlabelvalue",
+  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel", "ojs/ojlabelvalue",'ojs/ojpagingcontrol',
   "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
   function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $,PagingDataProviderView,) {
     function ViewModel() {
@@ -43,7 +43,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.currentHorizontalGridVisible = ko.observable("disable");
         self.currentVerticalGridVisible = ko.observable("enable");
         self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
-        this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data(), { idAttribute: 'id' }));
+        this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data, { idAttribute: 'id' }));
 
         console.log(self.data())
         console.log(this.pagingDataProvider)
