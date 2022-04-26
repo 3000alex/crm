@@ -1,8 +1,8 @@
 
-define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery","ojs/ojpagingdataproviderview",
-  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel", "ojs/ojlabelvalue",'ojs/ojpagingcontrol',
+define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery", "ojs/ojpagingdataproviderview",
+  "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel", "ojs/ojlabelvalue", 'ojs/ojpagingcontrol',
   "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
-  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $,PagingDataProviderView,) {
+  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView,) {
     function ViewModel() {
       var self = this;
       self.data = ko.observableArray([]); //Data de la tabla principal
@@ -13,19 +13,16 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.hora = "";
 
       self.obtenerDatos = () => {
-        let peticion = $.get({ url: 'js/data/atencion.json' })
-        peticion.done((data) => { 
-          self.data(data) 
-          
-        })
-        peticion.fail((err, err2) => { console.log(err, err2) });
+        $.get({ url: 'js/data/atencion.json' })
+          .done((data) => { self.data(data) })
+          .fail((err, err2) => { console.log(err, err2) });
 
-        peticion = $.get({ url: 'js/data/dataAdministrativos.json' })
-        peticion.done((data) => {
-          self.dataADM(data)
-          $.each(self.dataADM(), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) }) //Config atendido por
-        })
-        peticion.fail((err, err2) => { console.log(err, err2) });
+        $.get({ url: 'js/data/dataAdministrativos.json' })
+          .done((data) => {
+            self.dataADM(data)
+            $.each(self.dataADM(), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) }) //Config atendido por
+          })
+          .fail((err, err2) => { console.log(err, err2) });
 
         //Configuramos suggestions 
         self.dataadministrativo = new ArrayDataProvider(this.suggestionsADM, { keyAttributes: "value", });
@@ -33,15 +30,12 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
       self.connected = () => {
         document.title = "Atencion";
-        self.opcion = ko.observable("crear");
 
         //Obtenemos datos
         self.obtenerDatos();
 
         //Configuracion datos de la tabla
-        self.currentDisplayOption = ko.observable("grid");
-        self.currentHorizontalGridVisible = ko.observable("disable");
-        self.currentVerticalGridVisible = ko.observable("enable");
+        
         self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
         this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data, { idAttribute: 'id' }));
 
