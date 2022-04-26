@@ -43,7 +43,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.currentHorizontalGridVisible = ko.observable("disable");
         self.currentVerticalGridVisible = ko.observable("enable");
         self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
-        
+        this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data(), { idAttribute: 'id' }));
+
+        console.log(self.data())
+        console.log(this.pagingDataProvider)
         //Fin configuracion de los datos de la tabla
 
         //Variables para actualizar tabla
