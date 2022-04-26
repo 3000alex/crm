@@ -2,8 +2,8 @@
       {
             "id": "1",
             "personaAtendida": {
-                  "id":"19231",
-                  "numExpediente":"1931",
+                  "id": "19231",
+                  "numExpediente": "1931",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -24,21 +24,29 @@
                   "asunto": "Error en el portal de alumnos",
                   "seguimiento": [
                         {
-                              "id":"1",
+                              "id": "1",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1960",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"2",
+                              "id": "2",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1961",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "Finalizado",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -51,8 +59,8 @@
       {
             "id": "2",
             "personaAtendida": {
-                  "id":"19232",
-                  "numExpediente":"1932",
+                  "id": "19232",
+                  "numExpediente": "1932",
                   "nombre": "carlos lopez",
                   "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
@@ -73,21 +81,29 @@
                   "asunto": "Error en el portal de alumnos",
                   "seguimiento": [
                         {
-                              "id":"3",
+                              "id": "3",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1961",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"4",
+                              "id": "4",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1960",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "Finalizado",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -100,8 +116,8 @@
       {
             "id": "3",
             "personaAtendida": {
-                  "id":"19233",
-                  "numExpediente":"1933",
+                  "id": "19233",
+                  "numExpediente": "1933",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -122,21 +138,29 @@
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
                   "seguimiento": [
                         {
-                              "id":"5",
+                              "id": "5",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"6",
+                              "id": "6",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "tipoAtencion":"Correo Electrónico",
-                              "administrativo":"alex1",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "tipoAtencion": "Correo Electrónico",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1961",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -149,8 +173,8 @@
       {
             "id": "4",
             "personaAtendida": {
-                  "id":"19234",
-                  "numExpediente":"1934",
+                  "id": "19234",
+                  "numExpediente": "1934",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -171,20 +195,24 @@
                   "asunto": "Error en el portal de alumnos",
                   "seguimiento": [
                         {
-                              "id":"7",
+                              "id": "7",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1960",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"8",
+                              "id": "8",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -197,8 +225,8 @@
       {
             "id": "5",
             "personaAtendida": {
-                  "id":"19235",
-                  "numExpediente":"1935",
+                  "id": "19235",
+                  "numExpediente": "1935",
                   "nombre": "carlos lopez",
                   "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
@@ -219,20 +247,24 @@
                   "asunto": "Error en el portal de alumnos",
                   "seguimiento": [
                         {
-                              "id":"9",
+                              "id": "9",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"10",
+                              "id": "10",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "Finalizado",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -245,8 +277,8 @@
       {
             "id": "6",
             "personaAtendida": {
-                  "id":"19236",
-                  "numExpediente":"1936",
+                  "id": "19236",
+                  "numExpediente": "1936",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -267,21 +299,29 @@
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
                   "seguimiento": [
                         {
-                              "id":"11",
+                              "id": "11",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1961",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"12",
+                              "id": "12",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -294,8 +334,8 @@
       {
             "id": "7",
             "personaAtendida": {
-                  "id":"19237",
-                  "numExpediente":"1937",
+                  "id": "19237",
+                  "numExpediente": "1937",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -316,21 +356,29 @@
                   "asunto": "Error en el portal de alumnos",
                   "seguimiento": [
                         {
-                              "id":"13",
+                              "id": "13",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"14",
+                              "id": "14",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -343,8 +391,8 @@
       {
             "id": "8",
             "personaAtendida": {
-                  "id":"19238",
-                  "numExpediente":"1938",
+                  "id": "19238",
+                  "numExpediente": "1938",
                   "nombre": "carlos lopez",
                   "numContacto": "52345345",
                   "correoInstitucional": "ejemplo2@iedep.edu.mx",
@@ -365,21 +413,29 @@
                   "asunto": "Error en el portal de alumnos",
                   "seguimiento": [
                         {
-                              "id":"15",
+                              "id": "15",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"16",
+                              "id": "16",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"
@@ -392,8 +448,8 @@
       {
             "id": "9",
             "personaAtendida": {
-                  "id":"19239",
-                  "numExpediente":"1939",
+                  "id": "19239",
+                  "numExpediente": "1939",
                   "nombre": "Juan meza",
                   "numContacto": "222312345",
                   "correoInstitucional": "ejemplo@iedep.edu.mx",
@@ -414,21 +470,29 @@
                   "asunto": "Error en el portal SIAF (antiguo portal de estudiantes)",
                   "seguimiento": [
                         {
-                              "id":"17",
+                              "id": "17",
                               "descripcion": "Se esta trabajando en enviar los accesos correctos a los alumnos que tienen problemas de acceso.",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "09/04/2021 - 09:23:40"
                         },
                         {
-                              "id":"18",
+                              "id": "18",
                               "descripcion": "se finalizo con el tramite",
-                              "tipoAtencion":"Correo Electrónico",
-                              "tipoActualizacion":"Se agrego una nota",
-                              "administrativo":"alex1",
+                              "tipoAtencion": "Correo Electrónico",
+                              "tipoActualizacion": "Se agrego una nota",
+                              "administrativo": {
+                                    "nombre": "alex1",
+                                    "numExpediente": "1959",
+                                    "correoInstitucional": "alex@iedep.edu.mx"
+                              },
                               "estatus": "En proceso",
                               "archivos": [],
                               "fecha_actualizacion": "10/04/2021 - 09:23:40"

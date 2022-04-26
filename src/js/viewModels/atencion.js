@@ -35,12 +35,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.obtenerDatos();
 
         //Configuracion datos de la tabla
-        
         self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
         this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data, { idAttribute: 'id' }));
-
-        console.log(self.data())
-        console.log(this.pagingDataProvider)
         //Fin configuracion de los datos de la tabla
 
         //Variables para actualizar tabla
@@ -170,6 +166,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.asunto(self.dataUpdate.datosGenerales.asunto)
           self.tipoUsuario(self.dataUpdate.personaAtendida.tipoUsuario)
           self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
+          
           document.querySelector("#editarModal").open();
         }
 
@@ -299,7 +296,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           }
         }
 
-        console.log(registro)
+        self.limpiarCampos();
         //Se almacena el nuevo registro en la tabla CRM 
 
         //Se actualiza la tabla principal con los nuevos datos: 
@@ -345,7 +342,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
             }
           )
         }
-        self.dataprovider.updateItem({ metadata: { key: self.dataUpdate.id }, data: self.dataUpdate });
+       
         self.limpiarCampos();
 
         //Cerramos el modal
@@ -406,14 +403,18 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       }
 
       self.limpiarCampos = () => {
+        self.idAtencion(0);
+        self.tipoUsuario("");
+        self.identificadorPersonaAtendida("");
         self.administrativo("");
-        self.asunto("");
         self.tipoAtencion("");
         self.estatus("");
-        self.seguimiento("");
-        self.identificadorPersonaAtendida("");
+        self.asunto("");
+        self.seguimiento([]);
+        self.camposSeguimientos(false)
         self.fileNames("");
         self.files = ko.observable([]);
+        console.log("pase a limpiar los campos")
 
       }
 
