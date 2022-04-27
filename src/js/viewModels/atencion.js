@@ -5,27 +5,30 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
   function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView,) {
     function ViewModel() {
       var self = this;
+      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJTVVBFUjAxIiwiZW1haWwiOiItIiwib3duZXIiOjEsInJvbGUiOiJBRE1JTiIsInVzZXJfbGV2ZWwiOjEwMCwiZ3JvdXAiOiJFU0NPTEFSIiwiZ3JvdXBzIjpbICJFU0NPTEFSIiwgIkFETUlOSVNUUkFUSVZPUyIsICJLIiBdLCJpYXQiOjE2NTEwNzY2NjYuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3LCJleHAiOjE2NTExNjMwNjYuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3IH0.63jYRTSIWq1MJCp0CeO0-Wsx0sMxIEDnyVTsCQyJ5rY";
+      var settingsGET = {
+        url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias',
+        headers: {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      }
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
-      self.suggestionsADM = ko.observableArray([]); //Array opciones Atendido por
       self.fecha = "";
       self.hora = "";
+      self.idRegistroEliminar = 0;
 
       self.obtenerDatos = () => {
-        $.get({ url: 'js/data/atencion.json' })
-          .done((data) => { self.data(data) })
-          .fail((err, err2) => { console.log(err, err2) });
 
-        $.get({ url: 'js/data/dataAdministrativos.json' })
+        $.get(settingsGET)
           .done((data) => {
-            self.dataADM(data)
-            $.each(self.dataADM(), (index, data) => { self.suggestionsADM.push({ value: data.numExpediente, label: data.nombre }) }) //Config atendido por
+            self.data(data.items)
+            console.log(data.items)
           })
           .fail((err, err2) => { console.log(err, err2) });
 
-        //Configuramos suggestions 
-        self.dataadministrativo = new ArrayDataProvider(this.suggestionsADM, { keyAttributes: "value", });
       }
 
       self.connected = () => {
@@ -33,14 +36,15 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         //Obtenemos datos
         self.obtenerDatos();
+        
 
         //Configuracion datos de la tabla
-        self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(this.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
-        this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(this.data, { idAttribute: 'id' }));
+        self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(self.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
+        this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(self.data, { idAttribute: 'id' }));
         //Fin configuracion de los datos de la tabla
 
         //Variables para actualizar tabla
-        self.dataUpdate = {}
+        self.dataUpdate = ko.observable({})
         //Fin variables para actualizar tabla
 
         //Configuracion Modal Crear
@@ -57,32 +61,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         //Variables Incidencia Detail
         self.idIncidencia = ko.observable();
-        self.incidenciaDetail = ko.observable({
-          personaAtendida: ko.observable({
-            nombre: ko.observable(),
-            numContacto: ko.observable(),
-            correoInstitucional: ko.observable(),
-            correoInstitucional: ko.observable(),
-            matricula: ko.observable(),
-            correoPersonal: ko.observable(),
-            campus: ko.observable(),
-            licenciatura: ko.observable(),
-          }),
-          administrativo: ko.observable({
-            nombre: ko.observable(),
-            numExpediente: ko.observable(),
-            correoInstitucional: ko.observable(),
-          }),
-          datosGenerales: ko.observable({
-            fechaInicio: ko.observable(),
-            estatus: ko.observable(),
-            tipoAtencion: ko.observable(),
-            asunto: ko.observable(),
-            seguimiento: ko.observableArray([]),
-            fecha_fin: ko.observable(),
-          }),
-
-        })
+        self.incidenciaDetail = ko.observable({});
         //Fin variables Incidencia Detail 
 
         //Variables campos de busqueda 
@@ -158,19 +137,25 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           document.getElementById("crearModal").open();
         }
         else if (idBtnModal === "btnActualizar") {
-          document.getElementById("modal_edit_create");
+
           const element = document.getElementById('table');
           const currentRow = element.currentRow;
-          self.dataUpdate = self.data()[currentRow.rowIndex];
-          self.idIncidencia(self.dataUpdate.id)
-          self.asunto(self.dataUpdate.datosGenerales.asunto)
-          self.tipoUsuario(self.dataUpdate.personaAtendida.tipoUsuario)
-          self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
-          
+          const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
+          self.dataUpdate(dataObj.data);
+          self.dataUpdate().tipoUsuario = "datos BD pendientes" //Eliminamos cuando tengamos este elemento en la tabla
+          /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */
+
+
+          /* Finalizamos la busqueda del seguimiento */
+
           document.querySelector("#editarModal").open();
         }
 
         else if (idBtnModal === "btnEliminar") {
+          const element = document.getElementById('table');
+          const currentRow = element.currentRow;
+          const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
+          self.idRegistroEliminar = dataObj.data.id;
           document.querySelector("#eliminarModal").open();
         }
 
@@ -178,11 +163,34 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const element = document.getElementById('table');
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
+          self.incidenciaDetail(dataObj.data);
+          self.incidenciaDetail().tipoUsuario = "alumno" //Lo quitamos cuando tengamos este atributo en la base de datos 
+          self.incidenciaDetail().identificador = "";
+          /*
+          self.incidenciaDetail().idecatalu = ko.observable({ //IdPersona proximamente
+            id:self.incidenciaDetail.idecatalu,
+            nombre:"nombre P atendida",
+            numContacto: "num P atendida",
+            correoInstitucional: "correoPAtenidida@iedep.edu.mx",
+            correoPersonal: "correoPPatendida@iedep.edu.mx",
+            campus: "campusPAtendida",
+            planEstudios: "planPAtendida"
+          })
+          console.log(self.incidenciaDetail().idecatalu)
+          */
 
-          self.idIncidencia(dataObj.data.id);
-          self.incidenciaDetail().personaAtendida(dataObj.data.personaAtendida);
-          self.incidenciaDetail().administrativo(dataObj.data.administrativo)
-          self.incidenciaDetail().datosGenerales(dataObj.data.datosGenerales)
+
+          if (self.incidenciaDetail().tipoUsuario == "aspirante") {
+            self.incidenciaDetail.identificador = "23123"
+          }
+          else if (self.incidenciaDetail().tipoUsuario == "alumno" || self.incidenciaDetail().tipoUsuario == "ex alumno") {
+            self.incidenciaDetail.identificador = "20CL42352"
+          }
+          else if (self.incidenciaDetail().tipoUsuario == "representante" || self.incidenciaDetail().tipoUsuario == "coordinador") {
+            self.incidenciaDetail.identificador = "1254"
+          }
+
+          self.dataUpdate().tipoUsuario = "datos BD pendientes" //Eliminamos cuando tengamos este elemento en la tabla
           document.getElementById("mostrarModal").open();
         }
       }
@@ -195,6 +203,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         }
         else if (idBtnModal === "btnCancelEditar1" || idBtnModal === "btnCancelEditar2") {
           document.querySelector("#editarModal").close();
+          self.dataUpdate({})
           self.camposSeguimientos(false)
         }
         else if (idBtnModal === "btnCancelEliminar1" || idBtnModal === "btnCancelEliminar2") {
@@ -213,11 +222,33 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         let dataPersonaAtendidaBD;
         let dataAdmBD;
         let seguimientoBD;
-
+        if (self.asunto() && self.identificadorPersonaAtendida() && self.tipoUsuario() && self.tipoAtencion() && self.estatus() && self.seguimiento()) {
+          alert("campo lleno")
+        }
+        else {
+          alert("Falta por rellenar un campo")
+        }
+        return
         //Configuramos fecha: 
         self.obtenerFecha();
         //Fin configuracion fecha. 
+        let settings = {
+          url: "https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias",
+          method: "POST",
+          timeout: 0,
+          headers: {
+            "Authorization": "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwMyIsImVtYWlsIjoiYWxlamFuZHJvLnJhbWlyZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTA5ODM4MzcuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5LCJleHAiOjE2NTEwNzAyMzcuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5IH0.o0FHEY5EGsmtCMNLbiA4Uv186fjZSiilRvnTvpv1Ew8",
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify()
+        }
+        $.post(settings)
+          .done(() => {
 
+          })
+          .fail(() => {
+
+          });
         //Buscamos los datos de la persona atendida: 
         // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
         if (self.tipoUsuario() == "Aspirante") {
@@ -342,7 +373,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
             }
           )
         }
-       
+
         self.limpiarCampos();
 
         //Cerramos el modal
@@ -419,26 +450,24 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       }
 
       //FUNCIONES ELIMINAR REGISTRO DE ATENCION
-      self.eliminarRegistro = () => {
-        const element = document.getElementById('table');
-        const currentRow = element.currentRow;
-        const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
-        self.dataprovider.removeItem({
-          metadata: { key: dataObj.key },
-          data: dataObj.data
-        });
-        this.dataprovider.getTotalSize().then(function (value) {
-          if (value == 0) {
-            this.isEmptyTable(true);
-          }
-        }.bind(this));
+      self.eliminarRegistro = (event) => {
+        console.log(event.target.id);
+        let index = "";
+        if (event.target.id == "registroEliminar") {
+          $.each(self.data(), function (i, arr) {
+            if (arr.id == self.idRegistroEliminar) { index = i; }
+          });
 
-        // Clear the table selection
-        element.selected = { row: new ojkeyset_1.KeySetImpl(), column: new ojkeyset_1.KeySetImpl() };
-        //Cerramos el modal
+          self.data.splice(index, 1);
+        }
+
+
+        //Eliminamos de la BD: 
+
+        //Fin eliminamos BD
 
         document.getElementById("eliminarModal").close();
-
+        console.log(self.data());
       };
       //FUNCIONES VISUALIZAR REGISTRO DE ATENCION
 

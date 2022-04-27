@@ -10,7 +10,7 @@
     <div class="oj-flex oj-flex oj-sm-flex-items-initial oj-sm-justify-content-flex-end">
 
       <oj-input-search id="search1" style="width:400px;" value="{{search}}" raw-value="{{rawSearch}}"
-        on-oj-value-action="[[searchRegister]]" placeholder="Buscar registro, ejemplo: 134512"
+        on-oj-value-action="[[searchRegister]]" placeholder="Buscar registro por ID, ejemplo: 1345"
         aria-label="Busqueda rapida">
       </oj-input-search>
     </div>
@@ -30,28 +30,28 @@
             class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
 
             <oj-input-text id="asunto" value="{{asunto}}" label-hint="Asunto"
-              placeholder="Ingrese el asunto que se trato"></oj-input-text>
+              placeholder="Ingrese el asunto que se trato" required></oj-input-text>
 
             <oj-input-text id="identificadorPersonaAtendida" value="{{identificadorPersonaAtendida}}"
               label-hint="Matricula, Num expediente o ID de la persona atendida"
-              placeholder="Ingrese la matricula, expediente o id de la persona atendida"></oj-input-text>
+              placeholder="Ingrese la matricula, expediente o id de la persona atendida" required></oj-input-text>
 
             <oj-select-single id="tipoUsuario" data="[[dataPersonaAtendida]]" value="{{tipoUsuario}}"
               label-edge="inside" label-hint="Persona atendida" class="oj-form-control-max-width-lg"
-              placeholder="Seleccione el tipo de persona que fue atendida"></oj-select-single>
+              placeholder="Seleccione el tipo de persona que fue atendida" required></oj-select-single>
 
             <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
               label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
-              placeholder="Seleccione el tipo de atención que se ha dado a este registro"></oj-select-single>
+              placeholder="Seleccione el tipo de atención que se ha dado a este registro" required></oj-select-single>
 
             <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
               label-hint="Estatus" class="oj-form-control-max-width-lg"
-              placeholder="Seleccione el estatus en el que se encuentra este registro"></oj-select-single>
+              placeholder="Seleccione el estatus en el que se encuentra este registro" required></oj-select-single>
 
 
-            <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar seguimiento" rows="3"
+            <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar descripción" rows="3"
               placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
-            </oj-text-area>
+            </oj-text-area required>
 
             <oj-file-picker class="oj-form-control-max-width-lg" style="max-width: 100% !important; text-align:center"
               accept="[[acceptArr]]" selection-mode="multiple" on-oj-select="[[selectListener]]"
@@ -81,20 +81,67 @@
           </oj-button>
         </div>
         <div slot="body">
-          <h2>Editar Incidencia N° <oj-bind-text value="[[ idIncidencia() ]]"></oj-bind-text>
+          <h2>Editar Incidencia N° <oj-bind-text value="[[ dataUpdate().id  ]]"></oj-bind-text>
           </h2>
-          <b>
-            <p> Asunto: <small>
-                <oj-bind-text value="[[ asunto() ]]"></oj-bind-text>
-              </small></p>
-          </b>
-          <b>
-            <p> Persona atendida: <small>
-                <oj-bind-text value="[[ tipoUsuario() ]]"></oj-bind-text>
-              </small></p>
-          </b>
+          <div class="oj-flex">
+            <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+              <p>Atención A:</p>
+              <div class="oj-typography-subheading-xs">
+                <small>
+                  <oj-bind-text value="[[ dataUpdate().idecatalu ]]"></oj-bind-text>
+                </small> <!-- Aqui va el nomrbe de la idPersona que se atendio-->
+              </div>
+            </div>
 
-          <strong>Seguimiento registrado</strong>
+            <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+              <p>Persona Atendida:</p>
+              <div class="oj-typography-subheading-xs">
+                <small>
+                  <oj-bind-text value="[[ dataUpdate().tipoUsuario ]]"></oj-bind-text>
+                </small>
+              </div>
+            </div>
+
+            <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+              <p>Asunto:</p>
+              <div class="oj-typography-subheading-xs">
+                <small>
+                  <oj-bind-text value="[[ dataUpdate().asunto ]]"></oj-bind-text>
+                </small>
+              </div>
+            </div>
+
+            <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+              <p>Atendida por:</p>
+              <div class="oj-typography-subheading-xs">
+                <small>
+                  <oj-bind-text value="[[ dataUpdate().atendido_por ]]"></oj-bind-text>
+                </small>
+              </div>
+            </div>
+
+            <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+              <p>Tipo de atención:</p>
+              <div class="oj-typography-subheading-xs">
+                <small>
+                  <oj-bind-text value="[[ dataUpdate().tipo_atencion ]]"></oj-bind-text>
+                </small>
+              </div>
+            </div>
+
+
+            <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+              <p>Estatus:</p>
+              <div class="oj-typography-subheading-xs">
+                <small>
+                  <oj-bind-text value="[[ dataUpdate().estatus ]]"></oj-bind-text>
+                </small>
+              </div>
+            </div>
+
+          </div>
+
+          <h5><strong>Seguimiento registrado</strong></h5>
 
           <oj-bind-for-each data="[[ seguimientoArray ]]">
 
@@ -108,56 +155,71 @@
                       </oj-bind-text>
                     </h3>
 
-                    <oj-form-layout :id="[[$current.index]]" label-edge="start" columns="3" max-columns="3"
-                      direction="row" label-wrapping="wrap" readonly="{{camposSeguimiento}}"
-                      user-assistance-density="efficient">
+                    <div class="oj-flex">
 
-                      <oj-select-single id="seguimientoAtencionPor" data="[[dataadministrativo]]"
-                        value="{{$current.data.administrativo.numExpediente}}" label-edge="inside" label-hint="Administrativo(a)"
-                        class="oj-form-control-max-width-lg">
-                      </oj-select-single>
+                      <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <oj-select-single id="seguimientoAtencionPor" data="[[dataadministrativo]]"
+                          value="{{$current.data.administrativo.numExpediente}}" label-edge="inside"
+                          label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
+                        </oj-select-single>
+                      </div>
 
-                      <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]"
-                        value="[[$current.data.tipoAtencion]]" label-edge="inside" label-hint="Tipo atención"
-                        class="oj-form-control-max-width-lg"
-                        placeholder="Seleccione el tipo de atención que se ha dado a este registro">
-                      </oj-select-single>
+                      <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]"
+                          value="[[$current.data.tipoAtencion]]" label-edge="inside" label-hint="Tipo atención"
+                          class="oj-form-control-max-width-lg"
+                          placeholder="Seleccione el tipo de atención que se ha dado a este registro">
+                        </oj-select-single>
+                      </div>
 
-                      <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="[[$current.data.estatus]]"
-                        label-edge="inside" label-hint="Estatus" class="oj-form-control-max-width-lg"
-                        placeholder="Seleccione el estatus en el que se encuentra este registro">
-                      </oj-select-single>
+                      <div class="oj-md-4 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="[[$current.data.estatus]]"
+                          label-edge="inside" label-hint="Estatus" class="oj-form-control-max-width-lg"
+                          placeholder="Seleccione el estatus en el que se encuentra este registro">
+                        </oj-select-single>
+                      </div>
 
-                      <oj-text-area id="seguimiento[[$current.index]]" value="[[$current.data.descripcion]]"
-                        label-edge="inside" label-hint="Nota" rows="3"
-                        placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
-                      </oj-text-area>
+                      <div class="oj-md-12 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <oj-text-area id="seguimiento[[$current.index]]" value="[[$current.data.descripcion]]"
+                          label-edge="inside" label-hint="Nota" rows="3"
+                          placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
+                        </oj-text-area>
+                      </div>
 
-                      <oj-bind-for-each data="[[ $current.data.archivos ]]">
+                      <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <oj-bind-for-each data="[[ $current.data.archivos ]]">
 
-                        <template data-oj-as="archivo">
-                          <oj-label-value>
-                            <oj-bind-text slot="value" value="[[archivo.data.name]]"></oj-bind-text>
-                          </oj-label-value>
-                        </template>
+                          
+                          <span>Archivo</span>
+                          <template data-oj-as="archivo">
+                            <ul>
+                              <li><oj-bind-text value="[[archivo.data.name]]"></oj-bind-text></li>
+                            </ul>
+                            
+                          </template>
 
-                        <template slot='noData'>
-                          <oj-label-value>
-                            <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
-                          </oj-label-value>
-                        </template>
 
-                      </oj-bind-for-each>
+                          <template slot='noData'>
+                            <oj-label-value>
+                              <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
+                            </oj-label-value>
+                          </template>
 
-                      <oj-file-picker class="oj-form-control-max-width-lg"
-                        style="max-width: 100% !important; text-align:center" accept="[[acceptArr]]"
-                        selection-mode="multiple" on-oj-select="[[selectListener]]"
-                        on-oj-invalid-select="[[invalidListener]]" primary-text="[[primaryTextFilePicker]]"
-                        secondary-text="[[secondarytextFilePicker]]" disabled="{{camposSeguimiento}}">
+                        </oj-bind-for-each>
+                      </div>
 
-                      </oj-file-picker>
+                      <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <oj-file-picker class="oj-form-control-max-width-lg"
+                          style="max-width: 100% !important; text-align:center" accept="[[acceptArr]]"
+                          selection-mode="multiple" on-oj-select="[[selectListener]]"
+                          on-oj-invalid-select="[[invalidListener]]" primary-text="[[primaryTextFilePicker]]"
+                          secondary-text="[[secondarytextFilePicker]]" disabled="{{camposSeguimiento}}">
+                        </oj-file-picker>
+                      </div>
 
-                    </oj-form-layout>
+
+                    </div>
+
 
                     <div class="oj-typography-subheading-md">
                       <oj-button display="icons" :id="[[ $current.data.id ]]"
@@ -180,17 +242,18 @@
             </template>
 
             <template slot='noData'>
-              <p>No existe seguimiento previo</p>
+              <div
+                class="oj-flex oj-sm-flex-items-initial oj-sm-only-justify-content-center oj-md-only-justify-content-center">
+                <div class="oj-flex-item oj-sm-padding-2x-horizontal">
+                  No existe seguimiento previo
+                </div>
+              </div>
               <template>
           </oj-bind-for-each>
 
           <oj-bind-if test="[[ camposSeguimientos() ]]">
             <oj-form-layout id="myform" label-edge="inside" direction="row"
               class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
-
-              <oj-select-single id="administrativo" data="[[dataadministrativo]]" value="{{administrativo}}"
-                label-edge="inside" label-hint="Administrativo(a)" class="oj-form-control-max-width-lg">
-              </oj-select-single>
 
               <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
                 label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
@@ -242,7 +305,7 @@
           <p><b>¿ Estas seguro que deseas eliminar este registro ?</b></p>
         </div>
         <div slot="footer">
-          <oj-button on-oj-action="[[eliminarRegistro]]">Aceptar</oj-button>
+          <oj-button id="registroEliminar" on-oj-action="[[eliminarRegistro]]">Aceptar</oj-button>
           <oj-button id="btnCancelEliminar2" on-oj-action="[[cerrarModal]]">Cancelar</oj-button>
         </div>
       </oj-dialog>
@@ -260,63 +323,86 @@
         </div>
         <div slot="body">
           <div class="oj-lg-justify-content-center oj-sm-12">
-            <h3>Detalles de la Incidencia N° <oj-bind-text value="[[ idIncidencia() ]]"></oj-bind-text>
+            <h3>Detalles de la Incidencia N° <oj-bind-text value="[[ incidenciaDetail().id ]]"></oj-bind-text>
             </h3>
 
             <div id="accordionPage" data-oj-binding-provider="none">
               <oj-accordion id="a1">
 
                 <oj-collapsible id="c1" expanded>
-                  <h3 slot="header">Datos de la persona atendida</h3>
+                  <h3 slot="header">Datos de la persona atendida</h3> <!-- Aqui colocamos los datos de idPersona  -->
                   <div class="oj-flex">
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Nombre</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="{{ incidenciaDetail().personaAtendida().nombre }}"></oj-bind-text>
+                        <oj-bind-text value="{{ incidenciaDetail().idecatalu }}"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Numero de contacto</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().numContacto ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Institucional</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().correoInstitucional ]]">
+                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]">
                         </oj-bind-text>
                       </div>
                     </div>
 
-                    <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                      <p>Matricula</p>
-                      <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().matricula ]]"></oj-bind-text>
+                    <!--
+                    <oj-bind-if test="[[ incidenciaDetail().idecatalu.tipoUsuario == 'aspirante' ]]">
+                      <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <p>Id</p>
+                        <div class="oj-typography-subheading-xs">
+                          <oj-bind-text value="[[ incidenciaDetail().identificador ]]"></oj-bind-text>
+                        </div>
                       </div>
-                    </div>
+                    </oj-bind-if>
+
+                    <oj-bind-if test="[[ incidenciaDetail().idecatalu.tipoUsuario == 'representante' || incidenciaDetail().idecatalu.tipoUsuario == 'coordinador' ]]">
+                      <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <p>Expediente</p>
+                        <div class="oj-typography-subheading-xs">
+                          <oj-bind-text value="[[ incidenciaDetail().identificador ]]"></oj-bind-text>
+                        </div>
+                      </div>
+                    </oj-bind-if>
+
+
+                    <oj-bind-if test="[[ incidenciaDetail().tipoUsuario == 'alumno' || incidenciaDetail().idecatalu.tipoUsuario == 'ex alumno' ]]">
+                      <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <p>Matricula</p>
+                        <div class="oj-typography-subheading-xs">
+                          <oj-bind-text value="[[ incidenciaDetail().identificador ]]"></oj-bind-text>
+                        </div>
+                      </div>
+                    </oj-bind-if>
+                    -->
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Personal</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().correoPersonal ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Campus</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().campus ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                      <p>Licenciatura</p>
+                      <p>Plan de estudios</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().personaAtendida().licenciatura ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
                       </div>
                     </div>
 
@@ -330,19 +416,19 @@
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>Nombre</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().administrativo().nombre ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().atendido_por ]]"></oj-bind-text>
                       </div>
                     </div>
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>N° Expediente</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().administrativo().numExpediente ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().atendido_por ]]"></oj-bind-text>
                       </div>
                     </div>
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>Correo Institucional</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().administrativo().correoInstitucional ]]">
+                        <oj-bind-text value="[[ incidenciaDetail().atendido_por ]]">
                         </oj-bind-text>
                       </div>
                     </div>
@@ -356,36 +442,36 @@
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Fecha de inicio de atención</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().fecha_inicio ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().inicio_atencion ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Estatus</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().estatus ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().estatus ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Tipo de atención</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().tipoAtencion ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().tipo_atencion ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Asunto</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().datosGenerales().asunto ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().asunto ]]"></oj-bind-text>
                       </div>
                     </div>
 
-                    <oj-bind-if test="[[ incidenciaDetail().datosGenerales().estatus === 'Finalizado' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().estatus === 'Finalizado' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Fecha final de atención</p>
                         <div class="oj-typography-subheading-xs">
-                          <oj-bind-text value="[[ incidenciaDetail().datosGenerales().fecha_fin ]]"></oj-bind-text>
+                          <oj-bind-text value="[[ incidenciaDetail().fin_atencion ]]"></oj-bind-text>
                         </div>
                       </div>
                     </oj-bind-if>
@@ -394,7 +480,7 @@
                   <div>
                     <strong>Seguimiento registrado</strong>
 
-                    <oj-bind-for-each data="[[ incidenciaDetail().datosGenerales().seguimiento ]]">
+                    <oj-bind-for-each data="[[ seguimientoArray ]]">
                       <template>
                         <div id="accordionPage" data-oj-binding-provider="none">
                           <oj-accordion id="aa1">
@@ -486,15 +572,13 @@
     </div>
 
     <oj-table id="table" class="demo-table-container" aria-label="Tabla de atención" data="[[pagingDataProvider]]"
-      columns-default.sortable="disabled" 
-      columns='[{"headerText": "ID", "resizable": "enabled","width":"auto"},
+      columns-default.sortable="disabled" columns='[{"headerText": "ID", "resizable": "enabled","width":"auto"},
                 {"headerText": "Atención A", "resizable": "enabled"},
                 {"headerText": "Persona atendida", "resizable": "enabled"},
                 {"headerText": "Administrativo(a)", "resizable": "enabled"},
                 {"headerText": "Tipo de atención", "resizable": "enabled"},
                 {"headerText": "Estatus", "resizable": "enabled"},
                 {"headerText": "Asunto", "resizable": "enabled","width":"190px"},
-                {"headerText": "Ultima Nota", "resizable": "enabled","width":"150px"},
                 {"headerText": "Acciones", "resizable": "enabled"}]' style="width: 100%;">
 
       <template slot="rowTemplate" data-oj-as="row">
@@ -504,33 +588,32 @@
           </td>
 
           <td>
-            <oj-bind-text value="[[row.data.personaAtendida.nombre]]"></oj-bind-text>
+            <oj-bind-text value="[[row.data.idecatalu]]"></oj-bind-text> <!-- Aqui iria el nombre de atencion A -->
           </td>
 
           <td>
-            <oj-bind-text value="[[row.data.personaAtendida.tipoUsuario]]"></oj-bind-text>
+            <oj-bind-if test="[[row.data.tipoUsuario]]">
+              <oj-bind-text value="[[row.data.tipoUsuario]]"></oj-bind-text>
+            </oj-bind-if>
+            <oj-bind-text value="Tipo de usuario"></oj-bind-text>
+
           </td>
 
           <td>
-            <oj-bind-text value="[[row.data.administrativo.nombre]]"></oj-bind-text>
+            <oj-bind-text value="[[row.data.atendido_por]]"></oj-bind-text>
           </td>
           <td>
-            <oj-bind-text value="[[row.data.datosGenerales.tipoAtencion]]"></oj-bind-text>
+            <oj-bind-text value="[[row.data.tipo_atencion]]"></oj-bind-text>
           </td>
 
           <td>
-            <oj-bind-text value="[[row.data.datosGenerales.estatus]]"></oj-bind-text>
+            <oj-bind-text value="[[row.data.estatus]]"></oj-bind-text>
           </td>
 
           <td>
-            <oj-bind-text value="[[row.data.datosGenerales.asunto]]"></oj-bind-text>
+            <oj-bind-text value="[[row.data.asunto]]"></oj-bind-text>
           </td>
 
-          <td>
-            <oj-bind-text
-              value="[[row.data.datosGenerales.seguimiento[row.data.datosGenerales.seguimiento.length-1].descripcion]]">
-            </oj-bind-text>
-          </td>
 
           <td>
             <div>
@@ -556,13 +639,11 @@
       </template>
 
       <oj-paging-control id="paging" data="[[pagingDataProvider]]" page-size="6" slot="bottom"
-      translations.full-msg-item="Registro {pageTo} de {pageMax}"
-      translations.full-msg-item-approx=" {pageTo} de {pageMax} registros"
-      translations.full-msg-item-at-least=" {pageTo} de {pageMax} registros"
-      translations.label-acc-nav-page="Registro"
-      translations.label-nav-input-page="Registro"
-      translations.tip-nav-input-page="Registro"
-      translations.tip-nav-page-link="Ir al registro {pageNum}">
+        translations.full-msg-item="Registro {pageTo} de {pageMax}"
+        translations.full-msg-item-approx=" {pageTo} de {pageMax} registros"
+        translations.full-msg-item-at-least=" {pageTo} de {pageMax} registros"
+        translations.label-acc-nav-page="Registro" translations.label-nav-input-page="Registro"
+        translations.tip-nav-input-page="Registro" translations.tip-nav-page-link="Ir al registro {pageNum}">
       </oj-paging-control>
     </oj-table>
 
