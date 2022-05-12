@@ -5,14 +5,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
   function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView,) {
     function ViewModel() {
       var self = this;
-      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJTVVBFUjAxIiwiZW1haWwiOiItIiwib3duZXIiOjEsInJvbGUiOiJBRE1JTiIsInVzZXJfbGV2ZWwiOjEwMCwiZ3JvdXAiOiJFU0NPTEFSIiwiZ3JvdXBzIjpbICJFU0NPTEFSIiwgIkFETUlOSVNUUkFUSVZPUyIsICJLIiBdLCJpYXQiOjE2NTEwNzY2NjYuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3LCJleHAiOjE2NTExNjMwNjYuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3IH0.63jYRTSIWq1MJCp0CeO0-Wsx0sMxIEDnyVTsCQyJ5rY";
-      var settingsGET = {
-        url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias',
-        headers: {
-          "Authorization": token,
-          "Content-Type": "application/json"
-        }
-      }
+      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwNCIsImVtYWlsIjoiYWxleGlzLmJlbml0ZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTIzNjM5MDUsImV4cCI6MTY1MjQ1MDMwNSB9.APPQXuhQwUpoArI0KVab6Y5LXVGGQJ-kC-uQbwit39U";
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
@@ -20,32 +13,29 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
       self.hora = "";
       self.idRegistroEliminar = 0;
 
-      self.obtenerDatos = () => {
+      self.connected = () => {
+        document.title = "Atencion";
 
-        $.get(settingsGET)
+        //Configuramos la tabla
+        $.get({
+          url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias',
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        })
           .done((data) => {
             self.data(data.items)
             console.log(data.items)
           })
-          .fail((err, err2) => { console.log(err, err2) });
+          .fail((err, err2) => {
+            console.log(err)
+            console.log(err2)
+          });
 
-      }
-
-      self.connected = () => {
-        document.title = "Atencion";
-
-        //Obtenemos datos
-        self.obtenerDatos();
-        
-
-        //Configuracion datos de la tabla
-        self.dataprovider = new BufferingDataProvider(new ArrayDataProvider(self.data, { keyAttributes: 'id' })); //Buffering para actualizar la tabla
         this.pagingDataProvider = new PagingDataProviderView(new ArrayDataProvider(self.data, { idAttribute: 'id' }));
-        //Fin configuracion de los datos de la tabla
-
-        //Variables para actualizar tabla
-        self.dataUpdate = ko.observable({})
-        //Fin variables para actualizar tabla
+        self.dataUpdate = ko.observable({}) //Variables para actualizar tabla
+        //Fin configuracion tabla
 
         //Configuracion Modal Crear
         //Inicializacion de variables a usar
@@ -62,6 +52,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         //Variables Incidencia Detail
         self.idIncidencia = ko.observable();
         self.incidenciaDetail = ko.observable({});
+        self.administrativo = ko.observable({});
         //Fin variables Incidencia Detail 
 
         //Variables campos de busqueda 
@@ -75,6 +66,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
         //Variables y funciones FILE
         self.files = ko.observable([]);
+        self.filesSeguimiento = ko.observableArray([]);
         self.fileNames = ko.observable([]);
         primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
         secondarytextFilePicker = ko.observable("Tipo de datos aceptados:JPG,JPEG,PDF,XLSX,DOCX")
@@ -143,10 +135,43 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
           self.dataUpdate(dataObj.data);
           self.dataUpdate().tipoUsuario = "datos BD pendientes" //Eliminamos cuando tengamos este elemento en la tabla
+
           /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */
+          $.get({
+            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento/${self.dataUpdate().id}`,
+            headers: {
+              "Authorization": token,
+              "Content-Type": "application/json"
+            }
+          })
+            .done((data) => {
+              self.seguimientoArray(data.items)
+              //console.log(data.items)
 
-
+            })
+            .fail((err, err2) => {
+              console.log(err)
+              console.log(err2)
+            });
           /* Finalizamos la busqueda del seguimiento */
+          $.get({
+            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/archivos/archivos/21`,
+            headers: {
+              "Authorization": token,
+              "Content-Type": "application/json"
+            }
+          })
+            .done((data) => {
+              
+              console.log(data.items)
+
+            })
+            .fail((err, err2) => {
+              console.log(err)
+              console.log(err2)
+            });
+
+
 
           document.querySelector("#editarModal").open();
         }
@@ -163,9 +188,39 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           const element = document.getElementById('table');
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
+          $.get({
+            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias/${dataObj.data.id}`,
+            headers: {
+              "Authorization": token,
+              "Content-Type": "application/json"
+            }
+          })
+            .done((data) => {
+              self.incidenciaDetail(data.items[0])
+              console.log(data.items[0].idecatalu)
+              $.get({
+                url: `https://sice.iedep.edu.mx:8282/dev/administrativos/usuarios/usuarios/${data.items[0].idecatalu}`,
+                headers: {
+                  "Authorization": token,
+                  "Content-Type": "application/json"
+                }
+              })
+                .done((data) => {
+                  self.administrativo(data.items[0]);
+                  console.log(self.administrativo())
+                })
+                .fail((err) => {
+
+                })
+            })
+            .fail((err) => { console.log(err) })
+
+
+
           self.incidenciaDetail(dataObj.data);
           self.incidenciaDetail().tipoUsuario = "alumno" //Lo quitamos cuando tengamos este atributo en la base de datos 
           self.incidenciaDetail().identificador = "";
+
           /*
           self.incidenciaDetail().idecatalu = ko.observable({ //IdPersona proximamente
             id:self.incidenciaDetail.idecatalu,
