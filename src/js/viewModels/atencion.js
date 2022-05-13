@@ -1,11 +1,11 @@
 
-define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbufferingdataprovider", "ojs/ojkeyset", "jquery", "ojs/ojpagingdataproviderview",
+define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "ojs/ojpagingdataproviderview", "ojs/ojmutablearraydataprovider", "ojs/ojasyncvalidator-regexp",
   "ojs/ojtable", "ojs/ojbutton", "ojs/ojpopup", "ojs/ojformlayout", "ojs/ojaccordion", "ojs/ojradioset", "ojs/ojlabel", "ojs/ojlabelvalue", 'ojs/ojpagingcontrol',
-  "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch'],
-  function (require, exports, ko, ArrayDataProvider, BufferingDataProvider, ojkeyset_1, $, PagingDataProviderView,) {
+  "ojs/ojinputtext", "ojs/ojfilepicker", "ojs/ojinputnumber", "ojs/ojselectsingle", "ojs/ojformlayout", "ojs/ojselectcombobox", 'ojs/ojinputsearch', "ojs/ojmessagebanner"],
+  function (require, exports, ko, ArrayDataProvider, $, PagingDataProviderView, MutableArrayDataProvider, AsyncRegExpValidator) {
     function ViewModel() {
       var self = this;
-      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwNCIsImVtYWlsIjoiYWxleGlzLmJlbml0ZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTIzNjM5MDUsImV4cCI6MTY1MjQ1MDMwNSB9.APPQXuhQwUpoArI0KVab6Y5LXVGGQJ-kC-uQbwit39U";
+      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwNCIsImVtYWlsIjoiYWxleGlzLmJlbml0ZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTI0NTM3MjAuMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAzLCJleHAiOjE2NTI1NDAxMjAuMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAzIH0.WNlXj2i0MjZHSx_fDUYNOLP3OOdHtil5NLs-K1ho4ts";
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
@@ -15,7 +15,18 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
 
       self.connected = () => {
         document.title = "Atencion";
-
+        const initialData = [
+          {
+            id: 'error1',
+            severity: 'error',
+            summary: 'No existe ningun archivo',
+            detail: 'No se ha cargado ningun archivo',
+            closeAffordance: 'off'
+          },
+        ];
+        this.messages = new MutableArrayDataProvider(initialData, {
+          keyAttributes: 'id'
+        });
         //Configuramos la tabla
         $.get({
           url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias',
@@ -46,7 +57,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.tipoAtencion = ko.observable("");
         self.estatus = ko.observable("");
         self.asunto = ko.observable("");
-        self.seguimiento = ko.observableArray([]);
+        self.descripcionSeguimientoCrear = ko.observable("");
         self.camposSeguimientos = ko.observable(false)
 
         //Variables Incidencia Detail
@@ -137,6 +148,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
           self.dataUpdate().tipoUsuario = "datos BD pendientes" //Eliminamos cuando tengamos este elemento en la tabla
 
           /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */
+
           $.get({
             url: `https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento/${self.dataUpdate().id}`,
             headers: {
@@ -154,21 +166,24 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
               console.log(err2)
             });
           /* Finalizamos la busqueda del seguimiento */
+
           $.get({
-            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/archivos/archivos/21`,
+            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/archivos/archivos/${self.dataUpdate().id}`,
             headers: {
               "Authorization": token,
               "Content-Type": "application/json"
             }
           })
             .done((data) => {
-              
+              console.log("archivos: ")
+              self.filesSeguimiento(data.items)
               console.log(data.items)
 
             })
             .fail((err, err2) => {
+              console.log("Ocurrio un error")
               console.log(err)
-              console.log(err2)
+              //console.log(err2)
             });
 
 
@@ -271,39 +286,75 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "ojs/ojbuff
         self.limpiarCampos();
       }
 
+      this.validators = [
+        new AsyncRegExpValidator({
+          pattern: "^[^]+$",
+          messageDetail: "Este campo es obligatorio",
+        }),
+      ];
+
+      self.validarCamposCrear = () => {
+        var datos = [
+          {
+            observable: self.asunto(),
+            field_id: "asunto"
+          },
+          {
+            observable: self.identificadorPersonaAtendida(),
+            field_id: "identificadorPersonaAtendida"
+          },
+          {
+            observable: self.tipoUsuario(),
+            field_id: "tipoUsuario"
+          },
+          {
+            observable: self.tipoAtencion(),
+            field_id: "tipoAtencionCrear"
+          },
+          {
+            observable: self.estatus(),
+            field_id: "estatus"
+          },
+          {
+            observable: self.descripcionSeguimientoCrear(),
+            field_id: "descripcionSeguimientoCrear"
+          },
+        ]
+        var validFields = false;
+
+        $.each(datos, function (index, element) {
+          if (element.observable) { validFields = true }
+          else if (element.observable == "") {
+            let fieldmatricula = document.getElementById(element.field_id);
+            fieldmatricula.showMessages();
+            validFields = false;
+            return false;
+          }
+        })
+
+        return validFields;
+
+      }
       //FUNCIONES CREAR REGISTRO ATENCION
       self.crearRegistro = () => {
         let registro = {};
         let dataPersonaAtendidaBD;
         let dataAdmBD;
         let seguimientoBD;
-        if (self.asunto() && self.identificadorPersonaAtendida() && self.tipoUsuario() && self.tipoAtencion() && self.estatus() && self.seguimiento()) {
-          alert("campo lleno")
+        if (self.validarCamposCrear()) {
+          alert("Campos llenados correctamente"); 
+
         }
         else {
-          alert("Falta por rellenar un campo")
+          alert("Es Necesario llenar todos los campos")
         }
-        return
+
+
         //Configuramos fecha: 
         self.obtenerFecha();
         //Fin configuracion fecha. 
-        let settings = {
-          url: "https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias",
-          method: "POST",
-          timeout: 0,
-          headers: {
-            "Authorization": "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwMyIsImVtYWlsIjoiYWxlamFuZHJvLnJhbWlyZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTA5ODM4MzcuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5LCJleHAiOjE2NTEwNzAyMzcuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5IH0.o0FHEY5EGsmtCMNLbiA4Uv186fjZSiilRvnTvpv1Ew8",
-            "Content-Type": "application/json"
-          },
-          data: JSON.stringify()
-        }
-        $.post(settings)
-          .done(() => {
-
-          })
-          .fail(() => {
-
-          });
+        
+       
         //Buscamos los datos de la persona atendida: 
         // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
         if (self.tipoUsuario() == "Aspirante") {

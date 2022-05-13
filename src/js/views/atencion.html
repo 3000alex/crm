@@ -34,13 +34,13 @@
 
             <oj-input-text id="identificadorPersonaAtendida" value="{{identificadorPersonaAtendida}}"
               label-hint="Matricula, Num expediente o ID de la persona atendida"
-              placeholder="Ingrese la matricula, expediente o id de la persona atendida" required></oj-input-text>
+              placeholder="Ingrese la matricula, expediente o id de la persona atendida" validators="[[validators]]" valid="invalidHidden" required></oj-input-text>
 
             <oj-select-single id="tipoUsuario" data="[[dataPersonaAtendida]]" value="{{tipoUsuario}}"
               label-edge="inside" label-hint="Persona atendida" class="oj-form-control-max-width-lg"
               placeholder="Seleccione el tipo de persona que fue atendida" required></oj-select-single>
 
-            <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
+            <oj-select-single id="tipoAtencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
               label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
               placeholder="Seleccione el tipo de atención que se ha dado a este registro" required></oj-select-single>
 
@@ -49,9 +49,9 @@
               placeholder="Seleccione el estatus en el que se encuentra este registro" required></oj-select-single>
 
 
-            <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar descripción" rows="3"
-              placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
-            </oj-text-area required>
+            <oj-text-area id="descripcionSeguimientoCrear" value="{{descripcionSeguimientoCrear}}" label-hint="Agregar descripción" rows="3" validators="[[validators]]" valid="invalidHidden"
+              placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final" required>
+            </oj-text-area>
 
             <oj-file-picker class="oj-form-control-max-width-lg" style="max-width: 100% !important; text-align:center"
               accept="[[acceptArr]]" selection-mode="multiple" on-oj-select="[[selectListener]]"
@@ -180,24 +180,35 @@
                       </div>
 
                       <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
+                        <span>Archivos:</span>
                         <oj-bind-for-each data="[[ filesSeguimiento ]]">
-
-
-                          <span>Archivo</span>
+                          
                           <template data-oj-as="archivo">
-                            <ul>
-                              <li>
-                                <oj-bind-text value="[[archivo.data.name]]"></oj-bind-text>
-                              </li>
-                            </ul>
+                            
+                            <oj-bind-if test=" [[archivo.data.incidencia_id  !=  dataUpdate().id]]">
+                              <ul>
+                                <li>
+                                  <oj-bind-text value="[[archivo.data.nombre]]"></oj-bind-text>
+                                </li>
+                              </ul>
+                            </oj-bind-if>
+
+                            <oj-bind-if test=" [[archivo.data.incidencia_id  ==  dataUpdate().id]] && [[archivo.index]] == 0">
+                              <div id="containerDiv">
+                                <oj-message-banner
+                                  data="[[messages]]"
+                                  type="page"></oj-message-banner>
+                              </div>
+                            </oj-bind-if>
 
                           </template>
 
-
                           <template slot='noData'>
-                            <oj-label-value>
-                              <oj-bind-text slot="value" value="No se agregaron archivos"></oj-bind-text>
-                            </oj-label-value>
+                            <div id="containerDiv">
+                              <oj-message-banner
+                                data="[[messages]]"
+                                type="page"></oj-message-banner>
+                            </div>
                           </template>
 
                         </oj-bind-for-each>
@@ -305,7 +316,7 @@
 
     </div>
 
-    <!--Modal Mostrar Detail y Busqueda -->
+    <!--Modal Mostrar Detail -->
     <div id="popupWrapperMostrar">
       <oj-dialog id="mostrarModal" dialog-title="Visualización de registro" class="modal">
         <div slot="header">
