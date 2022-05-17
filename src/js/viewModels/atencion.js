@@ -57,7 +57,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         self.tipoAtencion = ko.observable("");
         self.estatus = ko.observable("");
         self.asunto = ko.observable("");
-        self.descripcionSeguimientoCrear = ko.observable("");
+        self.descripcionSeguimiento = ko.observable("");
         self.camposSeguimientos = ko.observable(false)
 
         //Variables Incidencia Detail
@@ -316,7 +316,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
             field_id: "estatus"
           },
           {
-            observable: self.descripcionSeguimientoCrear(),
+            observable: self.descripcionSeguimiento(),
             field_id: "descripcionSeguimientoCrear"
           },
         ]
@@ -457,7 +457,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         let date = new Date()
         self.fecha = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" +String(date.getDate()).padStart(2, '0');
         self.hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-        console.log(self.fecha + " " + self.hora);
       }
 
       self.actualizarRegistro = () => {
@@ -505,7 +504,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
             "cvecatpro":"ADMIN005", //Se tomara del login
             "tipo_atencion": self.tipoAtencion(),
             "estatus": self.estatus(),
-            "descripcion": self.descripcionSeguimientoCrear(),
+            "descripcion": self.descripcionSeguimiento(),
             "fecha_actualizacion": "",
             "incidencia_id":""
 
@@ -521,10 +520,43 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           });
       }
 
+      self.validarCamposSeguimiento = () => {
+        var datos = [
+          {
+            observable: self.tipoAtencion(),
+            field_id: "atencionEditar"
+          },
+          {
+            observable: self.estatus(),
+            field_id: "estatusEditar"
+          },
+          {
+            observable: self.descripcionSeguimiento(),
+            field_id: "descripcionSeguimientoEditar"
+          }
+        ]
+        var validFields = false;
+
+        $.each(datos, function (index, element) {
+          if (element.observable) { validFields = true }
+          else if (element.observable == "") {
+            let fieldmatricula = document.getElementById(element.field_id);
+            fieldmatricula.showMessages();
+            validFields = false;
+            return false;
+          }
+        })
+
+        return validFields;
+      }
+
       self.actualizarSeguimientos = () => {
         self.obtenerFecha();
-        if(self.tipoAtencion() && self.estatus() && self.descripcionSeguimientoCrear()){
-
+        if(self.validarCamposSeguimiento()){
+          alert("Campos enviados")
+        }
+        else{
+          alert("Debe de rellenar todos los campos")
         }
         
 

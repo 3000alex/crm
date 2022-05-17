@@ -50,7 +50,7 @@
               placeholder="Seleccione el estatus en el que se encuentra este registro" required></oj-select-single>
 
 
-            <oj-text-area id="descripcionSeguimientoCrear" value="{{descripcionSeguimientoCrear}}"
+            <oj-text-area id="descripcionSeguimientoCrear" value="{{descripcionSeguimiento}}"
               label-hint="Agregar descripción" rows="3" validators="[[validators]]" valid="invalidHidden"
               placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final"
               required>
@@ -257,19 +257,20 @@
           </oj-bind-for-each>
 
           <oj-bind-if test="[[ camposSeguimientos() ]]">
+
             <oj-form-layout id="myform" label-edge="inside" direction="row"
               class="oj-helper-margin-auto oj-formlayout-full-width" user-assistance-density="efficient">
 
-              <oj-select-single id="atencionCrear" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
+              <oj-select-single id="atencionEditar" data="[[datatipo_atencion]]" value="{{tipoAtencion}}"
                 label-edge="inside" label-hint="Tipo atención" class="oj-form-control-max-width-lg"
-                placeholder="Seleccione el tipo de atención que se ha dado a este registro"></oj-select-single>
+                placeholder="Seleccione el tipo de atención que se ha dado a este registro" required></oj-select-single>
 
-              <oj-select-single id="estatus" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
+              <oj-select-single id="estatusEditar" data="[[dataEstatusAtencion]]" value="{{estatus}}" label-edge="inside"
                 label-hint="Estatus" class="oj-form-control-max-width-lg"
-                placeholder="Seleccione el estatus en el que se encuentra este registro"></oj-select-single>
+                placeholder="Seleccione el estatus en el que se encuentra este registro" required></oj-select-single>
 
-              <oj-text-area id="descripcionSeguimientoEditar" value="{{descripcionSeguimientoCrear}}" label-hint="Agregar seguimiento" rows="3"
-                placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
+              <oj-text-area id="descripcionSeguimientoEditar" value="{{descripcionSeguimiento}}" label-hint="Agregar seguimiento" rows="3"
+                placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final" required>
               </oj-text-area>
 
               <oj-file-picker class="oj-form-control-max-width-lg" style="max-width: 100% !important; text-align:center"
