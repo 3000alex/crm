@@ -5,7 +5,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
   function (require, exports, ko, ArrayDataProvider, $, PagingDataProviderView, MutableArrayDataProvider, AsyncRegExpValidator) {
     function ViewModel() {
       var self = this;
-      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwNCIsImVtYWlsIjoiYWxleGlzLmJlbml0ZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTI0NTM3MjAuMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAzLCJleHAiOjE2NTI1NDAxMjAuMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAzIH0.WNlXj2i0MjZHSx_fDUYNOLP3OOdHtil5NLs-K1ho4ts";
+      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwNCIsImVtYWlsIjoiYWxleGlzLmJlbml0ZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTI3NzgzNzIuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3LCJleHAiOjE2NTI4NjQ3NzIuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3IH0.9ljaXcUXbj-IxAV5XamcsuxBRn_3oogDQ0GMvb8nl64";
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
@@ -342,7 +342,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         let dataAdmBD;
         let seguimientoBD;
         if (self.validarCamposCrear()) {
-          alert("Campos llenados correctamente"); 
+          alert("Campos llenados correctamente");
 
         }
         else {
@@ -353,8 +353,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         //Configuramos fecha: 
         self.obtenerFecha();
         //Fin configuracion fecha. 
-        
-       
+
+
         //Buscamos los datos de la persona atendida: 
         // *** En produccion se tendra que hacer una busqueda a la base de datos. ***
         if (self.tipoUsuario() == "Aspirante") {
@@ -580,29 +580,63 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.visualizarRegistros = () => {
       }
 
+      this.obtenerSeguimiento = (id_incidencia) => {
+        let seguimiento = [{}];
+        $.get({
+          async: false,
+          url: `https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento/${id_incidencia}`,
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        })
+          .done((data) => {
+            seguimiento = data.items;
+            
+          })
+          .fail((err, err2) => {
+            console.log(err)
+            console.log(err2)
+          });
+
+        return seguimiento;
+      }
+
+      this.obtenerIncidencia = (id_incidencia) => {
+        let incidencia;
+
+        $.get({
+          async: false,
+          url: `https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias/${id_incidencia}`,
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        })
+          .done((data) => {
+            incidencia = data.items;
+            
+          })
+          .fail((err, err2) => {
+            objDB = null;
+            alert("Registro Invalido")
+            console.log(err)
+            console.log(err2)
+          });
+
+        return incidencia;
+      }
+
       //FUNCIONES BUSCAR REGISTRO 
       this.searchRegister = function (event) {
         let queryId = event.detail.value;
-        let objData = "";
-        //Aqui se debe de buscar en la base de datos y regresar ese dato CAMBIAR
-        $.each(self.data(), (index, dataObj) => {
-          if (dataObj.id == queryId) {
-            objData = dataObj;
-          }
-        });
+        let objDB;
+        objDB = self.obtenerIncidencia(queryId);
+        console.log(objDB[0].id);
+        self.dataUpdate(objDB[0])
+        self.seguimientoArray(self.obtenerSeguimiento(queryId))
+        document.querySelector("#editarModal").open();
 
-        if (queryId && objData) {
-          self.dataUpdate = objData;
-
-          self.seguimientoArray(self.dataUpdate.datosGenerales.seguimiento);
-          self.idIncidencia(self.dataUpdate.id)
-          self.asunto(self.dataUpdate.datosGenerales.asunto)
-          self.tipoUsuario(self.dataUpdate.personaAtendida.tipoUsuario)
-          document.querySelector("#editarModal").open();
-        }
-        else {
-          alert("Registro Invalido")
-        }
 
       }
 
