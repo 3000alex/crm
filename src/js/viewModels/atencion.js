@@ -455,8 +455,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
 
       self.obtenerFecha = () => {
         let date = new Date()
-        self.fecha = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        self.fecha = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" +String(date.getDate()).padStart(2, '0');
         self.hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        console.log(self.fecha + " " + self.hora);
       }
 
       self.actualizarRegistro = () => {
@@ -492,8 +493,42 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         self.camposSeguimientos(true)
       }
 
+      self.crearSeguimiento = () => {
+        $.post({
+          async:false,
+          url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias',
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          },
+          data:{
+            "cvecatpro":"ADMIN005", //Se tomara del login
+            "tipo_atencion": self.tipoAtencion(),
+            "estatus": self.estatus(),
+            "descripcion": self.descripcionSeguimientoCrear(),
+            "fecha_actualizacion": "",
+            "incidencia_id":""
+
+          }
+        })
+          .done((data) => {
+            self.data(data.items)
+            console.log(data.items)
+          })
+          .fail((err, err2) => {
+            console.log(err)
+            console.log(err2)
+          });
+      }
+
       self.actualizarSeguimientos = () => {
         self.obtenerFecha();
+        if(self.tipoAtencion() && self.estatus() && self.descripcionSeguimientoCrear()){
+
+        }
+        
+
+
         //Obtenemos datos del administrativo
         let dataAdmBD = { //Estos datos se obtendran del login 
           nombre: "alex3",

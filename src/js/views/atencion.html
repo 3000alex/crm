@@ -34,7 +34,8 @@
 
             <oj-input-text id="identificadorPersonaAtendida" value="{{identificadorPersonaAtendida}}"
               label-hint="Matricula, Num expediente o ID de la persona atendida"
-              placeholder="Ingrese la matricula, expediente o id de la persona atendida" validators="[[validators]]" valid="invalidHidden" required></oj-input-text>
+              placeholder="Ingrese la matricula, expediente o id de la persona atendida" validators="[[validators]]"
+              valid="invalidHidden" required></oj-input-text>
 
             <oj-select-single id="tipoUsuario" data="[[dataPersonaAtendida]]" value="{{tipoUsuario}}"
               label-edge="inside" label-hint="Persona atendida" class="oj-form-control-max-width-lg"
@@ -49,8 +50,10 @@
               placeholder="Seleccione el estatus en el que se encuentra este registro" required></oj-select-single>
 
 
-            <oj-text-area id="descripcionSeguimientoCrear" value="{{descripcionSeguimientoCrear}}" label-hint="Agregar descripción" rows="3" validators="[[validators]]" valid="invalidHidden"
-              placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final" required>
+            <oj-text-area id="descripcionSeguimientoCrear" value="{{descripcionSeguimientoCrear}}"
+              label-hint="Agregar descripción" rows="3" validators="[[validators]]" valid="invalidHidden"
+              placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final"
+              required>
             </oj-text-area>
 
             <oj-file-picker class="oj-form-control-max-width-lg" style="max-width: 100% !important; text-align:center"
@@ -89,7 +92,7 @@
               <div class="oj-typography-subheading-xs">
                 <small>
                   <oj-bind-text value="[[ dataUpdate().nombre_persona_atendida ]]"></oj-bind-text>
-                </small> 
+                </small>
               </div>
             </div>
 
@@ -175,16 +178,17 @@
                       <div class="oj-md-12 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <oj-text-area id="seguimiento[[$current.index]]" value="[[$current.data.descripcion]]"
                           label-edge="inside" label-hint="Nota" rows="3"
-                          placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final" readonly>
+                          placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final"
+                          readonly>
                         </oj-text-area>
                       </div>
 
                       <div class="oj-md-6 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <span>Archivos:</span>
                         <oj-bind-for-each data="[[ filesSeguimiento ]]">
-                          
+
                           <template data-oj-as="archivo">
-                            
+
                             <oj-bind-if test=" [[archivo.data.incidencia_id  !=  dataUpdate().id]]">
                               <ul>
                                 <li>
@@ -193,11 +197,10 @@
                               </ul>
                             </oj-bind-if>
 
-                            <oj-bind-if test=" [[archivo.data.incidencia_id  ==  dataUpdate().id]] && [[archivo.index]] == 0">
+                            <oj-bind-if
+                              test=" [[archivo.data.incidencia_id  ==  dataUpdate().id]] && [[archivo.index]] == 0">
                               <div id="containerDiv">
-                                <oj-message-banner
-                                  data="[[messages]]"
-                                  type="page"></oj-message-banner>
+                                <oj-message-banner data="[[messages]]" type="page"></oj-message-banner>
                               </div>
                             </oj-bind-if>
 
@@ -205,9 +208,7 @@
 
                           <template slot='noData'>
                             <div id="containerDiv">
-                              <oj-message-banner
-                                data="[[messages]]"
-                                type="page"></oj-message-banner>
+                              <oj-message-banner data="[[messages]]" type="page"></oj-message-banner>
                             </div>
                           </template>
 
@@ -267,7 +268,7 @@
                 label-hint="Estatus" class="oj-form-control-max-width-lg"
                 placeholder="Seleccione el estatus en el que se encuentra este registro"></oj-select-single>
 
-              <oj-text-area id="seguimiento" value="{{seguimiento}}" label-hint="Agregar seguimiento" rows="3"
+              <oj-text-area id="descripcionSeguimientoEditar" value="{{descripcionSeguimientoCrear}}" label-hint="Agregar seguimiento" rows="3"
                 placeholder="Describa el seguimiento que se le ha dado a este asunto, añada un comentario u observación final">
               </oj-text-area>
 
