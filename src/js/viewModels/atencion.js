@@ -9,6 +9,17 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
+      self.seguimientoArray = ko.observableArray([]);
+
+      //Variables y funciones FILE
+      self.files = ko.observable([]);
+      self.filesSeguimiento = ko.observableArray([]);
+      self.fileNames = ko.observable([]);
+      primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
+      secondarytextFilePicker = ko.observable("Tipo de datos aceptados:JPG,JPEG,PDF,XLSX,DOCX")
+      self.invalidMessage = ko.observable("")
+      //FIN Inicializacion de variables a usar
+
       self.fecha = "";
       self.hora = "";
       self.idRegistroEliminar = 0;
@@ -37,7 +48,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         })
           .done((data) => {
             self.data(data.items)
-            console.log(data.items)
+            //console.log(data.items)
           })
           .fail((err, err2) => {
             console.log(err)
@@ -73,15 +84,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         //Variables seguimiento:
         self.seguimientoUpdate = ko.observable({});
         self.camposSeguimiento = ko.observable(true);
-        self.seguimientoArray = ko.observableArray();
 
-        //Variables y funciones FILE
-        self.files = ko.observable([]);
-        self.filesSeguimiento = ko.observableArray([]);
-        self.fileNames = ko.observable([]);
-        primaryTextFilePicker = ko.observable("Adjunta archivos arrastrándolos y colocándolos aquí, seleccionándolos o pegándolos.")
-        secondarytextFilePicker = ko.observable("Tipo de datos aceptados:JPG,JPEG,PDF,XLSX,DOCX")
-        self.invalidMessage = ko.observable("")
+        //Metodos files
         self.invalidListener = (event) => {
           alert("Archivo(s) invalido(s), por favor intente nuevamente")
           this.fileNames([]);
@@ -91,16 +95,16 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           const accept = self.acceptStr();
           return accept ? accept.split(",") : [];
         });
-
+  
         self.selectListener = (event) => {
-
+  
           self.invalidMessage("");
           self.files(event.detail.files);
           self.fileNames(Array.prototype.map.call(self.files(), (file) => {
             return file.name;
           }));
         };
-        //FIN Inicializacion de variables a usar
+
 
         //Config Tipo de atención
         self.datatipo_atencion = new ArrayDataProvider([
@@ -145,9 +149,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
           self.dataUpdate(dataObj.data);
-          self.obtenerSeguimiento(self.dataUpdate().id); /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */ 
+          self.obtenerSeguimiento(self.dataUpdate().id); /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */
           self.obtenerArchivos(self.dataUpdate().id); /* Obtenemos archivos de la incidencia */
-
           document.querySelector("#editarModal").open();
         }
 
@@ -415,9 +418,9 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
 
       self.obtenerFecha = () => {
         let date = new Date()
-        self.fecha = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" +String(date.getDate()).padStart(2, '0');
+        self.fecha = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0');
         self.hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-        console.log(self.fecha + ' ' +self.hora)
+        console.log(self.fecha + ' ' + self.hora)
       }
 
       self.actualizarRegistro = () => {
@@ -456,18 +459,18 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.crearSeguimientoBD = () => {
         let seguimiento;
         $.post({
-          async:false,
+          async: false,
           url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento',
           headers: {
             "Authorization": token,
             "Content-Type": "application/json"
           },
-          data:JSON.stringify( {
-            "cvecatpro":"ADMIN005", //Se tomara del login
+          data: JSON.stringify({
+            "cvecatpro": "ADMIN005", //Se tomara del login
             "tipo_atencion": self.tipoAtencion(),
             "estatus": self.estatus(),
             "descripcion": self.descripcionSeguimiento(),
-            "fecha_actualizacion": self.fecha + ' ' +self.hora,
+            "fecha_actualizacion": self.fecha + ' ' + self.hora,
             "incidencia_id": self.dataUpdate().id
           })
         })
@@ -476,7 +479,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
               descripcion: self.descripcionSeguimiento(),
               estatus: self.estatus(),
               fecha_actualizacion: self.fecha + ' ' + self.hora,
-              id: data.seguimiento_id, 
+              id: data.seguimiento_id,
               idecatpro: 4552, //Lo sacamos del Login
               incidencia_id: dataUpdate().id,
               nombre_administrativo: "Alexis Benítez Arellano", //Lo sacamos del login
@@ -489,7 +492,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
             console.log(err)
             console.log(err2)
           });
-          return seguimiento;
+        return seguimiento;
       }
 
       self.validarCamposSeguimiento = () => {
@@ -524,7 +527,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
 
       self.crearSeguimiento = () => {
         self.obtenerFecha();
-        if(self.validarCamposSeguimiento()){
+        if (self.validarCamposSeguimiento()) {
           let seguimiento = self.crearSeguimientoBD();
           self.seguimientoArray.push(seguimiento);
           self.limpiarCampos();
@@ -532,10 +535,10 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           self.camposSeguimientos(false);
           alert("Seguimiento creado")
         }
-        else{
+        else {
           alert("Debe de rellenar todos los campos")
         }
-        
+
       }
 
       self.activarCamposSeguimiento = (event) => {
@@ -560,12 +563,13 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       }
 
       self.limpiarCampos = () => {
-        
+
         //Campos Editar 
 
         //Campos Busqueda
         self.search('');
         self.rawSearch('');
+        self.seguimientoArray.removeAll();
       }
 
       //FUNCIONES ELIMINAR REGISTRO DE ATENCION
@@ -594,7 +598,6 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       }
 
       this.obtenerSeguimiento = (id_incidencia) => {
-        let seguimiento = [{}];
         $.get({
           async: false,
           url: `https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento/${id_incidencia}`,
@@ -604,19 +607,18 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           }
         })
           .done((data) => {
-            seguimiento = data.items; 
-            self.seguimientoArray(data.items)
+            let seguimiento = data.items;
+            self.seguimientoArray(seguimiento);
+            console.log(self.seguimientoArray());
           })
           .fail((err, err2) => {
             console.log(err)
             console.log(err2)
           });
-
-        return seguimiento;
       }
 
       this.obtenerIncidencia = (id_incidencia) => {
-        let incidencia;
+        let incidencia = null;
 
         $.get({
           async: false,
@@ -631,7 +633,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
             self.dataUpdate(incidencia[0])
           })
           .fail((err, err2) => {
-            objDB = null;
+            incidencia = null;
             alert("Registro Invalido")
             console.log(err)
             console.log(err2)
@@ -641,7 +643,28 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       }
 
       this.obtenerArchivos = (id_incidencia) => {
-
+        $.get({
+          async: false,
+          url: `https://sice.iedep.edu.mx:8282/dev/administrativos/archivos/archivos/${id_incidencia}`,
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        })
+          .done((data) => {
+            let archivos = data.items;
+            if (archivos != []) {
+              $.each(archivos, function (index, arr) {
+                self.filesSeguimiento.push(arr);
+              })
+            }
+            console.log("Archivos del seguimiento: ");
+            console.log(self.filesSeguimiento())
+          })
+          .fail((err, err2) => {
+            console.log(err)
+            console.log(err2)
+          });
       }
 
       //FUNCIONES BUSCAR REGISTRO 
@@ -649,6 +672,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         let queryId = event.detail.value;
         self.obtenerIncidencia(queryId);
         self.obtenerSeguimiento(queryId);
+        self.obtenerArchivos(queryId);
         document.querySelector("#editarModal").open();
       }
 
