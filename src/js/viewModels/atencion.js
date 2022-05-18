@@ -10,7 +10,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
       self.seguimientoArray = ko.observableArray();
-      self.personaAtendida = ko.observable();
+      
 
       //Variables y funciones FILE
       self.files = ko.observable([]);
@@ -74,6 +74,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
 
         //Variables Incidencia Detail
         self.idIncidencia = ko.observable();
+        self.personaAtendida = ko.observable({});
         self.incidenciaDetail = ko.observable({});
         self.administrativo = ko.observable({});
         //Fin variables Incidencia Detail 
@@ -168,21 +169,19 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
 
-         
-
           self.incidenciaDetail(dataObj.data);
-          console.log(self.incidenciaDetail())
+          
           if(self.incidenciaDetail().tipo_usuario == "Aspirante" ){
-            self.personaAtendida(self.obtenerAspirante(self.incidenciaDetail().clave));
+            self.personaAtendida(self.obtenerAspirante(self.incidenciaDetail().clave)[0]);
           }
           else if(self.incidenciaDetail().tipo_usuario == "Alumno" || self.incidenciaDetail().tipo_usuario == "Ex Alumno"){
-            self.personaAtendida(self.obtenerAlumno(self.incidenciaDetail().clave));
+            self.personaAtendida(self.obtenerAlumno(self.incidenciaDetail().clave)[0]);
           }
           else if(self.incidenciaDetail().tipo_usuario == "Representante" || self.incidenciaDetail().tipo_usuario == "Coordinador(a)"){
-            self.personaAtendida(self.obtenerAdministrativo(self.incidenciaDetail().clave));
+            self.personaAtendida(self.obtenerAdministrativo(self.incidenciaDetail().clave)[0]);
           }
 
-          console.log(self.personaAtendida())
+          console.log((self.personaAtendida()))
 
 
           /*

@@ -342,36 +342,36 @@
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Nombre</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="{{ incidenciaDetail().nombre_persona_atendida }}"></oj-bind-text>
+                        <oj-bind-text value="{{ personaAtendida().nombre }}"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Numero de contacto</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ personaAtendida().telcel ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Institucional</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]">
+                        <oj-bind-text value="[[ personaAtendida().correo_institucional ]]">
                         </oj-bind-text>
                       </div>
                     </div>
 
 
-                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'aspirante' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'Aspirante' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
-                        <p>Id</p>
+                        <p>ID</p>
                         <div class="oj-typography-subheading-xs">
                           <oj-bind-text value="[[ incidenciaDetail().clave ]]"></oj-bind-text>
                         </div>
                       </div>
                     </oj-bind-if>
 
-                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'representante' || incidenciaDetail().tipo_usuario == 'coordinador' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'Representante' || incidenciaDetail().tipo_usuario == 'Coordinador(a)' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Expediente</p>
                         <div class="oj-typography-subheading-xs">
@@ -381,7 +381,7 @@
                     </oj-bind-if>
 
 
-                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'alumno' || incidenciaDetail().tipo_usuario == 'ex alumno' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'Alumno' || incidenciaDetail().tipo_usuario == 'Ex Alumno' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Matricula</p>
                         <div class="oj-typography-subheading-xs">
@@ -394,21 +394,21 @@
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Personal</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ personaAtendida().correo_personal ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Campus</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ personaAtendida().campus ]]"></oj-bind-text>
                       </div>
                     </div>
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Plan de estudios</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ incidenciaDetail().idecatalu ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ personaAtendida().plan ]]"></oj-bind-text>
                       </div>
                     </div>
 
