@@ -5,7 +5,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
   function (require, exports, ko, ArrayDataProvider, $, PagingDataProviderView, MutableArrayDataProvider, AsyncRegExpValidator) {
     function ViewModel() {
       var self = this;
-      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwNCIsImVtYWlsIjoiYWxleGlzLmJlbml0ZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTI3NzgzNzIuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3LCJleHAiOjE2NTI4NjQ3NzIuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk3IH0.9ljaXcUXbj-IxAV5XamcsuxBRn_3oogDQ0GMvb8nl64";
+      var token = "Bearer eyAidHlwIjogIkpXVCIsICJhbGciOiAiSFMyNTYiIH0.eyAidXNlcm5hbWUiOiJBRE1JTjAwNCIsImVtYWlsIjoiYWxleGlzLmJlbml0ZXpAaWVkZXAuZWR1Lm14Iiwib3duZXIiOjEsInJvbGUiOiJVU0VSIiwidXNlcl9sZXZlbCI6MSwiZ3JvdXAiOiJBRE1JTklTVFJBVElWT1MiLCJncm91cHMiOlsiQURNSU5JU1RSQVRJVk9TIiwiSyJdLCJpYXQiOjE2NTI4NjQ4ODcuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk2LCJleHAiOjE2NTI5NTEyODcuOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk2IH0.FpQnmWSggjFWZz65S-5uupNiD7r5yK4xG76A6TrO1FQ";
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
@@ -73,7 +73,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         //Variables seguimiento:
         self.seguimientoUpdate = ko.observable({});
         self.camposSeguimiento = ko.observable(true);
-        self.seguimientoArray = ko.observableArray([]);
+        self.seguimientoArray = ko.observableArray();
 
         //Variables y funciones FILE
         self.files = ko.observable([]);
@@ -145,48 +145,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
           self.dataUpdate(dataObj.data);
-          
-
-          /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */
-
-          $.get({
-            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento/${self.dataUpdate().id}`,
-            headers: {
-              "Authorization": token,
-              "Content-Type": "application/json"
-            }
-          })
-            .done((data) => {
-              self.seguimientoArray(data.items)
-              console.log(self.seguimientoArray())
-
-            })
-            .fail((err, err2) => {
-              console.log(err)
-              console.log(err2)
-            });
-          /* Finalizamos la busqueda del seguimiento */
-
-          $.get({
-            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/archivos/archivos/${self.dataUpdate().id}`,
-            headers: {
-              "Authorization": token,
-              "Content-Type": "application/json"
-            }
-          })
-            .done((data) => {
-              console.log("archivos: ")
-              self.filesSeguimiento(data.items)
-              console.log(data.items)
-
-            })
-            .fail((err, err2) => {
-              console.log("Ocurrio un error")
-              console.log(err)
-              //console.log(err2)
-            });
-
-
+          self.obtenerSeguimiento(self.dataUpdate().id); /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */ 
+          self.obtenerArchivos(self.dataUpdate().id); /* Obtenemos archivos de la incidencia */
 
           document.querySelector("#editarModal").open();
         }
@@ -493,7 +453,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         self.camposSeguimientos(true)
       }
 
-      self.crearSeguimiento = () => {
+      self.crearSeguimientoBD = () => {
         let seguimiento;
         $.post({
           async:false,
@@ -565,7 +525,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.crearSeguimiento = () => {
         self.obtenerFecha();
         if(self.validarCamposSeguimiento()){
-          let seguimiento = self.crearSeguimiento();
+          let seguimiento = self.crearSeguimientoBD();
           self.seguimientoArray.push(seguimiento);
           self.limpiarCampos();
           $("#agregarSeguimientoBtn").prop("disabled", false);
@@ -600,19 +560,12 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       }
 
       self.limpiarCampos = () => {
-        self.idAtencion(0);
-        self.tipoUsuario("");
-        self.identificadorPersonaAtendida("");
-        self.administrativo("");
-        self.tipoAtencion("");
-        self.estatus("");
-        self.asunto("");
-        self.seguimiento([]);
-        self.camposSeguimientos(false)
-        self.fileNames("");
-        self.files = ko.observable([]);
-        console.log("pase a limpiar los campos")
+        
+        //Campos Editar 
 
+        //Campos Busqueda
+        self.search('');
+        self.rawSearch('');
       }
 
       //FUNCIONES ELIMINAR REGISTRO DE ATENCION
@@ -651,8 +604,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           }
         })
           .done((data) => {
-            seguimiento = data.items;
-            
+            seguimiento = data.items; 
+            self.seguimientoArray(data.items)
           })
           .fail((err, err2) => {
             console.log(err)
@@ -675,7 +628,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         })
           .done((data) => {
             incidencia = data.items;
-            
+            self.dataUpdate(incidencia[0])
           })
           .fail((err, err2) => {
             objDB = null;
@@ -687,17 +640,16 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         return incidencia;
       }
 
+      this.obtenerArchivos = (id_incidencia) => {
+
+      }
+
       //FUNCIONES BUSCAR REGISTRO 
-      this.searchRegister = function (event) {
+      self.searchRegister = function (event) {
         let queryId = event.detail.value;
-        let objDB;
-        objDB = self.obtenerIncidencia(queryId);
-        console.log(objDB[0].id);
-        self.dataUpdate(objDB[0])
-        self.seguimientoArray(self.obtenerSeguimiento(queryId))
+        self.obtenerIncidencia(queryId);
+        self.obtenerSeguimiento(queryId);
         document.querySelector("#editarModal").open();
-
-
       }
 
       //Filter table 
