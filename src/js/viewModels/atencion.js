@@ -457,6 +457,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         let date = new Date()
         self.fecha = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" +String(date.getDate()).padStart(2, '0');
         self.hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        console.log(self.fecha + ' ' +self.hora)
       }
 
       self.actualizarRegistro = () => {
@@ -495,24 +496,22 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.crearSeguimiento = () => {
         $.post({
           async:false,
-          url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias',
+          url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento',
           headers: {
             "Authorization": token,
             "Content-Type": "application/json"
           },
-          data:{
+          data:JSON.stringify( {
             "cvecatpro":"ADMIN005", //Se tomara del login
             "tipo_atencion": self.tipoAtencion(),
             "estatus": self.estatus(),
             "descripcion": self.descripcionSeguimiento(),
-            "fecha_actualizacion": "",
-            "incidencia_id":""
-
-          }
+            "fecha_actualizacion": self.fecha + ' ' +self.hora,
+            "incidencia_id": self.dataUpdate().id
+          })
         })
           .done((data) => {
-            self.data(data.items)
-            console.log(data.items)
+            console.log(data)
           })
           .fail((err, err2) => {
             console.log(err)
@@ -553,6 +552,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.actualizarSeguimientos = () => {
         self.obtenerFecha();
         if(self.validarCamposSeguimiento()){
+          self.crearSeguimiento();
           alert("Campos enviados")
         }
         else{
@@ -560,7 +560,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         }
         
 
-
+        /*
         //Obtenemos datos del administrativo
         let dataAdmBD = { //Estos datos se obtendran del login 
           nombre: "alex3",
@@ -583,6 +583,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         self.limpiarCampos();
         $("#agregarSeguimientoBtn").prop("disabled", false);
         self.camposSeguimientos(false);
+        */
       }
 
       self.activarCamposSeguimiento = (event) => {
