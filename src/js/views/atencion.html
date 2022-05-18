@@ -342,7 +342,7 @@
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Nombre</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="{{ incidenciaDetail().idecatalu }}"></oj-bind-text>
+                        <oj-bind-text value="{{ incidenciaDetail().nombre_persona_atendida }}"></oj-bind-text>
                       </div>
                     </div>
 
@@ -361,35 +361,35 @@
                       </div>
                     </div>
 
-                    <!--
-                    <oj-bind-if test="[[ incidenciaDetail().idecatalu.tipoUsuario == 'aspirante' ]]">
+
+                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'aspirante' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Id</p>
                         <div class="oj-typography-subheading-xs">
-                          <oj-bind-text value="[[ incidenciaDetail().identificador ]]"></oj-bind-text>
+                          <oj-bind-text value="[[ incidenciaDetail().clave ]]"></oj-bind-text>
                         </div>
                       </div>
                     </oj-bind-if>
 
-                    <oj-bind-if test="[[ incidenciaDetail().idecatalu.tipoUsuario == 'representante' || incidenciaDetail().idecatalu.tipoUsuario == 'coordinador' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'representante' || incidenciaDetail().tipo_usuario == 'coordinador' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Expediente</p>
                         <div class="oj-typography-subheading-xs">
-                          <oj-bind-text value="[[ incidenciaDetail().identificador ]]"></oj-bind-text>
+                          <oj-bind-text value="[[ incidenciaDetail().clave ]]"></oj-bind-text>
                         </div>
                       </div>
                     </oj-bind-if>
 
 
-                    <oj-bind-if test="[[ incidenciaDetail().tipoUsuario == 'alumno' || incidenciaDetail().idecatalu.tipoUsuario == 'ex alumno' ]]">
+                    <oj-bind-if test="[[ incidenciaDetail().tipo_usuario == 'alumno' || incidenciaDetail().tipo_usuario == 'ex alumno' ]]">
                       <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                         <p>Matricula</p>
                         <div class="oj-typography-subheading-xs">
-                          <oj-bind-text value="[[ incidenciaDetail().identificador ]]"></oj-bind-text>
+                          <oj-bind-text value="[[ incidenciaDetail().clave ]]"></oj-bind-text>
                         </div>
                       </div>
                     </oj-bind-if>
-                    -->
+
 
                     <div class="oj-md-3 oj-sm-12 oj-flex-item oj-sm-padding-2x">
                       <p>Correo Personal</p>
@@ -422,19 +422,19 @@
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>Nombre</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ administrativo().nombre_completo ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().nombre_administrativo ]]"></oj-bind-text>
                       </div>
                     </div>
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>N° Expediente</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ administrativo().num_expediente ]]"></oj-bind-text>
+                        <oj-bind-text value="[[ incidenciaDetail().cvecatpro ]]"></oj-bind-text>
                       </div>
                     </div>
                     <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">
                       <p>Correo Institucional</p>
                       <div class="oj-typography-subheading-xs">
-                        <oj-bind-text value="[[ administrativo().correo_institucional ]]">
+                        <oj-bind-text value="[[ incidenciaDetail().corcatpro ]]">
                         </oj-bind-text>
                       </div>
                     </div>

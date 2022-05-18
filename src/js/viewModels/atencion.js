@@ -9,7 +9,8 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       self.data = ko.observableArray([]); //Data de la tabla principal
       self.dataADM = ko.observableArray([]); //Data de los administradores que estan en el sistema
       self.dataAlu = ko.observableArray([]); //Data de los alumnos a quien pueden asociarse las incidencias
-      self.seguimientoArray = ko.observableArray([]);
+      self.seguimientoArray = ko.observableArray();
+      self.personaAtendida = ko.observable();
 
       //Variables y funciones FILE
       self.files = ko.observable([]);
@@ -166,38 +167,23 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           const element = document.getElementById('table');
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
-          $.get({
-            url: `https://sice.iedep.edu.mx:8282/dev/administrativos/incidencias/incidencias/${dataObj.data.id}`,
-            headers: {
-              "Authorization": token,
-              "Content-Type": "application/json"
-            }
-          })
-            .done((data) => {
-              self.incidenciaDetail(data.items[0])
-              console.log(data.items[0].idecatalu)
-              $.get({
-                url: `https://sice.iedep.edu.mx:8282/dev/administrativos/usuarios/usuarios/${data.items[0].idecatalu}`,
-                headers: {
-                  "Authorization": token,
-                  "Content-Type": "application/json"
-                }
-              })
-                .done((data) => {
-                  self.administrativo(data.items[0]);
-                  console.log(self.administrativo())
-                })
-                .fail((err) => {
 
-                })
-            })
-            .fail((err) => { console.log(err) })
-
-
+         
 
           self.incidenciaDetail(dataObj.data);
-          self.incidenciaDetail().tipoUsuario = "alumno" //Lo quitamos cuando tengamos este atributo en la base de datos 
-          self.incidenciaDetail().identificador = "";
+          console.log(self.incidenciaDetail())
+          if(self.incidenciaDetail().tipo_usuario == "Aspirante" ){
+            self.personaAtendida(self.obtenerAspirante(self.incidenciaDetail().clave));
+          }
+          else if(self.incidenciaDetail().tipo_usuario == "Alumno" || self.incidenciaDetail().tipo_usuario == "Ex Alumno"){
+            self.personaAtendida(self.obtenerAlumno(self.incidenciaDetail().clave));
+          }
+          else if(self.incidenciaDetail().tipo_usuario == "Representante" || self.incidenciaDetail().tipo_usuario == "Coordinador(a)"){
+            self.personaAtendida(self.obtenerAdministrativo(self.incidenciaDetail().clave));
+          }
+
+          console.log(self.personaAtendida())
+
 
           /*
           self.incidenciaDetail().idecatalu = ko.observable({ //IdPersona proximamente
@@ -213,19 +199,74 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           */
 
 
-          if (self.incidenciaDetail().tipoUsuario == "aspirante") {
-            self.incidenciaDetail.identificador = "23123"
-          }
-          else if (self.incidenciaDetail().tipoUsuario == "alumno" || self.incidenciaDetail().tipoUsuario == "ex alumno") {
-            self.incidenciaDetail.identificador = "20CL42352"
-          }
-          else if (self.incidenciaDetail().tipoUsuario == "representante" || self.incidenciaDetail().tipoUsuario == "coordinador") {
-            self.incidenciaDetail.identificador = "1254"
-          }
+         
 
           self.dataUpdate().tipoUsuario = "datos BD pendientes" //Eliminamos cuando tengamos este elemento en la tabla
           document.getElementById("mostrarModal").open();
         }
+      }
+
+      self.obtenerAspirante = (CVECATASP) => {
+        let aspirante = null;
+        $.get({
+          async:false,
+          url: `https://sice.iedep.edu.mx:8282/dev/administrativos/aspirantes/aspirantes/${CVECATASP}`,
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        })
+          .done((data) => {
+            aspirante = data.items;
+          })
+          .fail((err, err2) => {
+            console.log(err)
+            console.log(err2)
+          });
+
+          return aspirante
+      }
+
+      self.obtenerAlumno = (matricula_alumno) => {
+        let alumno = null;
+        $.get({
+          async:false,
+          url: `https://sice.iedep.edu.mx:8282/dev/administrativos/alumnos/alumnos/${matricula_alumno}`,
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        })
+          .done((data) => {
+            alumno = data.items;
+          })
+          .fail((err, err2) => {
+            console.log(err)
+            console.log(err2)
+          });
+
+          return alumno;
+      }
+
+      self.obtenerAdministrativo = (CVECATPRO) => {
+        let administrativo = null;
+        $.get({
+          async:false,
+          url: `https://sice.iedep.edu.mx:8282/dev/administrativos/usuarios/usuarios/${CVECATPRO}`,
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        })
+          .done((data) => {
+            administrativo = data.items;
+          })
+          .fail((err, err2) => {
+            console.log(err)
+            console.log(err2)
+          });
+
+          return administrativo;
       }
 
       self.cerrarModal = (event) => {
@@ -570,11 +611,16 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         self.search('');
         self.rawSearch('');
         self.seguimientoArray.removeAll();
+        self.filesSeguimiento.removeAll();
       }
 
       //FUNCIONES ELIMINAR REGISTRO DE ATENCION
       self.eliminarRegistro = (event) => {
+        console.log("ITEM ELIMINADO "+event.target.id)
         console.log(event.target.id);
+
+
+
         let index = "";
         if (event.target.id == "registroEliminar") {
           $.each(self.data(), function (i, arr) {
@@ -609,7 +655,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           .done((data) => {
             let seguimiento = data.items;
             self.seguimientoArray(seguimiento);
-            console.log(self.seguimientoArray());
+            
           })
           .fail((err, err2) => {
             console.log(err)
