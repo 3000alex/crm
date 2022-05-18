@@ -145,7 +145,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           const currentRow = element.currentRow;
           const dataObj = element.getDataForVisibleRow(currentRow.rowIndex);
           self.dataUpdate(dataObj.data);
-          self.dataUpdate().tipoUsuario = "datos BD pendientes" //Eliminamos cuando tengamos este elemento en la tabla
+          
 
           /* Buscamos en la tabla de seguimientos si es que existe uno relacionado con esta incidencia */
 
@@ -158,7 +158,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           })
             .done((data) => {
               self.seguimientoArray(data.items)
-              //console.log(data.items)
+              console.log(self.seguimientoArray())
 
             })
             .fail((err, err2) => {
@@ -494,6 +494,7 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
       }
 
       self.crearSeguimiento = () => {
+        let seguimiento;
         $.post({
           async:false,
           url: 'https://sice.iedep.edu.mx:8282/dev/administrativos/seguimiento/seguimiento',
@@ -511,12 +512,24 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
           })
         })
           .done((data) => {
+            seguimiento = {
+              descripcion: self.descripcionSeguimiento(),
+              estatus: self.estatus(),
+              fecha_actualizacion: self.fecha + ' ' + self.hora,
+              id: data.seguimiento_id, 
+              idecatpro: 4552, //Lo sacamos del Login
+              incidencia_id: dataUpdate().id,
+              nombre_administrativo: "Alexis Benítez Arellano", //Lo sacamos del login
+              tipo_atencion: self.tipoAtencion(),
+            }
             console.log(data)
           })
           .fail((err, err2) => {
+            seguimiento = null;
             console.log(err)
             console.log(err2)
           });
+          return seguimiento;
       }
 
       self.validarCamposSeguimiento = () => {
@@ -549,41 +562,20 @@ define(["require", "exports", "knockout", "ojs/ojarraydataprovider", "jquery", "
         return validFields;
       }
 
-      self.actualizarSeguimientos = () => {
+      self.crearSeguimiento = () => {
         self.obtenerFecha();
         if(self.validarCamposSeguimiento()){
-          self.crearSeguimiento();
-          alert("Campos enviados")
+          let seguimiento = self.crearSeguimiento();
+          self.seguimientoArray.push(seguimiento);
+          self.limpiarCampos();
+          $("#agregarSeguimientoBtn").prop("disabled", false);
+          self.camposSeguimientos(false);
+          alert("Seguimiento creado")
         }
         else{
           alert("Debe de rellenar todos los campos")
         }
         
-
-        /*
-        //Obtenemos datos del administrativo
-        let dataAdmBD = { //Estos datos se obtendran del login 
-          nombre: "alex3",
-          numExpediente: "1960",
-          correoInstituciona: "alex@iedep.edu.mx"
-        }
-        let idSeguimiento = "3"; //Este ID lo obtenemos de la BD al crear el registro
-        self.seguimientoArray.push(
-          {
-            "id": idSeguimiento,
-            "descripcion": self.seguimiento(),
-            "tipoAtencion": self.tipoAtencion(),
-            "tipoActualizacion": "Se agrego una nota nueva",
-            "administrativo": dataAdmBD.nombre,
-            "estatus": self.estatus(),
-            "archivos": self.files(),
-            "fecha_actualizacion": self.fecha + "  " + self.hora
-          }
-        )
-        self.limpiarCampos();
-        $("#agregarSeguimientoBtn").prop("disabled", false);
-        self.camposSeguimientos(false);
-        */
       }
 
       self.activarCamposSeguimiento = (event) => {
